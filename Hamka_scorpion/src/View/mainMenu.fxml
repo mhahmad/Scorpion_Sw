@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.mainMenuController">
+   <children>
+      <ImageView fitHeight="960.0" fitWidth="1200.0">
+         <image>
+            <Image url="@../../Backgrounds/mainMenuBackground.png" />
+         </image>
+      </ImageView>
+      <Pane prefHeight="65.0" prefWidth="1200.0" style="-fx-background-color: #630000;">
+         <children>
+            <Label layoutX="555.0" layoutY="19.0" text="Main Menu" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="317.0" layoutY="249.0" prefHeight="630.0" prefWidth="566.0" style="-fx-background-color: #630000; -fx-border-color: #444444; -fx-border-width: 8; -fx-border-radius: 30; -fx-background-radius: 33;">
+         <children>
+            <VBox layoutX="101.0" layoutY="42.0" prefHeight="597.0" prefWidth="365.0" spacing="20.0">
+               <children>
+                  <Button fx:id="startBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Start Game">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="loadGameBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Load Game">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="leaderboardBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Leaderboard">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="tutorialBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Tutorials">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="optionBtn" mnemonicParsing="false" onAction="#optionBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Options">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+                  <Button fx:id="exitBtn" mnemonicParsing="false" onAction="#exitGame" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #FF7777; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Exit">
+                     <font>
+                        <Font name="Roboto" size="30.0" />
+                     </font>
+                     <effect>
+                        <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
+                     </effect>
+                  </Button>
+               </children>
+               <padding>
+                  <Insets left="50.0" right="50.0" top="50.0" />
+               </padding>
+            </VBox>
+            <Label alignment="TOP_CENTER" layoutX="108.0" layoutY="-45.0" prefHeight="90.0" prefWidth="351.0" style="-fx-background-color: #FFE2E2; -fx-background-radius: 22; -fx-border-color: #000000; -fx-border-width: 3; -fx-border-radius: 20;" text="Hamka" textAlignment="CENTER">
+               <font>
+                  <Font name="Roboto" size="70.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
