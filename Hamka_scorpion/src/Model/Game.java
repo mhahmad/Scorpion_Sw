@@ -1,6 +1,6 @@
 package Model;
 
-import java.sql.Time;
+import java.util.Timer;
 
 
 public class Game {
@@ -9,8 +9,8 @@ public class Game {
 	private String player2;
 	private int player1Points;
 	private int player2Points;
-	private Time turnTime;
-	private Time matchTime;
+	private Timer turnTime;
+	private Timer matchTime;
 	private int player1Soldiers;
 	private int player2Soldiers;
 	private int player1Queens;
@@ -33,6 +33,7 @@ public class Game {
 		this.player2 = player2;
 		this.player1Points = 0;
 		this.player2Points = 0;
+		matchTime = new Timer();
 		this.player1Soldiers = 12;
 		this.player2Soldiers = 12;
 		// Time is needed here
