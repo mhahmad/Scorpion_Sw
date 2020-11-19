@@ -114,6 +114,17 @@ public class Game {
 		return player1Points;
 	}
 	  
+	
+	public int[][] getBoard() {
+		return board;
+	}
+
+
+	public void setBoard(int[][] board) {
+		this.board = board;
+	}
+
+
 	/**
 	 * 
 	 * @author mutla
@@ -140,5 +151,10 @@ public class Game {
 		 Pair[] pairs = new Pair[3];
 		 
 		return pairs;
+	 }
+	 
+	 
+	 public int getTileContent(int x , int y) {
+		 return this.getBoard()[x][y];
 	 }
 }

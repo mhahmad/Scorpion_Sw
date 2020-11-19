@@ -30,7 +30,7 @@ public class mainMenuController extends Application {
 
     @FXML
     private Button exitBtn;
-
+    
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
