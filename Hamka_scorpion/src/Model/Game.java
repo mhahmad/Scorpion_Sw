@@ -36,7 +36,7 @@ public class Game {
 		this.player1Soldiers = 12;
 		this.player2Soldiers = 12;
 		// Time is needed here
-		turn = PlayerTurn.Player1;
+		turn = PlayerTurn.Black;
 	}
 
 
@@ -131,7 +131,7 @@ public class Game {
 	 *enum for the turn of player
 	 */
 	public enum PlayerTurn {
-		Player1,Player2
+		Black,White
 		}
 		/**
 		 * 
@@ -152,6 +152,21 @@ public class Game {
 		 
 		return pairs;
 	 }
+	 
+	 /**
+	  * This method changes the turn when a player hands over the turn to the other player.
+	  * 
+	  */
+	 public void handTurn() {
+		 if(turn.equals(PlayerTurn.Black)) {
+			 turn = PlayerTurn.White;
+			 //should calculate Points
+			// turnTime.
+			 return;
+		 }
+		 turn = PlayerTurn.Black;
+	 }
+	 
 	 
 	 
 	 public int getTileContent(int x , int y) {

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -294,4 +295,73 @@ public class SysData {
 		}
 		
 	}
+	
+	
+	/**
+	 * load the saved game from the TXT file
+	 * @return Array of strings
+	 */
+	
+	private static String[] loadBoardText() {
+		
+		String path = "gameLoaded.txt";
+		File file = new File(path);
+		Scanner scanner = null;
+		String str = "";
+		try {
+			scanner = new Scanner(file);
+			while(scanner.hasNextLine()) {
+				str+= scanner.nextLine();
+			}
+		}catch (FileNotFoundException e) {
+             e.getStackTrace();
+        }finally {
+        	if(scanner != null) {
+        		 scanner.close();
+        	}
+        }
+		String[] toReturn =  str.split(",");
+		return toReturn;		
+	}
+	
+	/**
+	 * method that gets a matrix of the board 
+	 * @return matrix of numbers
+	 */
+	public  Integer[][] getBoard(){
+		String arr[] = loadBoardText();
+		Integer[][] board = {{-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1},
+                {-1,-1,-1,-1,-1,-1,-1,-1}
+};
+		int k=0;
+		for(int i=0; i<8;i++) {
+			for(int j=0 ; j<8 ; j++) {
+				if(i%2==0 && j%2==1) {
+					board[i][j]=Integer.parseInt(arr[k++]);
+				}else if(i%2==1 && j%2==0){
+					board[i][j]=Integer.parseInt(arr[k++]);
+				}
+			}
+		}
+		return board;
+	}
+	
+	/**
+	 * 
+	 * @return which player in turn in saved game.
+	 */
+	public Game.PlayerTurn getTurn() {
+		String arr[] = loadBoardText();
+		if(arr[arr.length-1].charAt(0) == 'B') {
+			return Game.PlayerTurn.Black;
+		}
+		return Game.PlayerTurn.White;
+	}
+	
 }
