@@ -2,6 +2,7 @@ package View;
 import java.util.concurrent.ThreadLocalRandom;
 
 import Controller.SysData;
+import Model.Game;
 import Model.Winner;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -20,9 +21,7 @@ public class Main  {
 //		SysData.getInstance().addWinnerToLeaderboard(w1);
 //		SysData.getInstance().addWinnerToLeaderboard(w2);
 //		SysData.getInstance().writeWinnersIntoFile();
-		SysData.getInstance().readLeaderboardFile();
-		for(Winner win : SysData.getInstance().getLeaderboard()) 
-			System.out.println(win);
+
 	}
 
 

@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class Game {
@@ -16,6 +17,7 @@ public class Game {
 	private int player1Queens;
 	private int player2Queens;
 	private String date;
+	public int seconds = 0;
 	private Pair[] yellowPanels;
 	private int[][] board = {{-1,1,-1,1,-1,1,-1,1},
 			                 {1,-1,1,-1,1,-1,1,-1},
@@ -116,6 +118,26 @@ public class Game {
 	}
 	  
 	
+	public Timer getTurnTime() {
+		return turnTime;
+	}
+
+
+	public void setTurnTime(Timer turnTime) {
+		this.turnTime = turnTime;
+	}
+
+
+	public Timer getMatchTime() {
+		return matchTime;
+	}
+
+
+	public void setMatchTime(Timer matchTime) {
+		this.matchTime = matchTime;
+	}
+
+
 	public int[][] getBoard() {
 		return board;
 	}
@@ -162,21 +184,31 @@ public class Game {
 		 if(turn.equals(PlayerTurn.Black)) {
 			 turn = PlayerTurn.White;
 			 //should calculate Points
-			// turnTime.
+
 			 return;
 		 }
+//		 TimerTask task = new TimerTask() {
+//			@Override
+//			public void run() {
+//				seconds++;
+//			}
+//			 
+//		 };
+//			matchTime.scheduleAtFixedRate(task, 1000, 1000);
+		// turnTime.
 		 turn = PlayerTurn.Black;
 	 }
 	 
+	 /***
+	  * return what insided the tile (empty ? , soldier ? , queen ? )
+	  * @param x
+	  * @param y
+	  * @return
+	  */
 	 public int getTileContent(int x , int y) {
 		 return this.getBoard()[x][y];
 	 }
 	 
 	 
-	 /***
-	  * commit this
-	  */
-	 public void newFun() {
-		 System.out.println("fun does not fun");
-	 }
+
 }

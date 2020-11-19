@@ -358,7 +358,7 @@ public class SysData {
 	 */
 	public Game.PlayerTurn getTurn() {
 		String arr[] = loadBoardText();
-		if(arr[arr.length-1].charAt(0) == 'B') {
+		if(arr[arr.length-1].equals('B')) {
 			return Game.PlayerTurn.Black;
 		}
 		return Game.PlayerTurn.White;
