@@ -1,5 +1,6 @@
 package Model;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -165,6 +166,10 @@ public class Game {
 			int x;
 			int y;
 			
+			Pair(int x,int y){
+				this.x = x;
+				this.y = y;
+			}
 		}
 	/***
 	 * method that decides random places to the yellow tiles
@@ -205,10 +210,28 @@ public class Game {
 	  * @param y
 	  * @return
 	  */
-	 public int getTileContent(int x , int y) {
-		 return this.getBoard()[x][y];
+	 public int getTileContent(Pair pair) {
+		 return this.getBoard()[pair.x][pair.y];
 	 }
 	 
 	 
-
+	 
+	 public ArrayList<Pair> getPossibleMovesForWhiteSoldier(int obj , Pair pair) {
+		 ArrayList<Pair> pairMoves = new ArrayList<Pair>();
+		 if(obj != 1)
+			 return null;
+		 else {
+			 if(pair.y == 0 && pair.x != 7 ) {
+				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
+					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
+				}
+				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2) {
+					
+				}
+			 }else if(pair.y == 7 && getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) {
+				 pairMoves.add(new Pair(pair.x+1,pair.y-1));
+			 }
+		 }
+		 return null;
+	 }
 }
