@@ -172,4 +172,12 @@ public class Game {
 	 public int getTileContent(int x , int y) {
 		 return this.getBoard()[x][y];
 	 }
+	 
+	 
+	 /***
+	  * commit this
+	  */
+	 public void newFun() {
+		 System.out.println("fun does not fun");
+	 }
 }
