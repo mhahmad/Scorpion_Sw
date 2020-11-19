@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.Timer;
+import java.sql.Time;
 
 
 public class Game {
@@ -9,8 +9,8 @@ public class Game {
 	private String player2;
 	private int player1Points;
 	private int player2Points;
-	private Timer turnTime;
-	private Timer matchTime;
+	private Time turnTime;
+	private Time matchTime;
 	private int player1Soldiers;
 	private int player2Soldiers;
 	private int player1Queens;
@@ -33,7 +33,6 @@ public class Game {
 		this.player2 = player2;
 		this.player1Points = 0;
 		this.player2Points = 0;
-		this.matchTime = new Timer();
 		this.player1Soldiers = 12;
 		this.player2Soldiers = 12;
 		// Time is needed here
@@ -167,8 +166,6 @@ public class Game {
 		 }
 		 turn = PlayerTurn.Black;
 	 }
-	 
-	 
 	 
 	 public int getTileContent(int x , int y) {
 		 return this.getBoard()[x][y];
