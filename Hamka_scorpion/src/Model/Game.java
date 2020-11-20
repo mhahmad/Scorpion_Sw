@@ -163,12 +163,15 @@ public class Game {
 		 *class to get the coloured pannel x,y
 		 */
 		private class Pair {
-			int x;
-			int y;
+			int x;// row
+			int y;//col
 			
 			Pair(int x,int y){
 				this.x = x;
 				this.y = y;
+			}
+			public String toString() {
+				return "[x="+x+",y="+y+"]";
 			}
 		}
 	/***
@@ -177,7 +180,7 @@ public class Game {
 	 */
 	 private Pair[] randomYellowTiles() {
 		 Pair[] pairs = new Pair[3];
-		 
+		 /// not finished yet
 		return pairs;
 	 }
 	 
@@ -221,34 +224,72 @@ public class Game {
 		 if(obj != 1)
 			 return null;
 		 else {
-			 if(pair.y == 0 && pair.x != 7 ) {
+			 if(pair.y == 0 && pair.x < 7 ) { // column =0 and row 1-6
 				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
 					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
 					 return pairMoves;
 				}
-				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0) {
+				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
 						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
 						return pairMoves;
 				}
-			 }else if(pair.y == 7 && pair.x != 7 ) {
-				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) {
+			 }else if(pair.y == 7 && pair.x < 7 ) { // if column =7 and row 0-6
+				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) { // move possible
 					 pairMoves.add(new Pair(pair.x+1,pair.y-1));
 					 return pairMoves;
-				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 2  && pair.x+1 != 7 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {
+				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 2  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
 					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
 					 return pairMoves;
 				 }
-			 }else if (pair.x !=7 && getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0) {
+			 }else if (pair.x <7 && pair.y>0 && pair.y<7 && getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0) { // row 1-6 and column 1-6 and move possible
 				 if(getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 )
 					 pairMoves.add(new Pair(pair.x + 1, pair.y -1 ));
 				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0)
 					 pairMoves.add(new Pair(pair.x + 1, pair.y + 1 ));
 				 return pairMoves;
-			 }else if (pair.x != 6 ) {
-				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) 
+			 }else if (pair.x < 6 && pair.y<6  && pair.y>1 ) { // row 0-5 and column 2-5 
+				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) //if eat to the right possible
 					 pairMoves.add(new Pair(pair.x + 2,pair.y + 2));
-				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) 
-					pairMoves.add(new Pair(pair.x + 2,pair.y = 2));
+				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) // if eat to the left possible
+					pairMoves.add(new Pair(pair.x + 2,pair.y - 2));
+				 return pairMoves;
+			 }
+		 }
+		 return null;
+	 }
+	 public ArrayList<Pair> getPossibleMovesForBlackSoldier(int obj , Pair pair) {
+		 ArrayList<Pair> pairMoves = new ArrayList<Pair>();
+		 if(obj != 2)
+			 return null;
+		 else {
+			 if(pair.y == 0 && pair.x > 0 ) { // row 1-7 and col 7
+				if( getTileContent(new Pair(pair.x-1,pair.y+1)) == 0) { // if move possible
+					 pairMoves.add(new Pair(pair.x-1,pair.y+1));
+					 return pairMoves;
+				}
+				else if (getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  - 2 , pair.y + 2)) == 0 && pair.x>1 ) { // if eat possible and row 2-7
+						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
+						return pairMoves;
+				}
+			 }else if(pair.y == 7 && pair.x >0 ) {
+				 if(getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 0) {
+					 pairMoves.add(new Pair(pair.x-1,pair.y-1));
+					 return pairMoves;
+				 }else if (getTileContent(new Pair(pair.x-1,pair.y -1 )) == 2  && pair.x+1 != 7 && getTileContent(new Pair(pair.x - 2,pair.y - 2)) == 0) {
+					 pairMoves.add(new Pair(pair.x - 2, pair.y - 2));
+					 return pairMoves;
+				 }
+			 }else if (pair.x >0  && pair.y>0 && pair.y <7 && getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0) {
+				 if(getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 )
+					 pairMoves.add(new Pair(pair.x - 1, pair.y -1 ));
+				 if(getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0)
+					 pairMoves.add(new Pair(pair.x - 1, pair.y + 1 ));
+				 return pairMoves;
+			 }else if (pair.x > 1 && pair.y<6  && pair.y>1 ) {
+				 if(getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x - 2,pair.y + 2)) == 0) 
+					 pairMoves.add(new Pair(pair.x - 2,pair.y + 2));
+				 if(getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
+					pairMoves.add(new Pair(pair.x - 2,pair.y - 2));
 				 return pairMoves;
 			 }
 		 }
