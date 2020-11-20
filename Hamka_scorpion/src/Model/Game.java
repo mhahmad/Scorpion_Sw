@@ -7,40 +7,41 @@ import java.util.TimerTask;
 
 public class Game {
 	private static int gameID;
-	private String player1;
-	private String player2;
-	private int player1Points;
-	private int player2Points;
+	private String whitePlayer;
+	private String blackPlayer;
+	private int whitePlayerPoints;
+	private int blackPlayerPoints;
 	private Timer turnTime;
 	private Timer matchTime;
-	private int player1Soldiers;
-	private int player2Soldiers;
-	private int player1Queens;
-	private int player2Queens;
+	private int whitePlayerSoldiers;
+	private int blackPlayerSoldiers;
+	private int whitePlayerQueens;
+	private int blackPlayerQueens;
 	private String date;
 	public int seconds = 0;
 	private Pair[] yellowPanels;
-	private int[][] board = {{-1,1,-1,1,-1,1,-1,1},
-			                 {1,-1,1,-1,1,-1,1,-1},
-			                 {-1,1,-1,1,-1,1,-1,1},
-			                 {0,-1,0,-1,0,-1,0,-1},
-			                 {-1,0,-1,0,-1,0,-1,0},
+	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 			                 {2,-1,2,-1,2,-1,2,-1},
 			                 {-1,2,-1,2,-1,2,-1,2},
-		                     {2,-1,2,-1,2,-1,2,-1}
+			                 {1,-1,1,-1,0,-1,0,-1},
+			                 {-1,0,-1,0,-1,0,-1,0},
+			                 {1,-1,1,-1,1,-1,1,-1},
+			                 {-1,1,-1,1,-1,1,-1,1},
+		                     {1,-1,1,-1,1,-1,1,-1}
 	};
 	PlayerTurn turn;
 	
-	public Game(String player1 , String player2) {
-		this.player1 = player1;
-		this.player2 = player2;
-		this.player1Points = 0;
-		this.player2Points = 0;
+	public Game(String whitePlayer , String blackPlayer) {
+		this.whitePlayer = whitePlayer;
+		this.blackPlayer = blackPlayer;
+		this.whitePlayerPoints = 0;
+		this.blackPlayerPoints = 0;
 		matchTime = new Timer();
-		this.player1Soldiers = 12;
-		this.player2Soldiers = 12;
+		this.whitePlayerSoldiers = 12;
+		this.blackPlayerSoldiers = 12;
 		// Time is needed here
 		turn = PlayerTurn.Black;
+		
 	}
 
 
@@ -49,53 +50,53 @@ public class Game {
 	}
 
 
-	public int getPlayer2Points() {
-		return player2Points;
+	public int getblackPlayerPoints() {
+		return blackPlayerPoints;
 	}
 
 
-	public void setPlayer2Points(int player2Points) {
-		this.player2Points = player2Points;
+	public void setblackPlayerPoints(int blackPlayerPoints) {
+		this.blackPlayerPoints = blackPlayerPoints;
 	}
 
 
-	public int getPlayer1Soldiers() {
-		return player1Soldiers;
+	public int getwhitePlayerSoldiers() {
+		return whitePlayerSoldiers;
 	}
 
 
-	public void setPlayer1Soldiers(int player1Soldiers) {
-		this.player1Soldiers = player1Soldiers;
+	public void setwhitePlayerSoldiers(int whitePlayerSoldiers) {
+		this.whitePlayerSoldiers = whitePlayerSoldiers;
 	}
 
 
-	public int getPlayer2Soldiers() {
-		return player2Soldiers;
+	public int getblackPlayerSoldiers() {
+		return blackPlayerSoldiers;
 	}
 
 
-	public void setPlayer2Soldiers(int player2Soldiers) {
-		this.player2Soldiers = player2Soldiers;
+	public void setblackPlayerSoldiers(int blackPlayerSoldiers) {
+		this.blackPlayerSoldiers = blackPlayerSoldiers;
 	}
 
 
-	public int getPlayer1Queens() {
-		return player1Queens;
+	public int getwhitePlayerQueens() {
+		return whitePlayerQueens;
 	}
 
 
-	public void setPlayer1Queens(int player1Queens) {
-		this.player1Queens = player1Queens;
+	public void setwhitePlayerQueens(int whitePlayerQueens) {
+		this.whitePlayerQueens = whitePlayerQueens;
 	}
 
 
-	public int getPlayer2Queens() {
-		return player2Queens;
+	public int getblackPlayerQueens() {
+		return blackPlayerQueens;
 	}
 
 
-	public void setPlayer2Queens(int player2Queens) {
-		this.player2Queens = player2Queens;
+	public void setblackPlayerQueens(int blackPlayerQueens) {
+		this.blackPlayerQueens = blackPlayerQueens;
 	}
 
 
@@ -104,18 +105,18 @@ public class Game {
 	}
 
 
-	public String getPlayer1() {
-		return player1;
+	public String getwhitePlayer() {
+		return whitePlayer;
 	}
 
 
-	public String getPlayer2() {
-		return player2;
+	public String getblackPlayer() {
+		return blackPlayer;
 	}
 
 
-	public int getPlayer1Points() {
-		return player1Points;
+	public int getwhitePlayerPoints() {
+		return whitePlayerPoints;
 	}
 	  
 	
@@ -173,6 +174,29 @@ public class Game {
 			public String toString() {
 				return "[x="+x+",y="+y+"]";
 			}
+			
+			@Override
+			public boolean equals(Object obj) {
+				if (this == obj)
+					return true;
+				if (obj == null)
+					return false;
+				if (getClass() != obj.getClass())
+					return false;
+				Pair other = (Pair) obj;
+				if (!getEnclosingInstance().equals(other.getEnclosingInstance()))
+					return false;
+				if (x != other.x)
+					return false;
+				if (y != other.y)
+					return false;
+				return true;
+			}
+			private Game getEnclosingInstance() {
+				return Game.this;
+			}
+			
+			
 		}
 	/***
 	 * method that decides random places to the yellow tiles
@@ -207,6 +231,13 @@ public class Game {
 		 turn = PlayerTurn.Black;
 	 }
 	 
+	 public int getContentWithXandY(int x , int y) {
+		 return getTileContent(new Pair(x,y));
+	 }
+	 
+	 public Pair getPair(int x,int y) {
+		 return new Pair(x,y);
+	 }
 	 /***
 	  * return what insided the tile (empty ? , soldier ? , queen ? )
 	  * @param x
@@ -214,84 +245,277 @@ public class Game {
 	  * @return
 	  */
 	 public int getTileContent(Pair pair) {
-		 return this.getBoard()[pair.x][pair.y];
+		 if(pair.x >=0 && pair.x <= 7 && pair.y >=0 && pair.y <=7)
+			 return this.getBoard()[pair.x][pair.y];
+		 return -2;
 	 }
 	 
 	 
-	 
-	 public ArrayList<Pair> getPossibleMovesForWhiteSoldier(int obj , Pair pair) {
-		 ArrayList<Pair> pairMoves = new ArrayList<Pair>();
-		 if(obj != 1)
-			 return null;
-		 else {
-			 if(pair.y == 0 && pair.x < 7 ) { // column =0 and row 1-6
-				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
-					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
-					 return pairMoves;
-				}
-				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
-						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
-						return pairMoves;
-				}
-			 }else if(pair.y == 7 && pair.x < 7 ) { // if column =7 and row 0-6
-				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) { // move possible
-					 pairMoves.add(new Pair(pair.x+1,pair.y-1));
-					 return pairMoves;
-				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 2  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
-					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
-					 return pairMoves;
-				 }
-			 }else if (pair.x <7 && pair.y>0 && pair.y<7 && getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0) { // row 1-6 and column 1-6 and move possible
-				 if(getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 )
-					 pairMoves.add(new Pair(pair.x + 1, pair.y -1 ));
-				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0)
-					 pairMoves.add(new Pair(pair.x + 1, pair.y + 1 ));
-				 return pairMoves;
-			 }else if (pair.x < 6 && pair.y<6  && pair.y>1 ) { // row 0-5 and column 2-5 
-				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) //if eat to the right possible
-					 pairMoves.add(new Pair(pair.x + 2,pair.y + 2));
-				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) // if eat to the left possible
-					pairMoves.add(new Pair(pair.x + 2,pair.y - 2));
-				 return pairMoves;
-			 }
-		 }
-		 return null;
-	 }
+	 /***
+	  * This method gets the possible moves for the white soldier and return them in an array
+	  * @param obj
+	  * @param pair
+	  * @return
+	  */
 	 public ArrayList<Pair> getPossibleMovesForBlackSoldier(int obj , Pair pair) {
 		 ArrayList<Pair> pairMoves = new ArrayList<Pair>();
 		 if(obj != 2)
 			 return null;
 		 else {
-			 if(pair.y == 0 && pair.x > 0 ) { // row 1-7 and col 7
+			 if(pair.y == 0 && pair.x < 7 ) { // column =0 and row 1-6
+				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
+					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
+					 System.out.println(pairMoves);
+					 return pairMoves;
+				}
+				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 1 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
+						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
+						 System.out.println(pairMoves);
+						return pairMoves;
+				}
+			 }else if(pair.y == 7 && pair.x < 7 ) { // if column =7 and row 0-6
+				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) { // move possible
+					 pairMoves.add(new Pair(pair.x+1,pair.y-1));
+					 System.out.println(pairMoves);
+
+					 return pairMoves;
+				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 1  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
+					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
+					 System.out.println(pairMoves);
+					 return pairMoves;
+				 }
+			 }else if (pair.x <7 && pair.y>0 && pair.y<7 ) {  
+				 if(getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0) {// row 1-6 and column 1-6 and move possible
+					 if(getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 )
+						 pairMoves.add(new Pair(pair.x + 1, pair.y -1 ));
+					 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0)
+						 pairMoves.add(new Pair(pair.x + 1, pair.y + 1 ));
+				 }
+				 if (pair.x < 6 ) { // row 0-5 and column 2-5 
+					 if(pair.y<6 &&getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 1 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) //if eat to the right possible
+						 pairMoves.add(new Pair(pair.x + 2,pair.y + 2));
+					 if(pair.y>1 && getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 1 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) // if eat to the left possible
+						pairMoves.add(new Pair(pair.x + 2,pair.y - 2));
+					
+			 }
+				 System.out.println(pairMoves);
+
+				 return pairMoves;
+		 }}
+		 System.out.println(pairMoves);
+		 return null;
+		 
+	 }
+	 
+	 
+	 /***
+	  * This method gets the possible moves for the black soldier and returns then in an array
+	  * @param obj
+	  * @param pair
+	  * @return
+	  */
+	 public ArrayList<Pair> getPossibleMovesForWhiteSoldier(int obj , Pair pair) {
+		 ArrayList<Pair> pairMoves = new ArrayList<Pair>();
+		 if(obj != 1)
+			 return null;
+		 else {
+			 if(pair.y == 0 && pair.x > 0 ) { // row 1-7 and col 0
 				if( getTileContent(new Pair(pair.x-1,pair.y+1)) == 0) { // if move possible
 					 pairMoves.add(new Pair(pair.x-1,pair.y+1));
+					 System.out.println(pairMoves);
 					 return pairMoves;
 				}
 				else if (getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  - 2 , pair.y + 2)) == 0 && pair.x>1 ) { // if eat possible and row 2-7
-						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
+						pairMoves.add(new Pair(pair.x - 2, pair.y + 2));
+						 System.out.println(pairMoves);
+
 						return pairMoves;
 				}
 			 }else if(pair.y == 7 && pair.x >0 ) {
 				 if(getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 0) {
 					 pairMoves.add(new Pair(pair.x-1,pair.y-1));
 					 return pairMoves;
-				 }else if (getTileContent(new Pair(pair.x-1,pair.y -1 )) == 2  && pair.x+1 != 7 && getTileContent(new Pair(pair.x - 2,pair.y - 2)) == 0) {
+				 }else if (getTileContent(new Pair(pair.x-1,pair.y -1 )) == 2  && pair.x-1 != 0 && getTileContent(new Pair(pair.x - 2,pair.y - 2)) == 0) {
 					 pairMoves.add(new Pair(pair.x - 2, pair.y - 2));
+					 System.out.println(pairMoves);
 					 return pairMoves;
 				 }
-			 }else if (pair.x >0  && pair.y>0 && pair.y <7 && getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0) {
-				 if(getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 )
-					 pairMoves.add(new Pair(pair.x - 1, pair.y -1 ));
-				 if(getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0)
-					 pairMoves.add(new Pair(pair.x - 1, pair.y + 1 ));
-				 return pairMoves;
-			 }else if (pair.x > 1 && pair.y<6  && pair.y>1 ) {
-				 if(getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x - 2,pair.y + 2)) == 0) 
+			 }else if (pair.x >0  && pair.y>0 && pair.y <7 ) {
+				 if(getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0) {
+					 if(getTileContent(new Pair(pair.x - 1, pair.y - 1)) == 0 )
+						 pairMoves.add(new Pair(pair.x - 1, pair.y -1 ));
+					 if(getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 0)
+						 pairMoves.add(new Pair(pair.x - 1, pair.y + 1 ));
+				 }
+			  if (pair.x > 1) {
+				 if(pair.y>1 && getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x - 2,pair.y + 2)) == 0) 
 					 pairMoves.add(new Pair(pair.x - 2,pair.y + 2));
-				 if(getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
+				 if(pair.y<6  && getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
 					pairMoves.add(new Pair(pair.x - 2,pair.y - 2));
-				 return pairMoves;
 			 }
+			  System.out.println(pairMoves);
+				 return pairMoves;
+		 }
+		 }		 
+		 return null;
+	 }
+	 
+	 /***
+	  * This method is responsible for moving white soldiers around the board by providing the currect next position and the possible moves
+	  * it is also responsible for killing enemy soldiers.
+	  * @param currentPos
+	  * @param nextPos
+	  * @param possibleMoves
+	  */
+	 public void moveWhiteSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
+		 if(!possibleMoves.contains(nextPos)) {
+			 System.out.println("Wrong input");
+			 return;
+		 }
+		 if(ifKillExist(currentPos,possibleMoves)) {
+			 ArrayList<Pair> killMoves = getKillMove(possibleMoves,currentPos);
+			 if(killMoves.size() == 2) {
+				 Pair midEnemySol = getMiddleEnemySoldier(1,currentPos,nextPos);
+				 board[nextPos.x][nextPos.y] = 1;
+				 board[midEnemySol.x][midEnemySol.y] = 0;
+				 board[currentPos.x][currentPos.y] = 0;
+				 System.out.println("You killed enemy soldier!");
+				 this.blackPlayerSoldiers--;
+			 }else {
+				 Pair priorityMove = killMoves.get(0);
+				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
+					 System.out.println("You shoud have killed , you lose a soldier!");
+					 board[currentPos.x][currentPos.y] = 0;
+					 this.whitePlayerSoldiers--;
+				 }else {
+						 Pair midEnemySol = getMiddleEnemySoldier(1,currentPos,nextPos);
+						 board[nextPos.x][nextPos.y] = 1;
+						 board[midEnemySol.x][midEnemySol.y] = 0;
+						 board[currentPos.x][currentPos.y] = 0;
+						 System.out.println("You killed enemy soldier");
+						 this.blackPlayerSoldiers--;
+
+			 }
+			 }}else {
+
+			 if(possibleMoves.contains(nextPos)) {
+				 board[currentPos.x][currentPos.y] = 0;
+				 board[nextPos.x][nextPos.y]=1;
+				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+			 }
+		 }
+		 
+		 for(int i=0;i<8;i++) {
+			 for(int j=0; j<8;j++)
+				 System.out.print(board[i][j] + ",");
+			 System.out.println();
+		 }
+	 }
+	 
+	 /***
+	  * This method is responsible for moving black soldiers around the board by providing the currect next position and the possible moves
+	  * it is also responsible for killing enemy soldiers.
+	  * @param currentPos
+	  * @param nextPos
+	  * @param possibleMoves
+	  */
+	 public void moveBlackSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
+		 if(!possibleMoves.contains(nextPos)) {
+			 System.out.println("Wrong input");
+			 return;
+		 }
+		 if(ifKillExist(currentPos,possibleMoves)) {
+			 ArrayList<Pair> killMoves = getKillMove(possibleMoves,currentPos);
+			 if(killMoves.size() == 2) {
+				 Pair midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
+				 board[nextPos.x][nextPos.y] = 1;
+				 board[midEnemySol.x][midEnemySol.y] = 0;
+				 board[currentPos.x][currentPos.y] = 0;
+				 System.out.println("You killed enemy soldier!");
+				 this.whitePlayerSoldiers--;
+			 }else {
+				 Pair priorityMove = killMoves.get(0);
+				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
+					 System.out.println("You shoud have killed , you lose a soldier!");
+					 board[currentPos.x][currentPos.y] = 0;
+					 this.blackPlayerSoldiers--;
+				 }else {
+						 Pair midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
+						 board[nextPos.x][nextPos.y] = 1;
+						 board[midEnemySol.x][midEnemySol.y] = 0;
+						 board[currentPos.x][currentPos.y] = 0;
+						 System.out.println("You killed enemy soldier");
+						 this.whitePlayerSoldiers--;
+
+			 }
+			 }}else {
+
+			 if(possibleMoves.contains(nextPos)) {
+				 board[currentPos.x][currentPos.y] = 0;
+				 board[nextPos.x][nextPos.y]=1;
+				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+			 }
+		 }
+		 
+		 for(int i=0;i<8;i++) {
+			 for(int j=0; j<8;j++)
+				 System.out.print(board[i][j] + ",");
+			 System.out.println();
+		 }
+	 }
+	 /***
+	  * This method returns the coordinate of the enemy soldier that sits between current position and next position
+	  * @param color
+	  * @param current
+	  * @param next
+	  * @return
+	  */
+	 public Pair getMiddleEnemySoldier(int color ,Pair current , Pair next) {
+		 if(color == 1) {
+			 if(next.y - 2 == current.y)
+				 return  new Pair(next.x + 1,next.y - 1);
+			  if(next.y + 2 == current.y)
+				 return new Pair(next.x + 1,next.y + 1);
+		 }else {
+			 if(next.y - 2 == current.y )
+				 return new Pair(next.x - 1,next.y - 1);
+			  if(next.y + 2 == current.y)
+				 return new Pair(next.x - 1 , next.y + 1);
+		 }
+		 return null;
+	 }
+	 
+	 /***
+	  * This method take an array of possible moves and check if there is kill move among them and returns true, otherwise false
+	  * @param currentPos
+	  * @param possibleMoves
+	  * @return
+	  */
+	 public boolean ifKillExist(Pair currentPos , ArrayList<Pair> possibleMoves) {
+		if(possibleMoves != null) {
+			for(Pair pair : possibleMoves) {
+				if(pair.x - 2 == currentPos.x || pair.x + 2 == currentPos.x) {
+					return true;
+				}
+			}
+		}
+		return false;
+	 }
+	 
+	 /***
+	  * This method returns the kill moves of the possible moves .
+	  * @param moves
+	  * @param currentPos
+	  * @return
+	  */
+	 public ArrayList<Pair> getKillMove(ArrayList<Pair> moves ,Pair currentPos){
+		 ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		 if(moves != null) {
+			 for(Pair pair : moves) {
+				 if(pair.x - 2 == currentPos.x || pair.x + 2 == currentPos.x) {
+					 toReturn.add(pair);
+				 }
+			 }return toReturn;
 		 }
 		 return null;
 	 }

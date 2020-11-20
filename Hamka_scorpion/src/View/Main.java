@@ -21,7 +21,11 @@ public class Main  {
 //		SysData.getInstance().addWinnerToLeaderboard(w1);
 //		SysData.getInstance().addWinnerToLeaderboard(w2);
 //		SysData.getInstance().writeWinnersIntoFile();
-
+		
+		Game game = new Game("PL","SS");
+		
+		game.moveBlackSoldier(game.getPair(2, 1), game.getPair(4, 3), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(2,1), game.getPair(2,1)));
+		System.out.println(game.getblackPlayerSoldiers());
 	}
 
 

@@ -125,10 +125,10 @@ public class SysData {
 			return false;
 		else {
 			Winner winner = null;
-			if(game.getPlayer1Points() > game.getPlayer2Points())
-				winner = new Winner(game.getPlayer1(),game.getPlayer1Points(),game.getDate());
+			if(game.getwhitePlayerPoints() > game.getblackPlayerPoints())
+				winner = new Winner(game.getwhitePlayer(),game.getwhitePlayerPoints(),game.getDate());
 			else{
-				winner = new Winner(game.getPlayer2(),game.getPlayer2Points(),game.getDate());
+				winner = new Winner(game.getblackPlayer(),game.getblackPlayerPoints(),game.getDate());
 			}
 			return addWinnerToLeaderboard(winner);
 		}
