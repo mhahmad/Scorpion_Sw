@@ -224,12 +224,34 @@ public class Game {
 			 if(pair.y == 0 && pair.x != 7 ) {
 				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
 					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
+					 return pairMoves;
 				}
-				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2) {
-					
+				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0) {
+						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
+						return pairMoves;
 				}
-			 }else if(pair.y == 7 && getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) {
-				 pairMoves.add(new Pair(pair.x+1,pair.y-1));
+			 }else if(pair.y == 7 && pair.x != 7 ) {
+				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) {
+					 pairMoves.add(new Pair(pair.x+1,pair.y-1));
+					 return pairMoves;
+				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 2  && pair.x+1 != 7 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {
+					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
+					 return pairMoves;
+				 }
+			 }else if (pair.x !=7 && getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 || getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0) {
+				 if(getTileContent(new Pair(pair.x + 1, pair.y - 1)) == 0 )
+					 pairMoves.add(new Pair(pair.x + 1, pair.y -1 ));
+				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 0)
+					 pairMoves.add(new Pair(pair.x + 1, pair.y + 1 ));
+				 return pairMoves;
+			 }else if (pair.x != 6 ) {
+				 if(getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) 
+					 pairMoves.add(new Pair(pair.x + 2,pair.y + 2));
+				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) 
+					pairMoves.add(new Pair(pair.x + 2,pair.y = 2));
+				 return pairMoves;
+				 
+				 
 			 }
 		 }
 		 return null;
