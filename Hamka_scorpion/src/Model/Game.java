@@ -250,8 +250,6 @@ public class Game {
 				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) 
 					pairMoves.add(new Pair(pair.x + 2,pair.y = 2));
 				 return pairMoves;
-				 
-				 
 			 }
 		 }
 		 return null;
