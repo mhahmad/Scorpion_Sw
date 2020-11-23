@@ -23,7 +23,7 @@ public class Game {
 	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 			                 {2,-1,2,-1,2,-1,2,-1},
 			                 {-1,2,-1,2,-1,2,-1,2},
-			                 {1,-1,1,-1,0,-1,0,-1},
+			                 {0,-1,0,-1,0,-1,0,-1},
 			                 {-1,0,-1,0,-1,0,-1,0},
 			                 {1,-1,1,-1,1,-1,1,-1},
 			                 {-1,1,-1,1,-1,1,-1,1},
@@ -368,7 +368,7 @@ public class Game {
 	  * @param possibleMoves
 	  */
 	 public void moveWhiteSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
-		 if(!possibleMoves.contains(nextPos)) {
+		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
 			 System.out.println("Wrong input");
 			 return;
 		 }
@@ -399,9 +399,16 @@ public class Game {
 			 }}else {
 
 			 if(possibleMoves.contains(nextPos)) {
+				 if(nextPos.x == 0) {
+					 board[currentPos.x][currentPos.y] = 0;
+					 board[nextPos.x][nextPos.y] = 11;
+					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen !");
+
+				 }else {
 				 board[currentPos.x][currentPos.y] = 0;
 				 board[nextPos.x][nextPos.y]=1;
 				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+				 }
 			 }
 		 }
 		 
@@ -420,7 +427,7 @@ public class Game {
 	  * @param possibleMoves
 	  */
 	 public void moveBlackSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
-		 if(!possibleMoves.contains(nextPos)) {
+		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
 			 System.out.println("Wrong input");
 			 return;
 		 }
@@ -428,7 +435,7 @@ public class Game {
 			 ArrayList<Pair> killMoves = getKillMove(possibleMoves,currentPos);
 			 if(killMoves.size() == 2) {
 				 Pair midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
-				 board[nextPos.x][nextPos.y] = 1;
+				 board[nextPos.x][nextPos.y] = 2;
 				 board[midEnemySol.x][midEnemySol.y] = 0;
 				 board[currentPos.x][currentPos.y] = 0;
 				 System.out.println("You killed enemy soldier!");
@@ -441,7 +448,7 @@ public class Game {
 					 this.blackPlayerSoldiers--;
 				 }else {
 						 Pair midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
-						 board[nextPos.x][nextPos.y] = 1;
+						 board[nextPos.x][nextPos.y] = 2;
 						 board[midEnemySol.x][midEnemySol.y] = 0;
 						 board[currentPos.x][currentPos.y] = 0;
 						 System.out.println("You killed enemy soldier");
@@ -451,9 +458,15 @@ public class Game {
 			 }}else {
 
 			 if(possibleMoves.contains(nextPos)) {
+				 if(nextPos.x == 7) {
+					 board[currentPos.x][currentPos.y] = 0;
+					 board[nextPos.x][nextPos.y]=22;
+					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen!");
+				 }else {
 				 board[currentPos.x][currentPos.y] = 0;
-				 board[nextPos.x][nextPos.y]=1;
+				 board[nextPos.x][nextPos.y]=2;
 				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+				 }
 			 }
 		 }
 		 
