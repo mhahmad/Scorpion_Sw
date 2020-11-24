@@ -532,4 +532,64 @@ public class Game {
 		 }
 		 return null;
 	 }
+	 
+	 
+	 /**
+	  * method to use after a kill to check if a kill streak is possible
+	  * @param obj 1 or 2 the type of the soldier
+	  * @param pair is the current position of the soldier  
+	  * @return list of the kills possible including backwards kills
+	  */
+	public ArrayList<Pair> getKillStreak(int obj , Pair pair){
+		if(obj != 1 || obj !=2) return null; //if wasnt soldier then theres something wrong
+		ArrayList<Pair> toReturn = new ArrayList<Pair>(); 
+		int x = pair.x;
+		int y = pair.y;
+		if(obj ==1 ) {// if white soldier possible kill backwards
+			ArrayList<Pair> possibleMoves = getPossibleMovesForWhiteSoldier(obj, pair);	//the soldiers current possible moves
+			if(ifKillExist(pair, possibleMoves)) {  // if theres a kill possible in the ordinary moves add it
+				for( Pair p : getKillMove(possibleMoves, pair)) 
+					toReturn.add(pair);
+			}
+			if((y==0 || y==1) && x<6 ) {
+				if( getTileContent(new Pair(x+1,y+1)) == 2 && getTileContent(new Pair(x+2,y+2))==0) 
+					toReturn.add(new Pair(x+1,y+1));
+			}
+			if(y>1 && y<6 && x<6) {
+				if(getTileContent(new Pair(x+1,y-1)) == 2 && getTileContent(new Pair(x+2,y-2)) == 0  )
+					toReturn.add(new Pair(x+1, y-1));
+				if(getTileContent(new Pair(x+1,y+1)) == 2 && getTileContent(new Pair(x+2,y+2)) == 0  )
+					toReturn.add(new Pair(x+1, y+1));
+			}
+			if((y==6 || y==7) && x<6) {
+				if(getTileContent(new Pair(x+1,y-1)) == 2 && getTileContent(new Pair(x+2,y-2)) == 0 )
+					toReturn.add(new Pair(x-1,y-1));
+			}
+		}else {  // if black soldier possible kill backwards.
+			ArrayList<Pair> possibleMoves = getPossibleMovesForBlackSoldier(obj, pair);	//the soldiers current possible moves
+			if(ifKillExist(pair, possibleMoves)) {  // if theres a kill possible in the ordinary moves add it
+				for( Pair p : getKillMove(possibleMoves, pair)) 
+					toReturn.add(pair);
+			}
+			if( (y==0 || y==1) && x>1 ) {
+				if(getTileContent(new Pair(x-1,y+1)) ==1 && getTileContent(new Pair(x-2,y+2))==0)
+					toReturn.add(new Pair(x-1,y+1));
+			}
+			if(y>1 && y<6 && x>1) {
+				if(getTileContent(new Pair(x-1,y+1)) ==1 && getTileContent(new Pair(x-2,y+2))==0)
+					toReturn.add(new Pair(x-1, y+1));
+				if(getTileContent(new Pair(x-1,y-1)) ==1 && getTileContent(new Pair(x-2,y-2))==0)
+					toReturn.add(new Pair(x-1,y-1));
+			}
+			if((y==6 || y==7) && x>1) {
+				if(getTileContent(new Pair(x-1,y-1)) ==1 && getTileContent(new Pair(x-2,y-2))==0)
+					toReturn.add(new Pair(x-1,y-1));
+			}
+		}
+		return toReturn;
+	}
+	
+	
+	
+	
 }
