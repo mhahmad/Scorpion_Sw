@@ -589,6 +589,35 @@ public class Game {
 		return toReturn;
 	}
 	
+	/**
+	 * method that return the empty tiles in the board
+	 * @return list of pairs
+	 */
+	public ArrayList<Pair> getEmptyTiels(){
+		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		for( int i=0 ; i< 8 ; i++) {
+			for(int j=0 ; j<8; j++) {
+				if(i%2==0 && j%2==1 && board[i][j]==0) toReturn.add(new Pair(i,j));
+				if(i%2==1 && j%2==0 && board[i][j]==0) toReturn.add(new Pair(i,j));
+			}
+		}
+		return toReturn;
+	}
+	
+	public ArrayList<Pair> generateYellowTiles(){
+		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		int count = 0;
+		for(;;) {
+			int x = (int)(Math.random()*8);
+			int y = (int)(Math.random()*8);
+			if(getEmptyTiels().contains(new Pair(x,y))) {
+				count++;
+				toReturn.add(new Pair(x,y));
+			}
+				if(count ==3) break;	
+			}
+		return toReturn;
+	}
 	
 	
 	
