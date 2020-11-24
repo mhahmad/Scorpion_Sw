@@ -198,16 +198,7 @@ public class Game {
 			
 			
 		}
-	/***
-	 * method that decides random places to the yellow tiles
-	 * @return array of pairs of x and y
-	 */
-	 private Pair[] randomYellowTiles() {
-		 Pair[] pairs = new Pair[3];
-		 /// not finished yet
-		return pairs;
-	 }
-	 
+	
 	 /**
 	  * This method changes the turn when a player hands over the turn to the other player.
 	  * 
@@ -230,11 +221,21 @@ public class Game {
 		// turnTime.
 		 turn = PlayerTurn.Black;
 	 }
-	 
+	 /**
+	  * helper method that returns the content in a certain position
+	  * @param x row
+	  * @param y column
+	  * @return the content (0/1/2/11/22)
+	  */
 	 public int getContentWithXandY(int x , int y) {
 		 return getTileContent(new Pair(x,y));
 	 }
-	 
+	 /**
+	  * 
+	  * @param x row
+	  * @param y column
+	  * @return generates pair object from x and y
+	  */
 	 public Pair getPair(int x,int y) {
 		 return new Pair(x,y);
 	 }
@@ -250,6 +251,8 @@ public class Game {
 		 return -2;
 	 }
 	 
+	 
+	 /*****************************  Code Regarding Moves ***************************\
 	 
 	 /***
 	  * This method gets the possible moves for the white soldier and return them in an array
@@ -589,6 +592,13 @@ public class Game {
 		return toReturn;
 	}
 	
+	
+	
+	
+	/*********************** Code Regarding Special (Colored) Tile ************************************\
+	 * 
+	 *** YELLOW TILE ***
+	 */
 	/**
 	 * method that return the empty tiles in the board
 	 * @return list of pairs
@@ -619,6 +629,62 @@ public class Game {
 		return toReturn;
 	}
 	
+	/*** BLUE TILE ****/ 
+	/**
+	 * method that counts the number of pieces from a certain type 
+	 * @param obj white or black soldier or queen
+	 * @return count of the pieces from obj type
+	 */
+	public int countPiece(int obj) {
+		int count =0;
+		for(int i=0; i<8 ;i++) {
+			for(int j=0; j<8;j++) {
+				if(getContentWithXandY(i, j)==obj) count++;
+			}
+		}
+		return count;
+	}
+	/**
+	 * @return true if player has exactly 2 soldiers and at least 1 queen, false otherwise
+	 */
+	public boolean checkIfBlueTile() {
+		if((countPiece(1)==2 && countPiece(11)>=1) || (countPiece(2)==2 && countPiece(22)>=1)) return true;
+		return false;
+	}
+	/**
+	 * @return random pair for a tile in the board as Blue tile.
+	 */
+	public Pair generateBlueTile() {
+		if(checkIfBlueTile()) {
+			int x = (int)(Math.random()*8);
+			int y = (int)(Math.random()*8);
+			return new Pair(x,y);
+		}
+		return null;
+	}
 	
+/**
+ * 
+ * @param obj the type of the soldier (white or black)
+ * @param pos the position the player wants to put it in
+ * @return true if legal position, false otherwise
+ */
+	public boolean checkIfLegalPosition(int obj,Pair pos){
+		int x = pos.x;
+		int y = pos.y;
+		int op;
+		if(obj == 1 ) op = 2; 
+		else op = 1; 
+		if(getContentWithXandY(x-1, y)==op || getContentWithXandY(x-1, y)!=0  || getContentWithXandY(x-2, y)==op || getContentWithXandY(x-2, y)!=0 
+				||  getContentWithXandY(x-1, y-1)==op || getContentWithXandY(x-1, y-1)!=0  ||  getContentWithXandY(x-2, y-2)==op || getContentWithXandY(x-2, y-2)!=0
+				||  getContentWithXandY(x-1, y+1)==op || getContentWithXandY(x-1, y+1)!=0  ||  getContentWithXandY(x-2, y+2)==op || getContentWithXandY(x-2, y+2)!=0
+				||   getContentWithXandY(x, y-1)==op  ||   getContentWithXandY(x, y-1)!=0  ||  getContentWithXandY(x, y-2)==op   ||  getContentWithXandY(x, y-2)!=0
+				||   getContentWithXandY(x, y+1)==op  ||   getContentWithXandY(x, y+1)!=0  ||  getContentWithXandY(x, y+2)==op   || getContentWithXandY(x, y+2)!=0
+				||  getContentWithXandY(x+1, y-1)==op ||  getContentWithXandY(x+1, y-1)!=0 ||  getContentWithXandY(x-2, y-2)==op ||  getContentWithXandY(x-2, y-2)!=0
+				||  getContentWithXandY(x+1, y+1)==op ||  getContentWithXandY(x+1, y+1)!=0 ||  getContentWithXandY(x+2, y+2)==op || getContentWithXandY(x+2, y+2)!=0
+				||  getContentWithXandY(x+1, y)==op   ||  getContentWithXandY(x+1, y)!=0   ||  getContentWithXandY(x+2, y)==op   || getContentWithXandY(x+2, y)!=0) 
+			return false;
+		return true;
+	}
 	
 }
