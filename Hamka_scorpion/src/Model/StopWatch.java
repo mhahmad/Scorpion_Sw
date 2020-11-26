@@ -15,7 +15,10 @@ public class StopWatch {
 	  public static void main(String[] args) {
 		  StopWatch sw = new StopWatch();
 		  sw.start();
-		  //This is //
+		  /*
+		   * This is a simple test
+		   * As of right now each second is printed more than once if used like this.
+		   */
 		  while(running) {
 			  System.out.println((System.currentTimeMillis() - startTime) / 1000);
 			  if(((System.currentTimeMillis() - startTime) / 1000)==10)
