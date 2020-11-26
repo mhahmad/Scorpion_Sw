@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeSet;
+import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game {
@@ -20,13 +22,13 @@ public class Game {
 	private String date;
 	public int seconds = 0;
 	private Pair[] yellowPanels;
-	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
-			                 {2,-1,2,-1,2,-1,2,-1},
-			                 {-1,2,-1,2,-1,2,-1,2},
+	private int[][] board = {{-1,2,-1,0,-1,2,-1,0},
+			                 {2,-1,2,-1,2,-1,0,-1},
+			                 {-1,2,-1,0,-1,22,-1,2},
 			                 {0,-1,0,-1,0,-1,0,-1},
-			                 {-1,0,-1,0,-1,0,-1,0},
-			                 {1,-1,1,-1,1,-1,1,-1},
-			                 {-1,1,-1,1,-1,1,-1,1},
+			                 {-1,0,-1,11,-1,0,-1,0},
+			                 {1,-1,0,-1,0,-1,1,-1},
+			                 {-1,0,-1,0,-1,0,-1,1},
 		                     {1,-1,1,-1,1,-1,1,-1}
 	};
 	PlayerTurn turn;
@@ -384,6 +386,7 @@ public class Game {
 				 board[currentPos.x][currentPos.y] = 0;
 				 System.out.println("You killed enemy soldier!");
 				 this.blackPlayerSoldiers--;
+				 this.whitePlayerPoints+=100;
 			 }else {
 				 Pair priorityMove = killMoves.get(0);
 				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
@@ -397,6 +400,7 @@ public class Game {
 						 board[currentPos.x][currentPos.y] = 0;
 						 System.out.println("You killed enemy soldier");
 						 this.blackPlayerSoldiers--;
+						 this.whitePlayerPoints+=100;
 
 			 }
 			 }}else {
@@ -443,6 +447,7 @@ public class Game {
 				 board[currentPos.x][currentPos.y] = 0;
 				 System.out.println("You killed enemy soldier!");
 				 this.whitePlayerSoldiers--;
+				 this.blackPlayerPoints+=100;
 			 }else {
 				 Pair priorityMove = killMoves.get(0);
 				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
@@ -456,7 +461,7 @@ public class Game {
 						 board[currentPos.x][currentPos.y] = 0;
 						 System.out.println("You killed enemy soldier");
 						 this.whitePlayerSoldiers--;
-
+						 this.blackPlayerPoints+=100;
 			 }
 			 }}else {
 
@@ -603,7 +608,7 @@ public class Game {
 	 * method that return the empty tiles in the board
 	 * @return list of pairs
 	 */
-	public ArrayList<Pair> getEmptyTiels(){
+	public ArrayList<Pair> getEmptyTiles(){
 		ArrayList<Pair> toReturn = new ArrayList<Pair>();
 		for( int i=0 ; i< 8 ; i++) {
 			for(int j=0 ; j<8; j++) {
@@ -614,13 +619,43 @@ public class Game {
 		return toReturn;
 	}
 	
+	/***
+	 * This method generates a green tile of all the possible tiles for the player.
+	 * @param turn
+	 * @return
+	 */
+	public Pair generateGreenTile(PlayerTurn turn) {
+		TreeSet<Pair> allPossibleMoves = new TreeSet<Pair>();
+		ArrayList<Pair> possibleMovesArray = new ArrayList<Pair>();
+		if(turn == PlayerTurn.Black) {
+				for(int i=0 ; i < 8 ; i++) {
+					for(int j=0; j < 8; j++) {
+						if(getContentWithXandY(i, j) == 2) {
+							allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(getContentWithXandY(i, j), getPair(i, j)));
+						}
+					}
+				}
+		}else {
+			for(int i=0 ; i < 8 ; i++) {
+				for(int j=0; j < 8; j++) {
+					if(getContentWithXandY(i, j) == 1) {
+						allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(getContentWithXandY(i, j), getPair(i, j)));
+					}
+				}}			
+		}
+		possibleMovesArray.addAll(allPossibleMoves);
+		int numberOfMoves = possibleMovesArray.size();
+		int randomNumber = ThreadLocalRandom.current().nextInt(0 , numberOfMoves );
+		return possibleMovesArray.get(randomNumber);
+	}
+	
 	public ArrayList<Pair> generateYellowTiles(){
 		ArrayList<Pair> toReturn = new ArrayList<Pair>();
 		int count = 0;
 		for(;;) {
 			int x = (int)(Math.random()*8);
 			int y = (int)(Math.random()*8);
-			if(getEmptyTiels().contains(new Pair(x,y))) {
+			if(getEmptyTiles().contains(new Pair(x,y))) {
 				count++;
 				toReturn.add(new Pair(x,y));
 			}
@@ -683,8 +718,92 @@ public class Game {
 				||  getContentWithXandY(x+1, y-1)==op ||  getContentWithXandY(x+1, y-1)!=0 ||  getContentWithXandY(x-2, y-2)==op ||  getContentWithXandY(x-2, y-2)!=0
 				||  getContentWithXandY(x+1, y+1)==op ||  getContentWithXandY(x+1, y+1)!=0 ||  getContentWithXandY(x+2, y+2)==op || getContentWithXandY(x+2, y+2)!=0
 				||  getContentWithXandY(x+1, y)==op   ||  getContentWithXandY(x+1, y)!=0   ||  getContentWithXandY(x+2, y)==op   || getContentWithXandY(x+2, y)!=0) 
+//		if(getContentWithXandY(x-1,y-1) == op || getContentWithXandY(x-2,y-2))
 			return false;
 		return true;
 	}
 	
+	
+	/***
+	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
+	 * @param obj
+	 * @param pos
+	 * @return
+	 */
+	public ArrayList<Pair> getQueenBiasMoves(int obj , Pair pos){
+		int i = 1 ,j = 1;
+		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		int opSol,opQue;
+		if(obj == 11) { 
+			opSol= 2;
+			opQue = 22;
+		}
+		else { opSol =1;
+				opQue = 11;
+		}
+		// get the possible moves in the right-top bias
+			while(getContentWithXandY(pos.x - i , pos.y + j) == 0 || ((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue)
+					&& getContentWithXandY(pos.x - (i+1), pos.y + (j+1))== 0)) {
+				if((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y + (j+1) )== 0) {
+					toReturn.add(getPair(pos.x - (i+1), pos.y + (j+1)));
+					break;
+				}
+				toReturn.add(getPair(pos.x - i , pos.y + j));
+				i++;
+				j++;
+			}
+			i =1 ;
+			j = 1;
+			// get the possible moves in the left-top bias
+			while(getContentWithXandY(pos.x - i, pos.y - j) == 0 || ((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue)
+					&& getContentWithXandY(pos.x - (i+1), pos.y - (j+1))== 0)) {
+				if((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y - (j+1) )== 0) {
+					toReturn.add(getPair(pos.x - (i+1), pos.y - (j+1)));
+					break;
+				}
+				toReturn.add(getPair(pos.x - i, pos.y - j));
+				i++;
+				j++;
+			}
+				i=1;
+				j=1;
+			// get the possible moves in the right-bottom bias
+			while(getContentWithXandY(pos.x + i, pos.y + j) == 0 || ((getContentWithXandY(pos.x + i, pos.y + j) == opSol || getContentWithXandY(pos.x + i,pos.y + j) == opQue)
+					&& getContentWithXandY(pos.x + (i+1), pos.y + (j+1))== 0)) {
+				if((getContentWithXandY(pos.x + i, pos.y + j) == opSol || getContentWithXandY(pos.x + i,pos.y + j) == opQue) && getContentWithXandY(pos.x + (i+1), pos.y + (j+1))== 0) {
+					toReturn.add(getPair(pos.x + (i+1),pos.y + (j+1)));
+					break;
+					}
+				toReturn.add(getPair(pos.x + i,pos.y + j));
+				i++;
+				j++;
+				}
+			
+				i=1;
+				j=1;
+			
+				// get the possible moves in the left-bottom bias
+			while(getContentWithXandY(pos.x + i, pos.y - j) == 0 || ((getContentWithXandY(pos.x + i, pos.y - j) == opSol || getContentWithXandY(pos.x + i,pos.y - j) == opQue)
+					&& getContentWithXandY(pos.x + (i+1), pos.y - (j+1))== 0)) {
+				if((getContentWithXandY(pos.x + i, pos.y - j) == opSol || getContentWithXandY(pos.x + i,pos.y - j) == opQue) && getContentWithXandY(pos.x + (i+1), pos.y - (j+1))== 0)
+				{
+					toReturn.add(getPair(pos.x + (i+1),pos.y - (j+1)));
+					break;
+				}
+				toReturn.add(getPair(pos.x + i,pos.y - j));
+				i++;
+				j++;
+			}
+			System.out.println(toReturn);
+		return toReturn;
+	}
+//	public ArrayList<Pair >getQueenPossibleMoves(int obj , Pair pos) {
+//		if (pos == null)
+//			return null;
+//		if(obj == 1) {
+//			
+//		}else if(obj == 2) {
+//			
+//		}
+//	}
 }
