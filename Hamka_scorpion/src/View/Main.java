@@ -32,11 +32,14 @@ public class Main  {
 
 //		System.out.println(game.generateYellowTiles());
 //		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getPair(4, 3));
-		
+/*		
 		stopWatch sw = new stopWatch(5);
 		sw.startTiming();
 		while(true)
 			System.out.println(stopWatch.time);
+		*/
+		boolean leg = game.checkIfLegalPosition(1, game.getPair(4, 3));
+		System.out.println(leg);
 		
 	}
 

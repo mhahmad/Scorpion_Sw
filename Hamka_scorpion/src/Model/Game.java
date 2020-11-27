@@ -23,13 +23,13 @@ public class Game {
 	public int seconds = 0;
 	private Pair[] yellowPanels;
 	private int[][] board = {{-1,2,-1,0,-1,2,-1,0},
-			                 {2,-1,2,-1,2,-1,0,-1},
-			                 {-1,2,-1,0,-1,22,-1,2},
+			                 {2,-1,2,-1,2,-1,2,-1},
+			                 {-1,0,-1,0,-1,0,-1,2},
 			                 {0,-1,0,-1,0,-1,0,-1},
-			                 {-1,0,-1,11,-1,0,-1,0},
+			                 {-1,0,-1,1,-1,0,-1,0},
 			                 {1,-1,0,-1,0,-1,1,-1},
 			                 {-1,0,-1,0,-1,0,-1,1},
-		                     {1,-1,1,-1,1,-1,1,-1}
+		                     {2,-1,1,-1,1,-1,2,-1}
 	};
 	PlayerTurn turn;
 	
@@ -708,18 +708,49 @@ public class Game {
 		int x = pos.x;
 		int y = pos.y;
 		int op;
-		if(obj == 1 ) op = 2; 
-		else op = 1; 
-		if(getContentWithXandY(x-1, y)==op || getContentWithXandY(x-1, y)!=0  || getContentWithXandY(x-2, y)==op || getContentWithXandY(x-2, y)!=0 
-				||  getContentWithXandY(x-1, y-1)==op || getContentWithXandY(x-1, y-1)!=0  ||  getContentWithXandY(x-2, y-2)==op || getContentWithXandY(x-2, y-2)!=0
-				||  getContentWithXandY(x-1, y+1)==op || getContentWithXandY(x-1, y+1)!=0  ||  getContentWithXandY(x-2, y+2)==op || getContentWithXandY(x-2, y+2)!=0
-				||   getContentWithXandY(x, y-1)==op  ||   getContentWithXandY(x, y-1)!=0  ||  getContentWithXandY(x, y-2)==op   ||  getContentWithXandY(x, y-2)!=0
-				||   getContentWithXandY(x, y+1)==op  ||   getContentWithXandY(x, y+1)!=0  ||  getContentWithXandY(x, y+2)==op   || getContentWithXandY(x, y+2)!=0
-				||  getContentWithXandY(x+1, y-1)==op ||  getContentWithXandY(x+1, y-1)!=0 ||  getContentWithXandY(x-2, y-2)==op ||  getContentWithXandY(x-2, y-2)!=0
-				||  getContentWithXandY(x+1, y+1)==op ||  getContentWithXandY(x+1, y+1)!=0 ||  getContentWithXandY(x+2, y+2)==op || getContentWithXandY(x+2, y+2)!=0
-				||  getContentWithXandY(x+1, y)==op   ||  getContentWithXandY(x+1, y)!=0   ||  getContentWithXandY(x+2, y)==op   || getContentWithXandY(x+2, y)!=0) 
-//		if(getContentWithXandY(x-1,y-1) == op || getContentWithXandY(x-2,y-2))
+		int queOp;
+		if(obj == 1 ) {
+			op = 2; 
+			queOp=22;
+		}
+		else {
+			op = 1;
+			queOp=11;
+		}
+		if(getContentWithXandY(x-2, y)==op || getContentWithXandY(x-2, y)==queOp || getContentWithXandY(x+2, y)==op ||  getContentWithXandY(x+2, y)==queOp ||
+				getContentWithXandY(x, y-2)==op || getContentWithXandY(x, y-2)==queOp || getContentWithXandY(x, y+2)==op ||  getContentWithXandY(x, y+2)==queOp) 
 			return false;
+		
+		int it = 1;
+		while(it<5) {
+			int i = x;
+			int j = y;
+			int counter =0;
+			while(getContentWithXandY(i, j) != -2) {
+				if(it == 1) {
+					i--;
+					j--;
+				}
+				else if(it == 2) {
+					i--;
+					j++;
+				}
+				else if(it ==3) {
+					i++;
+					j--;
+				}else {
+					i++;
+					j++;
+				}
+				if(counter ==2 ) break;		
+				if(counter<2 && ( getContentWithXandY(i,j) == op || getContentWithXandY(i,j) == queOp )) {
+					System.out.println(counter);
+					return false;
+				}
+				if(getContentWithXandY(i, j) == 0) counter ++;//System.out.println(counter);
+			}
+			   it++;
+		}
 		return true;
 	}
 	
