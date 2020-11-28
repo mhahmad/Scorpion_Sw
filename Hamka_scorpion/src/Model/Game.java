@@ -758,6 +758,16 @@ public class Game {
 		return true;
 	}
 	
+	public boolean ressurectSoldier(int obj, Pair pos) {
+        if(checkIfLegalPosition(obj, pos)) {
+            if(obj == 1) whitePlayerSoldiers++;
+            else blackPlayerSoldiers++;
+            board[pos.x][pos.y] = obj;
+            return true;
+        }
+        return false;
+    }
+
 	/*** ORANGE TILES ***
 	 * This method generates orange tiles for the player and returns them.
 	 * @param turn
