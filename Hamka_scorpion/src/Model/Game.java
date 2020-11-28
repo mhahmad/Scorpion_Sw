@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TreeSet;
@@ -23,14 +24,14 @@ public class Game {
 	private String date;
 	public int seconds = 0;
 	private Pair[] yellowPanels;
-	private int[][] board = {{-1,2,-1,0,-1,2,-1,2},
-							{2,-1,2,-1,2,-1,0,-1},
-							{-1,0,-1,0,-1,22,-1,2},
-							{0,-1,0,-1,1,-1,0,-1},
+	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
+							{2,-1,2,-1,2,-1,2,-1},
+							{-1,2,-1,2,-1,2,-1,2},
+							{0,-1,0,-1,0,-1,0,-1},
 							{-1,0,-1,0,-1,0,-1,0},
-							{1,-1,0,-1,0,-1,1,-1},
-							{-1,0,-1,0,-1,0,-1,1},
-							{2,-1,1,-1,1,-1,2,-1}
+							{1,-1,1,-1,1,-1,1,-1},
+							{-1,1,-1,1,-1,1,-1,1},
+							{1,-1,1,-1,1,-1,1,-1}
 };
 	PlayerTurn turn;
 	
@@ -152,7 +153,9 @@ public class Game {
 		this.board = board;
 	}
 
-
+	public PlayerTurn getTurn() {
+		return this.turn;
+	}
 	/**
 	 * 
 	 * @author mutla
@@ -170,7 +173,7 @@ public class Game {
 			int x;// row
 			int y;//col
 			
-			Pair(int x,int y){
+			private Pair(int x,int y){
 				this.x = x;
 				this.y = y;
 			}
@@ -178,6 +181,15 @@ public class Game {
 				return "[x="+x+",y="+y+"]";
 			}
 			
+			@Override
+			public int hashCode() {
+				final int prime = 31;
+				int result = 1;
+				result = prime * result + getEnclosingInstance().hashCode();
+				result = prime * result + x;
+				result = prime * result + y;
+				return result;
+			}
 			@Override
 			public boolean equals(Object obj) {
 				if (this == obj)
@@ -195,6 +207,8 @@ public class Game {
 					return false;
 				return true;
 			}
+			
+			
 			private Game getEnclosingInstance() {
 				return Game.this;
 			}
@@ -210,18 +224,8 @@ public class Game {
 		 if(turn.equals(PlayerTurn.Black)) {
 			 turn = PlayerTurn.White;
 			 //should calculate Points
-
 			 return;
 		 }
-//		 TimerTask task = new TimerTask() {
-//			@Override
-//			public void run() {
-//				seconds++;
-//			}
-//			 
-//		 };
-//			matchTime.scheduleAtFixedRate(task, 1000, 1000);
-		// turnTime.
 		 turn = PlayerTurn.Black;
 	 }
 	 /**
@@ -419,11 +423,11 @@ public class Game {
 			 }
 		 }
 		 
-		 for(int i=0;i<8;i++) {
-			 for(int j=0; j<8;j++)
-				 System.out.print(board[i][j] + ",");
-			 System.out.println();
-		 }
+//		 for(int i=0;i<8;i++) {
+//			 for(int j=0; j<8;j++)
+//				 System.out.print(board[i][j] + ",");
+//			 System.out.println();
+//		 }
 	 }
 	 
 	 /***
@@ -478,12 +482,60 @@ public class Game {
 			 }
 		 }
 		 
-		 for(int i=0;i<8;i++) {
-			 for(int j=0; j<8;j++)
-				 System.out.print(board[i][j] + ",");
-			 System.out.println();
-		 }
+//		 for(int i=0;i<8;i++) {
+//			 for(int j=0; j<8;j++)
+//				 System.out.print(board[i][j] + ",");
+//			 System.out.println();
+		// }
 	 }
+	 
+	 
+		public void moveQueen(int obj , Pair cur , Pair next , HashMap<Pair,Pair> possibleMoves) {
+			if(possibleMoves == null || !possibleMoves.containsKey(next))
+				System.out.println("Wrong Input");
+			else if(getTileContent(next) != 0)
+				System.out.println("Wrong Destination");
+			else {
+				if(obj == 22) {
+					this.board[next.x][next.y] = 22;
+					this.board[cur.x][cur.y] = 0;
+					if(possibleMoves.get(next) == null) {
+						System.out.println("You have moved your queen from " + cur + " to " + next);
+					}else {
+						Pair midKill = possibleMoves.get(next);
+						this.board[midKill.x][midKill.y]= 0;
+						if(getTileContent(midKill) == 1)
+							this.whitePlayerSoldiers--;
+						else
+							this.whitePlayerQueens--;
+						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
+						this.blackPlayerPoints+=100;
+					}
+				}else if ( obj == 11) {
+					this.board[next.x][next.y]= 11;
+					this.board[cur.x][cur.y]= 0;
+					if(possibleMoves.get(next) == null) {
+						System.out.println("You have moved your queen from " + cur + " to " + next);
+					}else {
+						Pair midKill = possibleMoves.get(next);
+						this.board[midKill.x][midKill.y]= 0;
+						if(getTileContent(midKill) == 2)
+							this.blackPlayerSoldiers--;
+						else
+							this.blackPlayerQueens--;
+						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
+						this.whitePlayerPoints+=100;
+					}
+				}
+			}
+			
+//			for(int i = 0 ; i < 8; i++) {
+//				for(int j = 0; j < 8; j++) 
+//					System.out.print(board[i][j] + ",");
+//				 System.out.println();
+				
+		//	}
+		}
 	 /***
 	  * This method returns the coordinate of the enemy soldier that sits between current position and next position
 	  * @param color
@@ -841,7 +893,7 @@ public class Game {
 					break;
 				}
 //				toReturn.add(getPair(pos.x - i , pos.y + j));
-				if(getContentWithXandY(pos.x - i , pos.y + j) == 0)
+				if(getContentWithXandY(pos.x - i , pos.y + j) == 0 && !mapMoves.containsKey(new Pair(pos.x - i , pos.y + j)))
 					mapMoves.put(new Pair(pos.x - i , pos.y + j),null);
 				i++;
 				j++;
@@ -863,7 +915,7 @@ public class Game {
 //					toReturn.add(getPair(pos.x - (i+1), pos.y - (j+1)));
 					break;
 				}
-				if(getContentWithXandY(pos.x - i, pos.y - j) == 0)
+				if(getContentWithXandY(pos.x - i, pos.y - j) == 0 && !mapMoves.containsKey(new Pair(pos.x - i, pos.y - j)))
 					mapMoves.put(new Pair(pos.x - i,pos.y - j), null);
 //				toReturn.add(getPair(pos.x - i, pos.y - j));
 				i++;
@@ -886,7 +938,7 @@ public class Game {
 //					toReturn.add(getPair(pos.x + (i+1),pos.y + (j+1)));
 					break;
 					}
-				if(getContentWithXandY(pos.x + i, pos.y + j) == 0)
+				if(getContentWithXandY(pos.x + i, pos.y + j) == 0 && !mapMoves.containsKey(new Pair(pos.x + i, pos.y + j)))
 					mapMoves.put(new Pair(pos.x + i, pos.y + j), null);
 
 //				toReturn.add(getPair(pos.x + i,pos.y + j));
@@ -912,7 +964,7 @@ public class Game {
 //					toReturn.add(getPair(pos.x + (i+1),pos.y - (j+1)));
 					break;
 				}
-				if(getContentWithXandY(pos.x + i, pos.y - j) == 0){
+				if(getContentWithXandY(pos.x + i, pos.y - j) == 0 && !mapMoves.containsKey(new Pair(pos.x + i, pos.y - j))){
 					mapMoves.put(new Pair(pos.x + i, pos.y - j), null);
 
 				}
@@ -920,122 +972,182 @@ public class Game {
 				i++;
 				j++;
 			}}
-			System.out.println(mapMoves);
 		return mapMoves;
 	}
 	
-	public void getBiasMovesQueen(int obj,Pair pos){
+	public HashMap<Pair,Pair> getQueenMoves(int obj,Pair pos){
 		HashMap<Pair,Pair> myMoves = new HashMap<Pair,Pair>();
 		myMoves = getQueenBiasMoves(obj, pos, "TOP-LEFT", myMoves);
 		myMoves = getQueenBiasMoves(obj, pos, "TOP-RIGHT", myMoves);
 		myMoves = getQueenBiasMoves(obj, pos, "BOTTOM-LEFT", myMoves);
 		myMoves = getQueenBiasMoves(obj, pos, "BOTTOM-RIGHT", myMoves);
+		myMoves = getQueenCrossBoardMoves(obj, pos, myMoves);
+//		for(Map.Entry<Pair, Pair> temp : myMoves.entrySet()) {
+//			System.out.println(temp.getKey() + "  , " + temp.getValue());
+//		}
+		return myMoves;
+	}
+	
+	/***
+	 * This method gets the possible moves crossing the board (NOT FINISHED - may have bugs).
+	 * @param obj
+	 * @param pos
+	 * @param map
+	 * @return
+	 */
+	public HashMap<Pair,Pair> getQueenCrossBoardMoves(int obj , Pair pos,HashMap<Pair,Pair> map){
+		ArrayList<Pair> boardEdgesMoves = getLastPossibleMoveInBias(obj, pos,map);
+		HashSet<Pair> treeMoves = new HashSet<>();
+		String dir = "";
+		int opSol,opQue;
+		if(obj == 11) {
+			opSol = 2;
+			opQue = 22;
+		}else if(obj == 22) {
+			opSol = 1;
+			opQue = 11;
+		}
+		if(boardEdgesMoves != null && !boardEdgesMoves.isEmpty())
+			for(Pair pair : boardEdgesMoves) {
+				if((pos.x < pair.x && pos.y > pair.y)) {
+					dir = "BOTTOM-LEFT";
+				} else if (pos.x > pair.x && pos.y > pair.y) {
+					dir = "TOP-LEFT";
+				}else if((pos.x > pair.x && pos.y < pair.y )) {
+					dir = "TOP-RIGHT";
+				}else if (pos.x < pair.x && pos.y < pair.y) {
+					dir = "BOTTOM-RIGHT";
+				}
+				if(pair.y == 0 && pair.x == 7 && dir.equals("BOTTOM-LEFT") ){
+					if(getContentWithXandY(pair.x-7, pair.y+7) == 0) {
+						treeMoves.add(new Pair(pair.x - 7,pair.y + 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x - 7,pair.y + 7), "BOTTOM-LEFT", map);
+					}
+				}else if(pair.y == 0 && dir.equals("BOTTOM-LEFT")) {
+					if(getContentWithXandY(pair.x + 1, pair.y + 7) == 0) {
+						treeMoves.add(new Pair(pair.x + 1,pair.y + 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x + 1,pair.y + 7), "BOTTOM-LEFT", map);
+					}
+				}else if(pair.y == 0 && dir.equals("TOP-LEFT")) {
+					if(getContentWithXandY(pair.x - 1, pair.y + 7) == 0) {
+						treeMoves.add(new Pair(pair.x - 1,pair.y + 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x - 1,pair.y + 7), "TOP-LEFT", map);
+					}
+				}else if(pair.y == 7 && pair.x == 0 && dir.equals("TOP-RIGHT")) {
+					if(getContentWithXandY(pair.x + 7, pair.y - 7) == 0) {
+						treeMoves.add(new Pair(pair.x + 7,pair.y - 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x + 7,pair.y - 7), "TOP-RIGHT", map);
+					}
+				}else if(pair.y == 7 && dir.equals("TOP-RIGHT")) {
+					if(getContentWithXandY(pair.x - 1, pair.y - 7) == 0) {
+						treeMoves.add(new Pair(pair.x - 1,pair.y - 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x - 1,pair.y - 7), "TOP-RIGHT", map);
+
+					}
+				}else if(pair.y == 7 && dir.equals("BOTTOM-RIGHT")) {
+					if(getContentWithXandY(pair.x + 1, pair.y - 7) == 0) {
+						treeMoves.add(new Pair(pair.x + 1,pair.y - 7));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x + 1,pair.y - 7), "BOTTOM-RIGHT", map);
+					}
+				}else if(pair.x == 0 && dir.equals("TOP-RIGHT")) {
+					if(getContentWithXandY(pair.x + 7, pair.y + 1) == 0) {
+						treeMoves.add(new Pair(pair.x + 7,pair.y + 1));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x + 7,pair.y + 1), "TOP-RIGHT", map);
+					}
+				}else if(pair.x == 0 && dir.equals("TOP-LEFT")) {
+					if(getContentWithXandY(pair.x + 7, pair.y - 1) == 0) {
+						treeMoves.add(new Pair(pair.x + 7,pair.y - 1));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x + 7,pair.y - 1), "TOP-LEFT", map);
+					}
+				}else if(pair.x == 7 && dir.equals("BOTTOM-LEFT")) {
+					if(getContentWithXandY(pair.x - 7, pair.y -1 ) == 0) {
+						treeMoves.add(new Pair(pair.x - 7,pair.y - 1));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x - 7,pair.y - 1), "BOTTOM-RIGHT", map);
+					}
+				}else if(pair.x == 7 && dir.equals("BOTTOM-RIGHT")) {
+					if(getContentWithXandY(pair.x - 7, pair.y + 1) == 0) {
+						treeMoves.add(new Pair(pair.x - 7,pair.y + 1));
+						//FUNCTION CALL
+						map = getQueenBiasMoves(getTileContent(pos), new Pair(pair.x - 7,pair.y + 1), "TOP-RIGHT", map);
+					}
+				}
+			}
 		
-		for(Map.Entry<Pair, Pair> temp : myMoves.entrySet()) {
-			System.out.println(temp.getKey() + "  , " + temp.getValue());
+		if(!treeMoves.isEmpty())
+			for(Pair temp : treeMoves) {
+				if(!map.containsKey(temp)) {
+					map.put(temp, null);
+				}
+			}
+		
+		return map;
+	}
+	
+	
+	/***
+	 * This private method takes the queen possible moves and returns the ones on the edges of the board .
+	 * @param obj
+	 * @param pos
+	 * @param queenMoves
+	 * @return
+	 */
+	private ArrayList<Pair> getLastPossibleMoveInBias(int obj ,Pair pos,HashMap<Pair,Pair> queenMoves){
+		ArrayList<Pair> movesToReturn = new ArrayList<Pair>();
+		
+		if(pos.x == 0 || pos.x == 7 || pos.y == 0 || pos.y == 7) 
+			movesToReturn.add(pos);
+		for(Map.Entry<Pair,Pair> pair : queenMoves.entrySet()) {
+			if(pair.getKey().x == 0 || pair.getKey().x == 7 || pair.getKey().y == 0 || pair.getKey().y == 7) {
+				if(pair.getValue() == null)
+					movesToReturn.add(pair.getKey());
+			}
+		}
+		return movesToReturn;
+	}
+	
+	/***
+	 * Checks if the game is over or not.
+	 * @return
+	 */
+	public boolean isGameOver() {
+		if((this.whitePlayerSoldiers == 0 && this.whitePlayerQueens == 0 ) || (this.blackPlayerQueens == 0 && this.blackPlayerSoldiers == 0))
+			return true;
+		else 
+			return false;
+	}
+	/***
+	 * Returns the winner name
+	 * @return
+	 */
+	public String winner() {
+		if(this.whitePlayerQueens == 0 && this.whitePlayerSoldiers == 0) 
+			return this.blackPlayer;
+		else 
+			return this.whitePlayer;
+	}
+
+	public void printBoard() {
+		for(int i = 0 ; i < 8; i++) {
+			for(int j = 0; j < 8; j++) 
+				System.out.print(board[i][j] + ",");
+			 System.out.println();
+			
 		}
 	}
 	
-//	
-//	public TreeSet<Pair> getQueenCrossBoardMoves(int obj , Pair pos){
-//		ArrayList<Pair> boardEdgesMoves = getLastPossibleMoveInBias(obj, pos);
-//		TreeSet<Pair> treeMoves = new TreeSet<Pair>();
-//		String dir = "";
-//		int opSol,opQue;
-//		if(obj == 11) {
-//			opSol = 2;
-//			opQue = 22;
-//		}else if(obj == 22) {
-//			opSol = 1;
-//			opQue = 11;
-//		}
-//		for(Pair pair : boardEdgesMoves) {
-//			if((pos.x < pair.x && pos.y > pair.y)) {
-//				dir = "BOTTOM-LEFT";
-//			} else if (pos.x > pair.x && pos.y > pair.y) {
-//				dir = "TOP-LEFT";
-//			}else if((pos.x > pair.x && pos.y < pair.y )) {
-//				dir = "TOP-RIGHT";
-//			}else if (pos.x < pair.x && pos.y < pair.y) {
-//				dir = "BOTTOM-RIGHT";
-//			}
-//			if(pair.y == 0 && pair.x == 7 && dir.equals("BOTTOM-LEFT") ){
-//				if(getContentWithXandY(pair.x-7, pair.y+7) == 0) {
-//					treeMoves.add(new Pair(pair.x - 7,pair.y + 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.y == 0 && dir.equals("BOTTOM-LEFT")) {
-//				if(getContentWithXandY(pair.x + 1, pair.y + 7) == 0) {
-//					treeMoves.add(new Pair(pair.x + 1,pair.y + 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.y == 0 && dir.equals("TOP-LEFT")) {
-//				if(getContentWithXandY(pair.x - 1, pair.y + 7) == 0) {
-//					treeMoves.add(new Pair(pair.x - 1,pair.y + 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.y == 7 && pair.x == 0 && dir.equals("TOP-RIGHT")) {
-//				if(getContentWithXandY(pair.x + 7, pair.y - 7) == 0) {
-//					treeMoves.add(new Pair(pair.x + 7,pair.y - 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.y == 7 && dir.equals("TOP-RIGHT")) {
-//				if(getContentWithXandY(pair.x - 1, pair.y - 7) == 0) {
-//					treeMoves.add(new Pair(pair.x - 1,pair.y - 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.y == 7 && dir.equals("BOTTOM-RIGHT")) {
-//				if(getContentWithXandY(pair.x + 1, pair.y - 7) == 0) {
-//					treeMoves.add(new Pair(pair.x + 1,pair.y - 7));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.x == 0 && dir.equals("TOP-RIGHT")) {
-//				if(getContentWithXandY(pair.x + 7, pair.y + 1) == 0) {
-//					treeMoves.add(new Pair(pair.x + 7,pair.y + 1));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.x == 0 && dir.equals("TOP-LEFT")) {
-//				if(getContentWithXandY(pair.x + 7, pair.y - 1) == 0) {
-//					treeMoves.add(new Pair(pair.x + 7,pair.y - 1));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.x == 7 && dir.equals("BOTTOM-LEFT")) {
-//				if(getContentWithXandY(pair.x - 7, pair.y -1 ) == 0) {
-//					treeMoves.add(new Pair(pair.x - 7,pair.y - 1));
-//					//FUNCTION CALL
-//				}
-//			}else if(pair.x == 7 && dir.equals("BOTTOM-RIGHT")) {
-//				if(getContentWithXandY(pair.x - 7, pair.y + 1) == 0) {
-//					treeMoves.add(new Pair(pair.x - 7,pair.y + 1));
-//					//FUNCTION CALL
-//				}
-//			}
-//		}
-//		
-//		return treeMoves;
-//	}
-//	
-	
-//	private ArrayList<Pair> getLastPossibleMoveInBias(int obj ,Pair pos){
-//		ArrayList<Pair> queenMoves = getQueenBiasMoves(obj, pos);
-//		ArrayList<Pair> movesToReturn = new ArrayList<Pair>();
-//		
-//		if(pos.x == 0 || pos.x == 7 || pos.y == 0 || pos.y == 7) 
-//			movesToReturn.add(pos);
-//		for(Pair pair : queenMoves) {
-//			if(pair.x == 0 || pair.x == 7 || pair.y == 0 || pair.y == 7) {
-//				movesToReturn.add(pair);
-//			}
-//		}
-//		return movesToReturn;
-//	}
-//	public ArrayList<Pair >getQueenPossibleMoves(int obj , Pair pos) {
-//		if (pos == null)
-//			return null;
-//		if(obj == 1) {
-//			
-//		}else if(obj == 2) {
-//			
-//		}
-//	}
+	public ArrayList<Pair> getPossibleMovesForSoldiers(int obj, Pair pair){
+        if(obj == 1 ) {
+            return getPossibleMovesForSoldiers(obj, pair);
+        }
+        return getPossibleMovesForBlackSoldier(obj, pair);
+     }
 }
