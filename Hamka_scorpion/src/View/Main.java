@@ -31,13 +31,17 @@ public class Main  {
 //		game.getPossibleMovesForWhiteSoldier(1, game.getPair(2, 1));
 		//game.moveBlackSoldier(game.getPair(4, 3), game.getPair(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getPair(4,3)));
 //		System.out.println(game.getblackPlayerSoldiers());
+
 //		System.out.println(game.generateYellowTiles());
 //		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getPair(4, 3));
-		
+/*		
 		stopWatch sw = new stopWatch(5);
 		sw.startTiming();
 		while(true)
 			System.out.println(stopWatch.time);
+		*/
+		boolean leg = game.checkIfLegalPosition(1, game.getPair(4, 3));
+		System.out.println(leg);
 		
 	}
 }
