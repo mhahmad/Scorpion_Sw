@@ -28,7 +28,6 @@ public class Main  {
 //		System.out.println(leg);
 //		game.getBiasMovesQueen(game.getContentWithXandY(2, 5), game.getPair(2, 5));
 //		game.getQueenMoves(game.getContentWithXandY(2, 5), game.getPair(2, 5));
-
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter first name : ");
 		String firstP = scan.nextLine();
