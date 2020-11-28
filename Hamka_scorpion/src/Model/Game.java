@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
@@ -23,8 +24,8 @@ public class Game {
 	public int seconds = 0;
 	private Pair[] yellowPanels;
 	private int[][] board = {{-1,2,-1,0,-1,2,-1,0},
-			                 {2,-1,2,-1,2,-1,0,-1},
-			                 {-1,2,-1,0,-1,22,-1,2},
+			                 {2,-1,1,-1,2,-1,0,-1},
+			                 {-1,2,-1,1,-1,22,-1,2},
 			                 {0,-1,0,-1,0,-1,0,-1},
 			                 {-1,0,-1,11,-1,0,-1,0},
 			                 {1,-1,0,-1,0,-1,1,-1},
@@ -333,7 +334,6 @@ public class Game {
 				else if (getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  - 2 , pair.y + 2)) == 0 && pair.x>1 ) { // if eat possible and row 2-7
 						pairMoves.add(new Pair(pair.x - 2, pair.y + 2));
 						 System.out.println(pairMoves);
-
 						return pairMoves;
 				}
 			 }else if(pair.y == 7 && pair.x >0 ) {
@@ -620,6 +620,26 @@ public class Game {
 	}
 	
 	/***
+	 * This method generates a 3 random tiles and returns them.
+	 * @return
+	 */
+	public ArrayList<Pair> generateYellowTiles(){
+		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		int count = 0;
+		for(;;) {
+			int x = (int)(Math.random()*8);
+			int y = (int)(Math.random()*8);
+			if(getEmptyTiles().contains(new Pair(x,y))) {
+				count++;
+				toReturn.add(new Pair(x,y));
+			}
+				if(count ==3) break;	
+			}
+		return toReturn;
+	}
+	
+
+	/***GREEN TILE ***
 	 * This method generates a green tile of all the possible tiles for the player.
 	 * @param turn
 	 * @return
@@ -648,22 +668,6 @@ public class Game {
 		int randomNumber = ThreadLocalRandom.current().nextInt(0 , numberOfMoves );
 		return possibleMovesArray.get(randomNumber);
 	}
-	
-	public ArrayList<Pair> generateYellowTiles(){
-		ArrayList<Pair> toReturn = new ArrayList<Pair>();
-		int count = 0;
-		for(;;) {
-			int x = (int)(Math.random()*8);
-			int y = (int)(Math.random()*8);
-			if(getEmptyTiles().contains(new Pair(x,y))) {
-				count++;
-				toReturn.add(new Pair(x,y));
-			}
-				if(count ==3) break;	
-			}
-		return toReturn;
-	}
-	
 	/*** BLUE TILE ****/ 
 	/**
 	 * method that counts the number of pieces from a certain type 
@@ -723,16 +727,56 @@ public class Game {
 		return true;
 	}
 	
+	/*** ORANGE TILES ***
+	 * This method generates orange tiles for the player and returns them.
+	 * @param turn
+	 * @return
+	 */
+	public ArrayList<Pair> generateOrangeTiles(PlayerTurn turn){
+		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		TreeSet<Pair> allPossibleMoves = new TreeSet<Pair>();
+		if(turn == null)
+			return null;
+		if(turn == PlayerTurn.Black) {
+		for(int i = 0 ; i < 8 ; i++) {
+			for(int j = 0 ; j < 8 ; j++) {
+				if(getContentWithXandY(i, j) == 2) {
+					allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(2, getPair(i, j)));
+				}
+			}
+		}
+		}else {
+			for(int i = 0 ; i < 8 ; i++) {
+				for(int j = 0 ; j < 8 ; j++) {
+					if(getContentWithXandY(i, j) == 1) {
+						allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(1, getPair(i, j)));
+					}
+				}
+			}
+		}
+		toReturn.addAll(allPossibleMoves);
+		return toReturn;
+	}
 	
+	
+	/*** RED TILE ***
+	 * This method generates a random red tile from the player's possible moves and returns it.
+	 * @param turn
+	 * @return
+	 */
+	public Pair generateRedTile(PlayerTurn turn) {
+		return null;
+	}
 	/***
 	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
 	 * @param obj
 	 * @param pos
 	 * @return
 	 */
-	public ArrayList<Pair> getQueenBiasMoves(int obj , Pair pos){
+	public ArrayList<Pair> getQueenBiasMoves(int obj , Pair pos,String dir,HashMap<Pair,Pair> mapMoves){
 		int i = 1 ,j = 1;
 		ArrayList<Pair> toReturn = new ArrayList<Pair>();
+		HashMap<Pair,Pair> queenMoves = new HashMap<>();
 		int opSol,opQue;
 		if(obj == 11) { 
 			opSol= 2;
@@ -742,19 +786,30 @@ public class Game {
 				opQue = 11;
 		}
 		// get the possible moves in the right-top bias
+		if(dir.equals("TOP-RIGHT")) {
 			while(getContentWithXandY(pos.x - i , pos.y + j) == 0 || ((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue)
 					&& getContentWithXandY(pos.x - (i+1), pos.y + (j+1))== 0)) {
 				if((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y + (j+1) )== 0) {
-					toReturn.add(getPair(pos.x - (i+1), pos.y + (j+1)));
+					if(mapMoves.containsKey(new Pair(pos.x - (i+1),pos.y + (j+1)))) {
+						if(mapMoves.get(new Pair(pos.x - (i+1),pos.y + (j+1))) == null) {
+							mapMoves.put(new Pair(pos.x - (i+1),pos.y + (j+1)), new Pair(pos.x - i, pos.y + j));
+					}
+					}else {
+						mapMoves.put(new Pair(pos.x - (i+1),pos.y + (j+1)), new Pair(pos.x - i, pos.y + j));
+					}
+//					toReturn.add(getPair(pos.x - (i+1), pos.y + (j+1)));
 					break;
 				}
-				toReturn.add(getPair(pos.x - i , pos.y + j));
+//				toReturn.add(getPair(pos.x - i , pos.y + j));
+				if(getContentWithXandY(pos.x - i , pos.y + j) == 0)
+					mapMoves.put(new Pair(pos.x - i , pos.y + j),null);
 				i++;
 				j++;
-			}
-			i =1 ;
-			j = 1;
+			}}
+//			i =1 ;
+//			j = 1;
 			// get the possible moves in the left-top bias
+			else if(dir.equals("TOP-LEFT")) {
 			while(getContentWithXandY(pos.x - i, pos.y - j) == 0 || ((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue)
 					&& getContentWithXandY(pos.x - (i+1), pos.y - (j+1))== 0)) {
 				if((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y - (j+1) )== 0) {
@@ -764,9 +819,10 @@ public class Game {
 				toReturn.add(getPair(pos.x - i, pos.y - j));
 				i++;
 				j++;
-			}
-				i=1;
-				j=1;
+			}}
+//				i=1;
+//				j=1;
+			else if(dir.equals("BOTTOM-RIGHT")) {
 			// get the possible moves in the right-bottom bias
 			while(getContentWithXandY(pos.x + i, pos.y + j) == 0 || ((getContentWithXandY(pos.x + i, pos.y + j) == opSol || getContentWithXandY(pos.x + i,pos.y + j) == opQue)
 					&& getContentWithXandY(pos.x + (i+1), pos.y + (j+1))== 0)) {
@@ -777,11 +833,11 @@ public class Game {
 				toReturn.add(getPair(pos.x + i,pos.y + j));
 				i++;
 				j++;
-				}
+				}}
 			
-				i=1;
-				j=1;
-			
+//				i=1;
+//				j=1;
+			else if(dir.equals("BOTTOM-LEFT")) {
 				// get the possible moves in the left-bottom bias
 			while(getContentWithXandY(pos.x + i, pos.y - j) == 0 || ((getContentWithXandY(pos.x + i, pos.y - j) == opSol || getContentWithXandY(pos.x + i,pos.y - j) == opQue)
 					&& getContentWithXandY(pos.x + (i+1), pos.y - (j+1))== 0)) {
@@ -793,9 +849,102 @@ public class Game {
 				toReturn.add(getPair(pos.x + i,pos.y - j));
 				i++;
 				j++;
-			}
+			}}
 			System.out.println(toReturn);
 		return toReturn;
+	}
+	
+	
+	public TreeSet<Pair> getQueenCrossBoardMoves(int obj , Pair pos){
+		ArrayList<Pair> boardEdgesMoves = getLastPossibleMoveInBias(obj, pos);
+		TreeSet<Pair> treeMoves = new TreeSet<Pair>();
+		String dir = "";
+		int opSol,opQue;
+		if(obj == 11) {
+			opSol = 2;
+			opQue = 22;
+		}else if(obj == 22) {
+			opSol = 1;
+			opQue = 11;
+		}
+		for(Pair pair : boardEdgesMoves) {
+			if((pos.x < pair.x && pos.y > pair.y)) {
+				dir = "BOTTOM-LEFT";
+			} else if (pos.x > pair.x && pos.y > pair.y) {
+				dir = "TOP-LEFT";
+			}else if((pos.x > pair.x && pos.y < pair.y )) {
+				dir = "TOP-RIGHT";
+			}else if (pos.x < pair.x && pos.y < pair.y) {
+				dir = "BOTTOM-RIGHT";
+			}
+			if(pair.y == 0 && pair.x == 7 && dir.equals("BOTTOM-LEFT") ){
+				if(getContentWithXandY(pair.x-7, pair.y+7) == 0) {
+					treeMoves.add(new Pair(pair.x - 7,pair.y + 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.y == 0 && dir.equals("BOTTOM-LEFT")) {
+				if(getContentWithXandY(pair.x + 1, pair.y + 7) == 0) {
+					treeMoves.add(new Pair(pair.x + 1,pair.y + 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.y == 0 && dir.equals("TOP-LEFT")) {
+				if(getContentWithXandY(pair.x - 1, pair.y + 7) == 0) {
+					treeMoves.add(new Pair(pair.x - 1,pair.y + 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.y == 7 && pair.x == 0 && dir.equals("TOP-RIGHT")) {
+				if(getContentWithXandY(pair.x + 7, pair.y - 7) == 0) {
+					treeMoves.add(new Pair(pair.x + 7,pair.y - 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.y == 7 && dir.equals("TOP-RIGHT")) {
+				if(getContentWithXandY(pair.x - 1, pair.y - 7) == 0) {
+					treeMoves.add(new Pair(pair.x - 1,pair.y - 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.y == 7 && dir.equals("BOTTOM-RIGHT")) {
+				if(getContentWithXandY(pair.x + 1, pair.y - 7) == 0) {
+					treeMoves.add(new Pair(pair.x + 1,pair.y - 7));
+					//FUNCTION CALL
+				}
+			}else if(pair.x == 0 && dir.equals("TOP-RIGHT")) {
+				if(getContentWithXandY(pair.x + 7, pair.y + 1) == 0) {
+					treeMoves.add(new Pair(pair.x + 7,pair.y + 1));
+					//FUNCTION CALL
+				}
+			}else if(pair.x == 0 && dir.equals("TOP-LEFT")) {
+				if(getContentWithXandY(pair.x + 7, pair.y - 1) == 0) {
+					treeMoves.add(new Pair(pair.x + 7,pair.y - 1));
+					//FUNCTION CALL
+				}
+			}else if(pair.x == 7 && dir.equals("BOTTOM-LEFT")) {
+				if(getContentWithXandY(pair.x - 7, pair.y -1 ) == 0) {
+					treeMoves.add(new Pair(pair.x - 7,pair.y - 1));
+					//FUNCTION CALL
+				}
+			}else if(pair.x == 7 && dir.equals("BOTTOM-RIGHT")) {
+				if(getContentWithXandY(pair.x - 7, pair.y + 1) == 0) {
+					treeMoves.add(new Pair(pair.x - 7,pair.y + 1));
+					//FUNCTION CALL
+				}
+			}
+		}
+		
+		return treeMoves;
+	}
+	
+	private ArrayList<Pair> getLastPossibleMoveInBias(int obj ,Pair pos){
+		ArrayList<Pair> queenMoves = getQueenBiasMoves(obj, pos);
+		ArrayList<Pair> movesToReturn = new ArrayList<Pair>();
+		
+		if(pos.x == 0 || pos.x == 7 || pos.y == 0 || pos.y == 7) 
+			movesToReturn.add(pos);
+		for(Pair pair : queenMoves) {
+			if(pair.x == 0 || pair.x == 7 || pair.y == 0 || pair.y == 7) {
+				movesToReturn.add(pair);
+			}
+		}
+		return movesToReturn;
 	}
 //	public ArrayList<Pair >getQueenPossibleMoves(int obj , Pair pos) {
 //		if (pos == null)

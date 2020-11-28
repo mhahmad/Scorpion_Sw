@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,7 +40,6 @@ public class Main  {
 			System.out.println(stopWatch.time);
 		
 	}
-
 }
 
 class stopWatch{
