@@ -2,24 +2,26 @@ package View;
 
 import java.util.HashMap;
 import java.util.Scanner;
-
 import Model.Game;
 import Model.Game.PlayerTurn;
+import Model.Game;
+
 
 public class Main  {
 
-
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 //		Winner w1 = new Winner("Mohamed",720,"20/07/2019");
 //		Winner w2 = new Winner("Lool",400,"16/11/2020");
 //		SysData.getInstance().addWinnerToLeaderboard(w1);
+//		Winner w2 = new Winner("Lool",400,"16/11/2020");
 //		SysData.getInstance().addWinnerToLeaderboard(w2);
 //		SysData.getInstance().writeWinnersIntoFile();
+//		SysData.getInstance().addWinnerToLeaderboard(w1);
+//		Game game = new Game("PL","SS");
+		System.out.println("SDSD");
 //		game.getPossibleMovesForWhiteSoldier(1, game.getPair(2, 1));
 		//game.moveBlackSoldier(game.getPair(4, 3), game.getPair(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getPair(4,3)));
 //		System.out.println(game.getblackPlayerSoldiers());
-
 //		System.out.println(game.generateYellowTiles());
 //		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getPair(4, 3));
 //		boolean leg = game.checkIfLegalPosition(1, game.getPair(4, 3));
@@ -95,7 +97,6 @@ public class Main  {
 			}
 			game.handTurn();
 		}
-		System.out.println("The winner is : " + game.winner());
-		
+		System.out.println("The winner is : " + game.winner());		
 	}
 }
