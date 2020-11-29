@@ -169,7 +169,7 @@ public class Game {
 		 * @author mutla
 		 *class to get the coloured pannel x,y
 		 */
-		private class Pair {
+		public class Pair {
 			int x;// row
 			int y;//col
 			
