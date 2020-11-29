@@ -96,5 +96,6 @@ public class Main  {
 			game.handTurn();
 		}
 		System.out.println("The winner is : " + game.winner());		
+	
 	}
 }

@@ -27,7 +27,7 @@ public class Game {
 	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 							{2,-1,2,-1,2,-1,2,-1},
 							{-1,2,-1,2,-1,2,-1,2},
-							{0,-1,0,-1,1,-1,0,-1},
+							{0,-1,11,-1,1,-1,0,-1},
 							{-1,0,-1,0,-1,0,-1,0},
 							{1,-1,0,-1,1,-1,1,-1},
 							{-1,2,-1,1,-1,1,-1,1},
@@ -278,7 +278,7 @@ public class Game {
 					 //System.out.println(pairMoves);
 					 return pairMoves;
 				}
-				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 1 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
+				else if ((getTileContent(new Pair(pair.x+1,pair.y+1)) == 1 || getTileContent(new Pair(pair.x+1,pair.y+1)) == 11) && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
 						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
 						// System.out.println(pairMoves);
 						return pairMoves;
@@ -289,7 +289,7 @@ public class Game {
 					// System.out.println(pairMoves);
 
 					 return pairMoves;
-				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 1  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
+				 }else if ((getTileContent(new Pair(pair.x+1,pair.y-1)) == 1 || getTileContent(new Pair(pair.x+1,pair.y-1)) ==11)  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
 					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
 					// System.out.println(pairMoves);
 					 return pairMoves;
@@ -302,9 +302,9 @@ public class Game {
 						 pairMoves.add(new Pair(pair.x + 1, pair.y + 1 ));
 				 }
 				 if (pair.x < 6 ) { // row 0-5 and column 2-5 
-					 if(pair.y<6 &&getTileContent(new Pair(pair.x + 1,pair.y + 1)) == 1 && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) //if eat to the right possible
+					 if(pair.y<6 &&(getTileContent(new Pair(pair.x+1,pair.y+1)) == 1 || getTileContent(new Pair(pair.x+1,pair.y+1)) ==11) && getTileContent(new Pair(pair.x + 2,pair.y + 2)) == 0) //if eat to the right possible
 						 pairMoves.add(new Pair(pair.x + 2,pair.y + 2));
-					 if(pair.y>1 && getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 1 && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) // if eat to the left possible
+					 if(pair.y>1 && (getTileContent(new Pair(pair.x+1,pair.y-1)) == 1 || getTileContent(new Pair(pair.x+1,pair.y-1)) ==11) && getTileContent(new Pair(pair.x + 2 , pair.y - 2)) == 0) // if eat to the left possible
 						pairMoves.add(new Pair(pair.x + 2,pair.y - 2));
 					
 			 }
@@ -334,7 +334,7 @@ public class Game {
 					 System.out.println(pairMoves);
 					 return pairMoves;
 				}
-				else if (getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 && getTileContent(new Pair(pair.x  - 2 , pair.y + 2)) == 0 && pair.x>1 ) { // if eat possible and row 2-7
+				else if ((getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 || getTileContent(new Pair(pair.x-1,pair.y+1)) ==22 ) && getTileContent(new Pair(pair.x  - 2 , pair.y + 2)) == 0 && pair.x>1 ) { // if eat possible and row 2-7
 						pairMoves.add(new Pair(pair.x - 2, pair.y + 2));
 						 System.out.println(pairMoves);
 						return pairMoves;
@@ -343,7 +343,7 @@ public class Game {
 				 if(getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 0) {
 					 pairMoves.add(new Pair(pair.x-1,pair.y-1));
 					 return pairMoves;
-				 }else if (getTileContent(new Pair(pair.x-1,pair.y -1 )) == 2  && pair.x-1 != 0 && getTileContent(new Pair(pair.x - 2,pair.y - 2)) == 0) {
+				 }else if ((getTileContent(new Pair(pair.x-1,pair.y-1)) == 2 || getTileContent(new Pair(pair.x-1,pair.y-1)) ==22 )  && pair.x-1 != 0 && getTileContent(new Pair(pair.x - 2,pair.y - 2)) == 0) {
 					 pairMoves.add(new Pair(pair.x - 2, pair.y - 2));
 					 System.out.println(pairMoves);
 					 return pairMoves;
@@ -356,9 +356,9 @@ public class Game {
 						 pairMoves.add(new Pair(pair.x - 1, pair.y + 1 ));
 				 }
 			  if (pair.x > 1) {
-				 if(pair.y>1 && getTileContent(new Pair(pair.x - 1,pair.y + 1)) == 2 && getTileContent(new Pair(pair.x - 2,pair.y + 2)) == 0) 
+				 if(pair.y>1 && (getTileContent(new Pair(pair.x-1,pair.y+1)) == 2 || getTileContent(new Pair(pair.x-1,pair.y+1)) ==22 ) && getTileContent(new Pair(pair.x - 2,pair.y + 2)) == 0) 
 					 pairMoves.add(new Pair(pair.x - 2,pair.y + 2));
-				 if(pair.y<6  && getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
+				 if(pair.y<6  && (getTileContent(new Pair(pair.x-1,pair.y-1)) == 2 || getTileContent(new Pair(pair.x-1,pair.y-1)) ==22 ) && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
 					pairMoves.add(new Pair(pair.x - 2,pair.y - 2));
 			 }
 				 return pairMoves;
@@ -398,11 +398,21 @@ public class Game {
 					 this.whitePlayerSoldiers--;
 				 }else {
 						 Pair midEnemySol = getMiddleEnemySoldier(1,currentPos,nextPos);
+						 String killed;
+						 if(getTileContent(midEnemySol)==2 ) {
+							 killed = "soldier!";
+						 }else {
+							 killed = "queen!";
+						 }
 						 board[nextPos.x][nextPos.y] = 1;
 						 board[midEnemySol.x][midEnemySol.y] = 0;
 						 board[currentPos.x][currentPos.y] = 0;
-						 System.out.println("You killed enemy soldier");
-						 this.blackPlayerSoldiers--;
+						 System.out.println("You killed an enemy " + killed );
+						 if(killed.equals("soldier!")) {
+							 this.whitePlayerSoldiers--;
+						 }else {
+							 this.whitePlayerQueens--;
+						 }
 						 this.whitePlayerPoints+=100;
 
 				 		}
@@ -460,18 +470,28 @@ public class Game {
 	 public void moveBlackSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
 		 ArrayList<Pair> allKillsAvailable = getKills(PlayerTurn.Black);
 		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
-			 System.out.println("Wrong input");
+			 System.out.println("Wrong input"); 
 			 return;
 		 }
 		 if(ifKillExist(currentPos,possibleMoves)) {
 			 ArrayList<Pair> killMoves = getKillMove(possibleMoves,currentPos);
 			 if(killMoves.size() == 2) {
 				 Pair midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
+				 String killed;
+				 if(getTileContent(midEnemySol) == 1 ) {
+					killed = "soldier!"; 
+				 }else {
+					 killed = "queen!";
+				 }
 				 board[nextPos.x][nextPos.y] = 2;
 				 board[midEnemySol.x][midEnemySol.y] = 0;
 				 board[currentPos.x][currentPos.y] = 0;
-				 System.out.println("You killed enemy soldier!");
-				 this.whitePlayerSoldiers--;
+				 System.out.println("You killed an enemy " + killed );
+				 if(killed.equals("soldier!")) {
+					 this.whitePlayerSoldiers--;
+				 }else {
+					 this.whitePlayerQueens--;
+				 }
 				 this.blackPlayerPoints+=100;
 			 }else {
 				 Pair priorityMove = killMoves.get(0);
