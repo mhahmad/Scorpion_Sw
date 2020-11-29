@@ -665,12 +665,12 @@ public class Game {
 	  * @return
 	  */
 	 public Pair getMiddleEnemySoldier(int color ,Pair current , Pair next) {
-		 if(color == 1) {
+		 if(color == 1 || color == 11) {
 			 if(next.y - 2 == current.y)
 				 return  new Pair(next.x + 1,next.y - 1);
 			  if(next.y + 2 == current.y)
 				 return new Pair(next.x + 1,next.y + 1);
-		 }else {
+		 }else if(color==2 || color==22) {
 			 if(next.y - 2 == current.y )
 				 return new Pair(next.x - 1,next.y - 1);
 			  if(next.y + 2 == current.y)
@@ -1250,10 +1250,16 @@ public class Game {
 	 * @return
 	 */
 	public String winner() {
-		if(this.whitePlayerQueens == 0 && this.whitePlayerSoldiers == 0) 
+		if(this.whitePlayerPoints < this.blackPlayerPoints) 
 			return this.blackPlayer;
-		else 
+		else  if(this.whitePlayerPoints > this.blackPlayerPoints)
 			return this.whitePlayer;
+		else {
+			if(this.whitePlayerSoldiers==0 && this.whitePlayerQueens==0 )
+				return this.blackPlayer;
+			else
+				return this.whitePlayer;
+		}
 	}
 
 	public void printBoard() {

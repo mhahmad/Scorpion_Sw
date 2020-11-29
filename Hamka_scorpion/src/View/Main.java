@@ -3,6 +3,7 @@ package View;
 import java.util.HashMap;
 import java.util.Scanner;
 import Model.Game;
+import Model.StopWatch;
 import Model.Game.PlayerTurn;
 import Model.Game;
 
@@ -33,12 +34,16 @@ public class Main  {
 		System.out.println("Enter second name : ");
 		String secondP = scan.nextLine();
 		Game game = new Game(firstP,secondP);
+		StopWatch sw = new StopWatch();
+		StopWatch sw2 = new StopWatch();
 		int x , y ,z,w;
 		System.out.println("Game started , " + firstP + " has the color black , "+ secondP + " has the color white");
 		System.out.println(" -1 is a white Tile .");
 		while(!game.isGameOver()) {
 			game.printBoard();
 			if(game.getTurn().equals(PlayerTurn.Black)) {
+				sw.start();
+				sw2.start();
 				System.out.println("It's black turn");
 				System.out.print("Enter number x for the soldier/queen you want to move : ");
 				x = scan.nextInt();
@@ -65,7 +70,11 @@ public class Main  {
 				}else {
 					game.moveQueen(22, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(22, game.getPair(x, y)));
 				}
+				sw.stop();
+				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000  + "Seconds");
+				System.out.println();
 			}else {
+				sw.start();
 				System.out.println("It's white turn");
 				System.out.print("Enter number x for the soldier/queen you want to move : ");
 				x = scan.nextInt();
@@ -92,10 +101,16 @@ public class Main  {
 				}else {
 					game.moveQueen(11, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(11, game.getPair(x, y)));
 				}
+				sw.stop();
+				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + "Seconds");
+				System.out.println();
 			}
 			game.handTurn();
 		}
-		System.out.println("The winner is : " + game.winner());		
+		sw.stop();
+		System.out.println("The Game took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + "Seconds");
+		sw2.start();
+		System.out.println("The winner is : " + game.winner());
 	
 	}
 }
