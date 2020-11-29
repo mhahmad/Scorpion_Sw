@@ -30,9 +30,13 @@ import org.junit.jupiter.api.Test;
 	
 	and all expected results will be checked to that board,
 	for the correct results the board in the game class should be changed to it, otherwise some are going to fail.
+	Please before testing change the board in the Game class to the shown board above, otherwise some are going to fail.
 	If set successfully all tests should be successful.
  */
 class ClassTests {
+	/*
+	 * Please before testing change the board in the Game class to the shown board above, otherwise some are going to fail.
+	 */
 	
 	private final PrintStream standardOut = System.out;
 	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
