@@ -446,9 +446,9 @@ public class Game {
 					 this.whitePlayerQueens++;
 
 				 }else {
-				 board[currentPos.x][currentPos.y] = 0;
-				 board[nextPos.x][nextPos.y]=1;
-				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+					 board[currentPos.x][currentPos.y] = 0;
+					 board[nextPos.x][nextPos.y]=1;
+					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
 				 }
 			 }
 		 }}
@@ -545,11 +545,11 @@ public class Game {
 				 }
 		 }
 		 
-		 for(int i=0;i<8;i++) {
-			 for(int j=0; j<8;j++)
-				 System.out.print(board[i][j] + ",");
-			 System.out.println();
-		 }
+//		 for(int i=0;i<8;i++) {
+//			 for(int j=0; j<8;j++)
+//				 System.out.print(board[i][j] + ",");
+//			 System.out.println();
+//		 }
 	 }
 	 
 	 
