@@ -275,23 +275,23 @@ public class Game {
 			 if(pair.y == 0 && pair.x < 7 ) { // column =0 and row 1-6
 				if( getTileContent(new Pair(pair.x+1,pair.y+1)) == 0) {
 					 pairMoves.add(new Pair(pair.x+1,pair.y+1));
-					 System.out.println(pairMoves);
+					 //System.out.println(pairMoves);
 					 return pairMoves;
 				}
 				else if (getTileContent(new Pair(pair.x+1,pair.y+1)) == 1 && getTileContent(new Pair(pair.x  + 2 , pair.y + 2)) == 0 && pair.x <6 ) { //if eat is possible and row 1-5
 						pairMoves.add(new Pair(pair.x + 2, pair.y + 2));
-						 System.out.println(pairMoves);
+						// System.out.println(pairMoves);
 						return pairMoves;
 				}
 			 }else if(pair.y == 7 && pair.x < 7 ) { // if column =7 and row 0-6
 				 if(getTileContent(new Pair(pair.x + 1,pair.y - 1)) == 0) { // move possible
 					 pairMoves.add(new Pair(pair.x+1,pair.y-1));
-					 System.out.println(pairMoves);
+					// System.out.println(pairMoves);
 
 					 return pairMoves;
 				 }else if (getTileContent(new Pair(pair.x+1,pair.y -1 )) == 1  && pair.x <6 && getTileContent(new Pair(pair.x + 2,pair.y - 2)) == 0) {//if eat possible and row 1-5
 					 pairMoves.add(new Pair(pair.x + 2, pair.y - 2));
-					 System.out.println(pairMoves);
+					// System.out.println(pairMoves);
 					 return pairMoves;
 				 }
 			 }else if (pair.x <7 && pair.y>0 && pair.y<7 ) {  
@@ -308,11 +308,10 @@ public class Game {
 						pairMoves.add(new Pair(pair.x + 2,pair.y - 2));
 					
 			 }
-				 System.out.println(pairMoves);
+				 //System.out.println(pairMoves);
 
 				 return pairMoves;
 		 }}
-		 System.out.println(pairMoves);
 		 return null;
 		 
 	 }
@@ -362,7 +361,6 @@ public class Game {
 				 if(pair.y<6  && getTileContent(new Pair(pair.x - 1,pair.y - 1)) == 2 && getTileContent(new Pair(pair.x - 2 , pair.y - 2)) == 0) 
 					pairMoves.add(new Pair(pair.x - 2,pair.y - 2));
 			 }
-			  System.out.println(pairMoves);
 				 return pairMoves;
 		 }
 		 }		 
@@ -535,6 +533,60 @@ public class Game {
 //				 System.out.println();
 				
 		//	}
+		}
+		/***
+		 * This method returns a random soldier that has a kill move.
+		 * @param turn
+		 * @return
+		 */
+		public Pair getSoldierWithKill(PlayerTurn turn) {
+			
+			for(int i = 0; i < 8;i++) {
+				for(int j = 0; j < 8; j++) {
+					if(board[i][j] == 2 && turn.equals(PlayerTurn.Black)) {
+						if(ifKillExist(getPair(i,j), getPossibleMovesForBlackSoldier(board[i][j], getPair(i,j)))) {
+							return new Pair(i,j);
+						}
+					}else if(board[i][j] == 1 && turn.equals(PlayerTurn.White)) {
+						if(ifKillExist(getPair(i,j),getPossibleMovesForSoldiers(board[i][j], getPair(i,j)))) {
+							return new Pair(i,j);
+						}
+					}
+				}
+			}
+			return null;
+		}
+		/***
+		 * This method gets all the possible kills for the player.
+		 * @param turn
+		 * @return
+		 */
+		public ArrayList<Pair> getKills(PlayerTurn turn){
+			ArrayList<Pair> blackKillsMoves = new ArrayList<Pair>();
+			ArrayList<Pair> whiteKillsMoves = new ArrayList<Pair>();
+			if(turn == null) return null;
+			
+				for(int i=0; i < 8;i++) {
+					for(int j = 0; j < 8;j++) {
+						if(board[i][j] == 2 && turn.equals(PlayerTurn.Black)) {
+							ArrayList<Pair> possibleMoves = getPossibleMovesForBlackSoldier(board[i][j], getPair(i,j));
+							if(ifKillExist(getPair(i,j), possibleMoves)) {
+								blackKillsMoves.addAll(getKillMove(possibleMoves, getPair(i,j)));
+							}
+						}else if(board[i][j] == 1 && turn.equals(PlayerTurn.White)) {
+							ArrayList<Pair> possibleMoves = getPossibleMovesForWhiteSoldier(board[i][j], getPair(i,j));
+							if(ifKillExist(getPair(i,j), possibleMoves)) {
+								whiteKillsMoves.addAll(getKillMove(possibleMoves, getPair(i,j)));
+							}
+						}
+					}
+				}
+				
+				if(turn.equals(PlayerTurn.Black))
+					return blackKillsMoves;
+				else
+					return whiteKillsMoves;
+			
 		}
 	 /***
 	  * This method returns the coordinate of the enemy soldier that sits between current position and next position
