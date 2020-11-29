@@ -27,11 +27,11 @@ public class Game {
 	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 							{2,-1,2,-1,2,-1,2,-1},
 							{-1,2,-1,2,-1,2,-1,2},
-							{0,-1,0,-1,0,-1,0,-1},
+							{0,-1,0,-1,1,-1,0,-1},
 							{-1,0,-1,0,-1,0,-1,0},
-							{1,-1,1,-1,1,-1,1,-1},
-							{-1,1,-1,1,-1,1,-1,1},
-							{1,-1,1,-1,1,-1,1,-1}
+							{1,-1,0,-1,1,-1,1,-1},
+							{-1,2,-1,1,-1,1,-1,1},
+							{1,-1,0,-1,1,-1,1,-1}
 };
 	PlayerTurn turn;
 	
@@ -375,6 +375,7 @@ public class Game {
 	  * @param possibleMoves
 	  */
 	 public void moveWhiteSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
+		 ArrayList<Pair> allKillsAvailable = getKills(PlayerTurn.White);
 		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
 			 System.out.println("Wrong input");
 			 return;
@@ -404,14 +405,35 @@ public class Game {
 						 this.blackPlayerSoldiers--;
 						 this.whitePlayerPoints+=100;
 
-			 }
-			 }}else {
-
+				 		}
+			 		}
+			 }else {
+				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && !allKillsAvailable.contains(nextPos)) {
+					 Pair soldierHasToDie = getSoldierWithKill(PlayerTurn.White);
+					 if(soldierHasToDie != null) {
+						 if(nextPos.x != 7) {
+							 board[currentPos.x][currentPos.y] = 0;
+							 board[nextPos.x][nextPos.y]=1;
+							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 this.whitePlayerSoldiers--;
+							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " , you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+						 	}
+						 else {
+							 board[currentPos.x][currentPos.y] = 0;
+							 board[nextPos.x][nextPos.y]=11;
+							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 this.whitePlayerSoldiers--;
+							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 this.whitePlayerQueens++;
+						 }
+						 }
+				 }else {
 			 if(possibleMoves.contains(nextPos)) {
 				 if(nextPos.x == 0) {
 					 board[currentPos.x][currentPos.y] = 0;
 					 board[nextPos.x][nextPos.y] = 11;
 					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen !");
+					 this.whitePlayerQueens++;
 
 				 }else {
 				 board[currentPos.x][currentPos.y] = 0;
@@ -419,13 +441,13 @@ public class Game {
 				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
 				 }
 			 }
-		 }
+		 }}
 		 
-//		 for(int i=0;i<8;i++) {
-//			 for(int j=0; j<8;j++)
-//				 System.out.print(board[i][j] + ",");
-//			 System.out.println();
-//		 }
+		 for(int i=0;i<8;i++) {
+			 for(int j=0; j<8;j++)
+				 System.out.print(board[i][j] + ",");
+			 System.out.println();
+		 }
 	 }
 	 
 	 /***
@@ -436,6 +458,7 @@ public class Game {
 	  * @param possibleMoves
 	  */
 	 public void moveBlackSoldier(Pair currentPos , Pair nextPos , ArrayList<Pair> possibleMoves) {
+		 ArrayList<Pair> allKillsAvailable = getKills(PlayerTurn.Black);
 		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
 			 System.out.println("Wrong input");
 			 return;
@@ -453,7 +476,7 @@ public class Game {
 			 }else {
 				 Pair priorityMove = killMoves.get(0);
 				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
-					 System.out.println("You shoud have killed , you lose a soldier!");
+					 System.out.println("You missed a kill , you lose this soldier!");
 					 board[currentPos.x][currentPos.y] = 0;
 					 this.blackPlayerSoldiers--;
 				 }else {
@@ -464,27 +487,49 @@ public class Game {
 						 System.out.println("You killed enemy soldier");
 						 this.whitePlayerSoldiers--;
 						 this.blackPlayerPoints+=100;
-			 }
-			 }}else {
-
-			 if(possibleMoves.contains(nextPos)) {
-				 if(nextPos.x == 7) {
-					 board[currentPos.x][currentPos.y] = 0;
-					 board[nextPos.x][nextPos.y]=22;
-					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen!");
+				 	}
+			 	}
+			 }else {
+				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && !allKillsAvailable.contains(nextPos)) {
+					 Pair soldierHasToDie = getSoldierWithKill(PlayerTurn.Black);
+					 if(soldierHasToDie != null) {
+						 if(nextPos.x != 7) {
+							 board[currentPos.x][currentPos.y] = 0;
+							 board[nextPos.x][nextPos.y]=2;
+							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 this.blackPlayerSoldiers--;
+							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " , you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+						 	}
+						 else {
+							 board[currentPos.x][currentPos.y] = 0;
+							 board[nextPos.x][nextPos.y]=22;
+							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 this.blackPlayerSoldiers--;
+							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 this.blackPlayerQueens++;
+						 }
+						 }
 				 }else {
-				 board[currentPos.x][currentPos.y] = 0;
-				 board[nextPos.x][nextPos.y]=2;
-				 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+					 if(possibleMoves.contains(nextPos)) {
+						 if(nextPos.x == 7) {
+							 board[currentPos.x][currentPos.y] = 0;
+							 board[nextPos.x][nextPos.y]=22;
+							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen!");
+							 this.blackPlayerQueens++;
+						 }else {
+						 board[currentPos.x][currentPos.y] = 0;
+						 board[nextPos.x][nextPos.y]=2;
+						 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+						 }
+					 }
 				 }
-			 }
 		 }
 		 
-//		 for(int i=0;i<8;i++) {
-//			 for(int j=0; j<8;j++)
-//				 System.out.print(board[i][j] + ",");
-//			 System.out.println();
-		// }
+		 for(int i=0;i<8;i++) {
+			 for(int j=0; j<8;j++)
+				 System.out.print(board[i][j] + ",");
+			 System.out.println();
+		 }
 	 }
 	 
 	 
@@ -548,7 +593,7 @@ public class Game {
 							return new Pair(i,j);
 						}
 					}else if(board[i][j] == 1 && turn.equals(PlayerTurn.White)) {
-						if(ifKillExist(getPair(i,j),getPossibleMovesForSoldiers(board[i][j], getPair(i,j)))) {
+						if(ifKillExist(getPair(i,j),getPossibleMovesForWhiteSoldier(board[i][j], getPair(i,j)))) {
 							return new Pair(i,j);
 						}
 					}

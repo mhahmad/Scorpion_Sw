@@ -19,7 +19,7 @@ public class Main  {
 //		SysData.getInstance().addWinnerToLeaderboard(w1);
 //		Game game = new Game("PL","SS");
 //		game.getPossibleMovesForWhiteSoldier(1, game.getPair(2, 1));
-		//game.moveBlackSoldier(game.getPair(4, 3), game.getPair(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getPair(4,3)));
+//		game.moveBlackSoldier(game.getPair(4, 3), game.getPair(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getPair(4,3)));
 //		System.out.println(game.getblackPlayerSoldiers());
 //		System.out.println(game.generateYellowTiles());
 //		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getPair(4, 3));
