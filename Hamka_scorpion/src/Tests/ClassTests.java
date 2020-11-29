@@ -17,6 +17,21 @@ import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/*
+ * All methods Tested on the board
+ * {-1,2,-1,2,-1,2,-1,2},
+			{2,-1,2,-1,2,-1,2,-1},
+			{-1,2,-1,2,-1,2,-1,2},
+			{0,-1,11,-1,1,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
+			{1,-1,0,-1,1,-1,1,-1},
+			{-1,2,-1,1,-1,1,-1,1},
+			{1,-1,0,-1,1,-1,1,-1}
+	
+	and all expected results will be checked to that board,
+	for the correct results the board in the game class should be changed to it, otherwise some are going to fail.
+	If set successfully all tests should be successful.
+ */
 class ClassTests {
 	
 	private final PrintStream standardOut = System.out;
