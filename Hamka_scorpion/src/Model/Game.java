@@ -554,10 +554,14 @@ public class Game {
 	 
 	 
 		public void moveQueen(int obj , Pair cur , Pair next , HashMap<Pair,Pair> possibleMoves) {
-			if(possibleMoves == null || !possibleMoves.containsKey(next))
+			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
 				System.out.println("Wrong Input");
-			else if(getTileContent(next) != 0)
+				return;
+			}
+			else if(getTileContent(next) != 0) {
 				System.out.println("Wrong Destination");
+				return;
+			}
 			else {
 				if(obj == 22) {
 					this.board[next.x][next.y] = 22;
@@ -1267,4 +1271,6 @@ public class Game {
         }
         return getPossibleMovesForBlackSoldier(obj, pair);
      }
+	
+	
 }
