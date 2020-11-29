@@ -25,7 +25,6 @@ class ClassTests {
 	private Pair expected;
 	
 	
-	
 	/*
 	 * Initialize a game and a set of pair (Used frequently in a lot of tests.)
 	 */

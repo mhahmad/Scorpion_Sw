@@ -71,7 +71,7 @@ public class Main  {
 					game.moveQueen(22, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(22, game.getPair(x, y)));
 				}
 				sw.stop();
-				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000  + "Seconds");
+				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000  + " Seconds");
 				System.out.println();
 			}else {
 				sw.start();
@@ -102,14 +102,14 @@ public class Main  {
 					game.moveQueen(11, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(11, game.getPair(x, y)));
 				}
 				sw.stop();
-				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + "Seconds");
+				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + " Seconds");
 				System.out.println();
 			}
 			game.handTurn();
 		}
 		sw.stop();
-		System.out.println("The Game took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + "Seconds");
-		sw2.start();
+		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
+		sw2.stop();
 		System.out.println("The winner is : " + game.winner());
 	
 	}
