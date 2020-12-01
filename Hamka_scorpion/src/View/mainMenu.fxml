@@ -47,7 +47,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="leaderboardBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Leaderboard">
+                  <Button fx:id="leaderboardBtn" mnemonicParsing="false" onAction="#leaderboardBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Leaderboard">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>
@@ -55,7 +55,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="tutorialBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Tutorials">
+                  <Button fx:id="tutorialBtn" mnemonicParsing="false" onAction="#tutorialsBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Tutorials">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>

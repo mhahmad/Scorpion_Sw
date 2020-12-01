@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.leaderboardScreen">
+   <children>
+      <ImageView fitHeight="960.0" fitWidth="1200.0">
+         <image>
+            <Image url="@../../Backgrounds/mainMenuBackground.png" />
+         </image>
+      </ImageView>
+      <Pane layoutX="1.0" prefHeight="65.0" prefWidth="1200.0" style="-fx-background-color: #630000;;">
+         <children>
+            <Label layoutX="544.0" layoutY="18.0" text="Leaderboard" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane layoutX="158.0" layoutY="183.0" prefHeight="727.0" prefWidth="884.0" style="-fx-background-color: #630000; -fx-border-color: #444444; -fx-border-radius: 15; -fx-border-width: 6; -fx-background-radius: 17;">
+         <children>
+            <Button fx:id="backBtn" layoutX="383.0" layoutY="664.0" mnemonicParsing="false" onAction="#backBtnClicked" prefHeight="49.0" prefWidth="119.0" style="-fx-background-color: #b4f49c; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 2; -fx-background-insets: 0;" text="Back">
+               <font>
+                  <Font name="Roboto" size="24.0" />
+               </font>
+            </Button>
+            <Label alignment="CENTER" layoutX="228.0" layoutY="-41.0" prefHeight="82.0" prefWidth="428.0" style="-fx-background-color: #FFE2E2; -fx-background-radius: 17; -fx-border-width: 2; -fx-border-color: #000000; -fx-border-radius: 15;" text="Leaderboard" textFill="#252525">
+               <font>
+                  <Font name="Roboto" size="65.0" />
+               </font>
+               <effect>
+                  <InnerShadow color="#ee7373" height="18.03" radius="8.515" width="18.03" />
+               </effect>
+            </Label>
+            <TableView fx:id="leaderboardTable" layoutX="70.0" layoutY="106.0" prefHeight="530.0" prefWidth="745.0" style="-fx-background-color: #404040;" styleClass="-column-header-background { -fx-background-color:  #404040}">
+              <columns>
+                <TableColumn prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Player" />
+                <TableColumn minWidth="0.0" prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Date" />
+                  <TableColumn prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Result" />
+              </columns>
+            </TableView>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

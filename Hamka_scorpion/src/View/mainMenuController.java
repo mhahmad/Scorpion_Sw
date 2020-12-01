@@ -63,4 +63,22 @@ public class mainMenuController extends Application {
 		st.setScene(scene);
 
     }
+    
+    @FXML
+    void tutorialsBtnClicked(ActionEvent event) throws IOException {
+		Stage st = (Stage)this.tutorialBtn.getScene().getWindow();
+		Parent toLoad = FXMLLoader.load(getClass().getResource("TutorialScreen.fxml"));
+		Scene scene = new Scene(toLoad);
+		st.setScene(scene);
+
+    }
+    
+    @FXML
+    void leaderboardBtnClicked(ActionEvent event) throws IOException {
+		Stage st = (Stage)this.leaderboardBtn.getScene().getWindow();
+		Parent toLoad = FXMLLoader.load(getClass().getResource("LeaderboardScreen.fxml"));
+		Scene scene = new Scene(toLoad);
+		st.setScene(scene);
+
+    }
 }
