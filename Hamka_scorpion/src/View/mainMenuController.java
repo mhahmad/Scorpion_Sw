@@ -81,4 +81,12 @@ public class mainMenuController extends Application {
 		st.setScene(scene);
 
     }
+    
+    @FXML
+    void loadgameBtnClicked(ActionEvent event) throws IOException {
+		Stage st = (Stage)this.loadGameBtn.getScene().getWindow();
+		Parent toLoad = FXMLLoader.load(getClass().getResource("LoadGameScreen.fxml"));
+		Scene scene = new Scene(toLoad);
+		st.setScene(scene);
+    }
 }
