@@ -1,8 +1,8 @@
 package Tests;
 
 import Model.Game;
-import Model.Game.Pair;
-import Model.Game.PlayerTurn;
+import Model.Tile;
+import Model.Color;
 import junit.framework.Assert;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,16 +41,16 @@ class ClassTests {
 	private final PrintStream standardOut = System.out;
 	private final ByteArrayOutputStream outputStreamCaptor = new ByteArrayOutputStream();
 	private Game gm;
-	private Pair expected;
+	private Tile expected;
 	
 	
 	/*
-	 * Initialize a game and a set of pair (Used frequently in a lot of tests.)
+	 * Initialize a game and a set of Tile (Used frequently in a lot of tests.)
 	 */
 	@BeforeEach
 	public void setup() {
 		gm = new Game("P1", "P2");
-		expected =  gm.getPair(1,2);
+		expected =  gm.getTile(1,2);
 	}
 
 	/*
@@ -59,10 +59,10 @@ class ClassTests {
 	 */
 	@Test
 	void testGameGetContent() {
-		//getTileContent when given the pair (1,2) should return 2.
+		//getTileContent when given the Tile (1,2) should return 2.
 		assertTrue(gm.getTileContent(expected)==2);
-		expected = gm.getPair(3,2);
-		//getTileContent when given the pair (3,2) should return 11.
+		expected = gm.getTile(3,2);
+		//getTileContent when given the Tile (3,2) should return 11.
 		assertTrue(gm.getTileContent(expected)==11);
 	}
 	
@@ -72,17 +72,17 @@ class ClassTests {
 	 */
 	@Test
 	void testGetPossibleMovesForBlackSoldier() {
-		Pair pair = gm.getPair(2, 1);
+		Tile Tile = gm.getTile(2, 1);
 		int obj = 1;
 		//getPossibleMovesForBlackSoldier when given obj=1 should return null.
-		assertTrue(gm.getPossibleMovesForBlackSoldier(obj, pair) == null);
+		assertTrue(gm.getPossibleMovesForBlackSoldier(obj, Tile) == null);
 		obj = 2;
-		ArrayList<Pair> moves = new ArrayList<Pair>();
-		moves.add(gm.getPair(3, 0));
-		moves.add(gm.getPair(4, 3));
-		//getPossibleMovesForBlackSoldier when given obj=2 and the (2,1) pair  it should return an arraylist of pairs similar to moves.
-		assertEquals(moves, gm.getPossibleMovesForBlackSoldier(obj, pair));
-	//	assertTrue(gm.getPossibleMovesForBlackSoldier(obj, pair).equals(moves));
+		ArrayList<Tile> moves = new ArrayList<Tile>();
+		moves.add(gm.getTile(3, 0));
+		moves.add(gm.getTile(4, 3));
+		//getPossibleMovesForBlackSoldier when given obj=2 and the (2,1) Tile  it should return an arraylist of Tiles similar to moves.
+		assertEquals(moves, gm.getPossibleMovesForBlackSoldier(obj, Tile));
+	//	assertTrue(gm.getPossibleMovesForBlackSoldier(obj, Tile).equals(moves));
 	}
 	
 	
@@ -92,18 +92,18 @@ class ClassTests {
 	 */
 	@Test
 	void testGetPossibleMovesForWhiteSoldier() {
-		Pair pair = gm.getPair(2, 1);
+		Tile Tile = gm.getTile(2, 1);
 		int obj = 2;
 		//getPossibleMovesForWhiteSoldier when given obj=2 should return null.
-		assertTrue(gm.getPossibleMovesForWhiteSoldier(obj, pair) == null);
+		assertTrue(gm.getPossibleMovesForWhiteSoldier(obj, Tile) == null);
 		obj = 1;
-		pair = gm.getPair(5, 4);
-		ArrayList<Pair> moves = new ArrayList<Pair>();
-		moves.add(gm.getPair(4, 3));
-		moves.add(gm.getPair(4, 5));
-		//getPossibleMovesForWhiteSoldier when given obj=1 and the (5,4) pair  it should return an arraylist of pairs similar to moves.
-		assertEquals(moves, gm.getPossibleMovesForWhiteSoldier(obj, pair));
-	//	assertTrue(gm.getPossibleMovesForWhiteSoldier(obj, pair).equals(moves));
+		Tile = gm.getTile(5, 4);
+		ArrayList<Tile> moves = new ArrayList<Tile>();
+		moves.add(gm.getTile(4, 3));
+		moves.add(gm.getTile(4, 5));
+		//getPossibleMovesForWhiteSoldier when given obj=1 and the (5,4) Tile  it should return an arraylist of Tiles similar to moves.
+		assertEquals(moves, gm.getPossibleMovesForWhiteSoldier(obj, Tile));
+	//	assertTrue(gm.getPossibleMovesForWhiteSoldier(obj, Tile).equals(moves));
 	}
 	
 	
@@ -113,10 +113,10 @@ class ClassTests {
 	 */
 	@Test
 	void testMoveBlackSoldier() {
-		Pair currPos = gm.getPair(2, 1);
-		Pair nextPos = gm.getPair(4, 3);
+		Tile currPos = gm.getTile(2, 1);
+		Tile nextPos = gm.getTile(4, 3);
 		
-		ArrayList<Pair> moves = new ArrayList<Pair>();
+		ArrayList<Tile> moves = new ArrayList<Tile>();
 		moves = gm.getPossibleMovesForBlackSoldier(2, currPos);
 		gm.moveBlackSoldier(currPos, nextPos,moves );
 		
@@ -154,10 +154,10 @@ class ClassTests {
 	 */
 	@Test
 	void testMoveWhiteSoldier() {
-		Pair currPos = gm.getPair(3, 4);
-		Pair nextPos = gm.getPair(2, 3);
+		Tile currPos = gm.getTile(3, 4);
+		Tile nextPos = gm.getTile(2, 3);
 		
-		ArrayList<Pair> moves = new ArrayList<Pair>();
+		ArrayList<Tile> moves = new ArrayList<Tile>();
 		moves = gm.getPossibleMovesForBlackSoldier(1, currPos);
 		gm.moveWhiteSoldier(currPos, nextPos,moves );
 		
@@ -192,8 +192,8 @@ class ClassTests {
 		//Second  test - Test if board and expectedBoard2 are equal.
 		
 		Game gm2 = new Game("P1", "P2");
-		currPos = gm2.getPair(5, 4);
-		nextPos = gm2.getPair(4, 5);
+		currPos = gm2.getTile(5, 4);
+		nextPos = gm2.getTile(4, 5);
 		moves = gm2.getPossibleMovesForWhiteSoldier(1, currPos);
 		gm2.moveWhiteSoldier(currPos, nextPos,moves );
 		
@@ -225,26 +225,26 @@ class ClassTests {
 	@Test
 	void testGetSoldierWithKill() {
 		
-		ArrayList<Pair> kills = new ArrayList<Pair>();
-		kills = gm.getKills(PlayerTurn.Black);
+		ArrayList<Tile> kills = new ArrayList<Tile>();
+		kills = gm.getKills(Color.Black);
 		
-		ArrayList<Pair> expectedKills = new ArrayList<Pair>();
-		expectedKills.add(gm.getPair(4, 5));
-		expectedKills.add(gm.getPair(4, 3));
-		expectedKills.add(gm.getPair(4, 1));
-		expectedKills.add(gm.getPair(4, 3));
+		ArrayList<Tile> expectedKills = new ArrayList<Tile>();
+		expectedKills.add(gm.getTile(4, 5));
+		expectedKills.add(gm.getTile(4, 3));
+		expectedKills.add(gm.getTile(4, 1));
+		expectedKills.add(gm.getTile(4, 3));
 		
 		/*
-		 * We need to check manually if kills contains all pairs in expectedKills and vice versa
+		 * We need to check manually if kills contains all Tiles in expectedKills and vice versa
 		 * Alternatively if we use assertEquals it needs the same order which in turn could lead to failing the test when in fact it is a success.
 		 */
 		boolean flag = true;
-		for (Pair pair : expectedKills) {
-			if(!kills.contains(pair))
+		for (Tile Tile : expectedKills) {
+			if(!kills.contains(Tile))
 				flag =false;
 		}
-		for (Pair pair : kills) {
-			if(!expectedKills.contains(pair))
+		for (Tile Tile : kills) {
+			if(!expectedKills.contains(Tile))
 				flag =false;
 		}
 		assertTrue(flag);
@@ -258,11 +258,11 @@ class ClassTests {
 	@Test
 	void testgetMiddleEnemySoldier() {
 		
-		expected = gm.getPair(3, 2);
-		Pair curr = gm.getPair(2, 1);
-		Pair next = gm.getPair(4, 3);
+		expected = gm.getTile(3, 2);
+		Tile curr = gm.getTile(2, 1);
+		Tile next = gm.getTile(4, 3);
 	
-		Pair actual = gm.getMiddleEnemySoldier(2,curr , next);
+		Tile actual = gm.getMiddleEnemySoldier(2,curr , next);
 		
 		assertEquals(expected, actual);
 	}
@@ -275,7 +275,7 @@ class ClassTests {
 	@Test
 	void testIfKillExists() {
 		
-		Pair curr = gm.getPair(2, 5);
+		Tile curr = gm.getTile(2, 5);
 		assertTrue(gm.ifKillExist(curr, gm.getPossibleMovesForBlackSoldier(2, curr)));
 	}
 	
@@ -287,25 +287,25 @@ class ClassTests {
 	@Test
 	void testGetKillMove() {
 		
-		Pair curr = gm.getPair(2, 3);
-		ArrayList<Pair> expected = new ArrayList<Pair>();
-		ArrayList<Pair> actual = new ArrayList<Pair>();
+		Tile curr = gm.getTile(2, 3);
+		ArrayList<Tile> expected = new ArrayList<Tile>();
+		ArrayList<Tile> actual = new ArrayList<Tile>();
 		actual = gm.getKillMove(gm.getPossibleMovesForBlackSoldier(2, curr), curr);
-		expected.add(gm.getPair(4, 1));
-		expected.add(gm.getPair(4, 5));
+		expected.add(gm.getTile(4, 1));
+		expected.add(gm.getTile(4, 5));
 		
 		/*
 		 * Similiar to testGetSoldierWithKill()
-		 * We need to check manually if actual contains all pairs in expected and vice versa
+		 * We need to check manually if actual contains all Tiles in expected and vice versa
 		 * Alternatively if we use assertEquals it needs the same order which in turn could lead to failing the test when in fact it is a success.
 		 */
 		boolean flag = true;
-		for (Pair pair : expected) {
-			if(!actual.contains(pair))
+		for (Tile Tile : expected) {
+			if(!actual.contains(Tile))
 				flag =false;
 		}
-		for (Pair pair : actual) {
-			if(!expected.contains(pair))
+		for (Tile Tile : actual) {
+			if(!expected.contains(Tile))
 				flag =false;
 		}
 		assertTrue(flag);
@@ -329,7 +329,7 @@ class ClassTests {
 							{1,-1,1,-1,1,-1,1,-1}
 };
 	      gm.setBoard(board);
-	    gm.moveQueen(gm.getContentWithXandY(2, 1), gm.getPair(2, 1), gm.getPair(4, 3), gm.getQueenMoves(gm.getContentWithXandY(2, 1), gm.getPair(2, 1)));
+	    gm.moveQueen(gm.getContentWithXandY(2, 1), gm.getTile(2, 1), gm.getTile(4, 3), gm.getQueenMoves(gm.getContentWithXandY(2, 1), gm.getTile(2, 1)));
 	     boolean flag = true;
 	     int [][] expectedBoard = {{-1,2,-1,2,-1,2,-1,2},
 						  			{2,-1,2,-1,2,-1,2,-1},
@@ -345,7 +345,7 @@ class ClassTests {
 	    		 if(gm.getBoard()[i][j] != expectedBoard[i][j])
 	    			 flag = false;
 	    	 }
-		    gm.moveQueen(gm.getContentWithXandY(4, 3), gm.getPair(4, 3), gm.getPair(3, 2), gm.getQueenMoves(gm.getContentWithXandY(4, 3), gm.getPair(4, 3)));
+		    gm.moveQueen(gm.getContentWithXandY(4, 3), gm.getTile(4, 3), gm.getTile(3, 2), gm.getQueenMoves(gm.getContentWithXandY(4, 3), gm.getTile(4, 3)));
 		    int [][]  expectedBoard2 = {{-1,2,-1,2,-1,2,-1,2},
 							  			{2,-1,2,-1,2,-1,2,-1},
 							  			{-1,0,-1,2,-1,2,-1,2},
@@ -380,11 +380,11 @@ class ClassTests {
 					{1,-1,1,-1,1,-1,1,-1}
 };
 		 gm.setBoard(board);
-			Map<Pair,Pair> map = gm.getQueenMoves(22, gm.getPair(2, 1));
-			assertTrue(map.containsKey(gm.getPair(3, 2)) && map.get(gm.getPair(3, 2)) == null);
-			assertTrue(map.containsKey(gm.getPair(4, 3)) && map.get(gm.getPair(4, 3)) == null);
-			assertTrue(map.containsKey(gm.getPair(3, 0)) && map.get(gm.getPair(3, 0)) == null);
-			assertTrue(map.containsKey(gm.getPair(4,7)) && map.get(gm.getPair(4, 7)) == null);
+			Map<Tile,Tile> map = gm.getQueenMoves(22, gm.getTile(2, 1));
+			assertTrue(map.containsKey(gm.getTile(3, 2)) && map.get(gm.getTile(3, 2)) == null);
+			assertTrue(map.containsKey(gm.getTile(4, 3)) && map.get(gm.getTile(4, 3)) == null);
+			assertTrue(map.containsKey(gm.getTile(3, 0)) && map.get(gm.getTile(3, 0)) == null);
+			assertTrue(map.containsKey(gm.getTile(4,7)) && map.get(gm.getTile(4, 7)) == null);
 
 
 	}
@@ -406,8 +406,8 @@ class ClassTests {
 					{1,-1,1,-1,1,-1,1,-1}
 };
 		 gm.setBoard(board);
-		HashMap<Pair,Pair> arr = gm.getQueenCrossBoardMoves(22,gm.getPair(2, 1),gm.getQueenMoves(22, gm.getPair(2,1)));
-		assertTrue(arr.containsKey(gm.getPair(4,7)) && arr.get(gm.getPair(4, 7)) == null);
+		HashMap<Tile,Tile> arr = gm.getQueenCrossBoardMoves(22,gm.getTile(2, 1),gm.getQueenMoves(22, gm.getTile(2,1)));
+		assertTrue(arr.containsKey(gm.getTile(4,7)) && arr.get(gm.getTile(4, 7)) == null);
 		assertTrue(!arr.isEmpty());
 
 	}

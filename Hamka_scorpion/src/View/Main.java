@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Scanner;
 import Model.Game;
 import Model.StopWatch;
-import Model.Game.PlayerTurn;
+import Model.Color;
 import Model.Game;
 
 
@@ -19,15 +19,15 @@ public class Main  {
 //		SysData.getInstance().writeWinnersIntoFile();
 //		SysData.getInstance().addWinnerToLeaderboard(w1);
 //		Game game = new Game("PL","SS");
-//		game.getPossibleMovesForWhiteSoldier(1, game.getPair(2, 1));
-//		game.moveBlackSoldier(game.getPair(4, 3), game.getPair(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getPair(4,3)));
+//		game.getPossibleMovesForWhiteSoldier(1, game.getTile(2, 1));
+//		game.moveBlackSoldier(game.getTile(4, 3), game.getTile(6, 1), game.getPossibleMovesForBlackSoldier(game.getContentWithXandY(4,3), game.getTile(4,3)));
 //		System.out.println(game.getblackPlayerSoldiers());
 //		System.out.println(game.generateYellowTiles());
-//		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getPair(4, 3));
-//		boolean leg = game.checkIfLegalPosition(1, game.getPair(4, 3));
+//		game.getQueenBiasMoves(game.getContentWithXandY(4, 3), game.getTile(4, 3));
+//		boolean leg = game.checkIfLegalPosition(1, game.getTile(4, 3));
 //		System.out.println(leg);
-//		game.getBiasMovesQueen(game.getContentWithXandY(2, 5), game.getPair(2, 5));
-//		game.getQueenMoves(game.getContentWithXandY(2, 5), game.getPair(2, 5));
+//		game.getBiasMovesQueen(game.getContentWithXandY(2, 5), game.getTile(2, 5));
+//		game.getQueenMoves(game.getContentWithXandY(2, 5), game.getTile(2, 5));
 		Scanner scan = new Scanner(System.in);
 		System.out.println("Enter first name : ");
 		String firstP = scan.nextLine();
@@ -41,7 +41,7 @@ public class Main  {
 		System.out.println(" -1 is a white Tile .");
 		while(!game.isGameOver()) {
 			game.printBoard();
-			if(game.getTurn().equals(PlayerTurn.Black)) {
+			if(game.getTurn().equals(Color.Black)) {
 				sw.start();
 				sw2.start();
 				System.out.println("It's black turn");
@@ -66,9 +66,9 @@ public class Main  {
 					w = scan.nextInt();
 				}
 				if(game.getContentWithXandY(x, y) == 2) {
-					game.moveBlackSoldier(game.getPair(x, y), game.getPair(z, w), game.getPossibleMovesForBlackSoldier(2, game.getPair(x, y)));
+					game.moveBlackSoldier(game.getTile(x, y), game.getTile(z, w), game.getPossibleMovesForBlackSoldier(2, game.getTile(x, y)));
 				}else {
-					game.moveQueen(22, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(22, game.getPair(x, y)));
+					game.moveQueen(22, game.getTile(x, y), game.getTile(z, w), game.getQueenMoves(22, game.getTile(x, y)));
 				}
 				sw.stop();
 				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000  + " Seconds");
@@ -97,9 +97,9 @@ public class Main  {
 					w = scan.nextInt();
 				}
 				if(game.getContentWithXandY(x, y) == 1) {
-					game.moveWhiteSoldier(game.getPair(x, y), game.getPair(z, w), game.getPossibleMovesForWhiteSoldier(1, game.getPair(x, y)));
+					game.moveWhiteSoldier(game.getTile(x, y), game.getTile(z, w), game.getPossibleMovesForWhiteSoldier(1, game.getTile(x, y)));
 				}else {
-					game.moveQueen(11, game.getPair(x, y), game.getPair(z, w), game.getQueenMoves(11, game.getPair(x, y)));
+					game.moveQueen(11, game.getTile(x, y), game.getTile(z, w), game.getQueenMoves(11, game.getTile(x, y)));
 				}
 				sw.stop();
 				System.out.println("Your turn took: " + (System.currentTimeMillis() - sw.startTime) / 1000 + " Seconds");
