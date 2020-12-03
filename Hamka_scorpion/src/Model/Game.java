@@ -10,6 +10,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game {
+	
+	// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+		private int DeleteMe = 5 ; 
+		 
+		
 	private static int gameID;
 	private String whitePlayer;
 	private String blackPlayer;
