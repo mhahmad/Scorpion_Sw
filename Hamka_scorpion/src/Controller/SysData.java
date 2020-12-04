@@ -11,7 +11,7 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
-
+import Model.Color;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -356,12 +356,12 @@ public class SysData {
 	 * 
 	 * @return which player in turn in saved game.
 	 */
-	public Game.PlayerTurn getTurn() {
+	public Color getTurn() {
 		String arr[] = loadBoardText();
 		if(arr[arr.length-1].equals('B')) {
-			return Game.PlayerTurn.Black;
+			return Color.Black;
 		}
-		return Game.PlayerTurn.White;
+		return Color.White;
 	}
 	
 }

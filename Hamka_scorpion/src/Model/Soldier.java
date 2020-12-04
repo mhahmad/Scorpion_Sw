@@ -2,24 +2,29 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.Game.Pair;
+import Model.Tile;
 
 public class Soldier {
 
-	private int soldierNumber;
-	private int x;
-	private int y;
-	private ArrayList<Soldier> possibleKills;
-	private ArrayList<Pair> possibleMoves;
+	protected int soldierNumber;
+    protected Tile position ;
+    protected Color color; 
+	public Color getColor() {
+		return color;
+	}
+	public void setColor(Color color) {
+		this.color = color;
+	}
+	protected ArrayList<Soldier> possibleKills;
+	protected ArrayList<Tile> possibleMoves;
 	
 	
-	public Soldier(int soldierNumber, int x, int y) {
+	public Soldier(int soldierNumber,Tile position) {
 		super();
 		this.soldierNumber = soldierNumber;
-		this.x = x;
-		this.y = y;
+		this.position = position;
 		this.possibleKills = new ArrayList<Soldier>();
-		this.possibleMoves = new ArrayList<Pair>();
+		this.possibleMoves = new ArrayList<Tile>();
 	}
 	public int getSoldierNumber() {
 		return soldierNumber;
@@ -27,17 +32,22 @@ public class Soldier {
 	public void setSoldierNumber(int soldierNumber) {
 		this.soldierNumber = soldierNumber;
 	}
-	public int getX() {
-		return x;
+
+	public Tile getPosition() {
+		return position;
 	}
-	public void setX(int x) {
-		this.x = x;
+	public void setPosition(Tile position) {
+		this.position = position;
 	}
-	public int getY() {
-		return y;
+	public void setPosition(int x , int y) {
+		Tile pos = new Tile(x,y);
+		this.position = pos;
 	}
-	public void setY(int y) {
-		this.y = y;
+	public ArrayList<Soldier> getPossibleKills() {
+		return possibleKills;
+	}
+	public void setPossibleKills(ArrayList<Soldier> possibleKills) {
+		this.possibleKills = possibleKills;
 	}
 	public ArrayList<Soldier> getKills() {
 		return possibleKills;
@@ -45,12 +55,14 @@ public class Soldier {
 	public void setKills(ArrayList<Soldier> kills) {
 		this.possibleKills = kills;
 	}
-	public ArrayList<Pair> getPossibleMoves() {
+	public ArrayList<Tile> getPossibleMoves() {
 		return possibleMoves;
 	}
-	public void setPossibleMoves(ArrayList<Pair> possibleMoves) {
+	public void setPossibleMoves(ArrayList<Tile> possibleMoves) {
 		this.possibleMoves = possibleMoves;
 	}
+	
+	
 	
 	
 }
