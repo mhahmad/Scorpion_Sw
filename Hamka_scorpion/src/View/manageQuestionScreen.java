@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import javax.print.DocFlavor.URL;
 
 import Controller.SysData;
+import Model.Level;
 import Model.Question;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
@@ -21,8 +22,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -103,6 +106,31 @@ public class manageQuestionScreen extends Application implements Initializable {
 	        	);
 	        
 	        
+	        
+	        
+	        // intialzing the table View 
+	        
+	        // Content Column
+	        TableColumn<Question, String> ContentColumn = new TableColumn<>(" Content ");
+	        ContentColumn.setMinWidth(-1);
+	        ContentColumn.setPrefWidth(-1);
+	        ContentColumn.setCellValueFactory(new PropertyValueFactory<>("content")); 
+	        
+	        //Level
+	        TableColumn<Question, Level> LevelColumn = new TableColumn<>(" Level ");
+	        LevelColumn.setMinWidth(-1);
+	        LevelColumn.setPrefWidth(-1);
+	        LevelColumn.setCellValueFactory(new PropertyValueFactory<>("level")); 
+	        
+	      //rightAnswer
+	        TableColumn<Question, String> rightAnswerColumn = new TableColumn<>(" rightAnswer ");
+	        rightAnswerColumn.setMinWidth(-1);
+	        rightAnswerColumn.setPrefWidth(-1);
+	        rightAnswerColumn.setCellValueFactory(new PropertyValueFactory<>("rightAnswer")); 
+	        
+	        
+	        
+	        this.quesTable.getColumns().addAll(ContentColumn,LevelColumn,rightAnswerColumn) ;
 	}
  
 	@Override
