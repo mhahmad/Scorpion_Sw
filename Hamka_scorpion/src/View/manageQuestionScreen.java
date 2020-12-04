@@ -15,6 +15,7 @@ import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -26,6 +27,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -74,8 +77,10 @@ public class manageQuestionScreen extends Application implements Initializable {
     private ComboBox<String> combo ;
     @FXML
     private ComboBox<String> levelCombo;
-
+    @FXML
+    private TableColumn<Question, String> questionCol;
    
+	@SuppressWarnings("unchecked")
 	@Override
 	public void initialize(java.net.URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
@@ -104,40 +109,25 @@ public class manageQuestionScreen extends Application implements Initializable {
 	        	    .or(Bindings.isNull(combo.valueProperty()))
 	        	    .or(Bindings.isNull(levelCombo.valueProperty()))
 	        	);
+
+	        // intializing the table View 
 	        
+	        this.questionCol.setCellValueFactory(new PropertyValueFactory<>("content"));
+
+	        this.quesTable.setItems(getQuestions());
 	        
-	        
-	        
-	        // intialzing the table View 
-	        
-	        // Content Column
-	        TableColumn<Question, String> ContentColumn = new TableColumn<>(" Content ");
-	        ContentColumn.setMinWidth(-1);
-	        ContentColumn.setPrefWidth(-1);
-	        ContentColumn.setCellValueFactory(new PropertyValueFactory<>("content")); 
-	        
-	        //Level
-	        TableColumn<Question, Level> LevelColumn = new TableColumn<>(" Level ");
-	        LevelColumn.setMinWidth(-1);
-	        LevelColumn.setPrefWidth(-1);
-	        LevelColumn.setCellValueFactory(new PropertyValueFactory<>("level")); 
-	        
-	      //rightAnswer
-	        TableColumn<Question, String> rightAnswerColumn = new TableColumn<>(" rightAnswer ");
-	        rightAnswerColumn.setMinWidth(-1);
-	        rightAnswerColumn.setPrefWidth(-1);
-	        rightAnswerColumn.setCellValueFactory(new PropertyValueFactory<>("rightAnswer")); 
-	        
-	        
-	        
-	        this.quesTable.getColumns().addAll(ContentColumn,LevelColumn,rightAnswerColumn) ;
+	        this.quesTable.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                	editBtn.setDisable(false);
+                	removeBtn.setDisable(false);
+                }
+            });
 	}
  
 	@Override
 	public void start(Stage stage) throws Exception {
-		// TODO Auto-generated method stub
-		
-       
+		// TODO Auto-generated method stub   
 		Parent root = FXMLLoader.load(getClass().getResource("ManageQuestionScreen.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
@@ -149,7 +139,6 @@ public class manageQuestionScreen extends Application implements Initializable {
 	
 	public static void main(String[] arg) {
 		launch(arg);
-		
 	}
 	
 	
@@ -174,6 +163,19 @@ public class manageQuestionScreen extends Application implements Initializable {
 			this.editBtn.setDisable(true);
 			this.innerPanel.setVisible(true);
 			this.removeBtn.setDisable(true);
+			String ind = "0";
+			Question question = this.quesTable.getSelectionModel().getSelectedItem();
+			this.quesField.setText(question.getContent());
+			this.ans1Field.setText(question.getAnswers().get(0));
+			this.ans2Field.setText(question.getAnswers().get(1));
+			this.ans3Field.setText(question.getAnswers().get(2));
+			this.ans4Field.setText(question.getAnswers().get(3));
+			for(int i=0 ; i < question.getAnswers().size() ; i++)
+				if(question.getAnswers().get(i).equals(question.getRightAnswer()))
+					ind = Integer.toString(1+i);
+			
+			this.combo.setValue(ind);
+			this.levelCombo.setValue(question.getLevelNumber());
 	    }
 	@FXML
 	   public void addBtnClicked(ActionEvent event) throws IOException {
@@ -184,15 +186,27 @@ public class manageQuestionScreen extends Application implements Initializable {
 	
 	@FXML
 	public void innerBtnClicked(ActionEvent event) throws IOException{
+		String rightAnswer = "";
 		ArrayList<String> answers = new ArrayList<>();
 		answers.add(this.ans1Field.getText());
 		answers.add(this.ans2Field.getText());
 		answers.add(this.ans3Field.getText());
 		answers.add(this.ans4Field.getText());
-		System.out.println(this.levelCombo.getSelectionModel().getSelectedItem());
-		System.out.println(this.levelCombo.getValue());
-		Question ques = new Question(this.quesField.getText(),this.levelCombo.getSelectionModel().getSelectedItem(),answers,this.combo.getSelectionModel().getSelectedItem());
+		rightAnswer = answers.get((Integer.parseInt(this.combo.getSelectionModel().getSelectedItem())-1));
+		Question ques = new Question(this.quesField.getText(),this.levelCombo.getSelectionModel().getSelectedItem(),answers,rightAnswer);
 		quesTable.getItems().add(ques);
+		this.ans1Field.clear();
+		this.ans2Field.clear();
+		this.ans3Field.clear();
+		this.ans4Field.clear();
+		this.quesField.clear();
+		this.combo.getSelectionModel().clearSelection();
+		this.levelCombo.getSelectionModel().clearSelection();;
+		this.innerPanel.setVisible(false);
+		this.addBtn.setDisable(false);
+		if(SysData.getInstance().addQuestion(ques))
+			SysData.getInstance().writeQuestionsToJson();
+
 	}
 	
 	@FXML
@@ -209,6 +223,7 @@ public class manageQuestionScreen extends Application implements Initializable {
 	public ObservableList<Question> getQuestions(){
 		ObservableList<Question> questions = FXCollections.observableArrayList();
 		questions.addAll(SysData.getInstance().getQuestions());
+		System.out.println(questions);
 		return questions;
 	}
 

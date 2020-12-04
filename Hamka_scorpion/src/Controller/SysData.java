@@ -58,6 +58,8 @@ public class SysData {
 	}
 	
 	public ArrayList<Question> getQuestions(){
+		questionList.clear();
+		readQuestionsFromJson();
 		return questionList;
 	}
 	
@@ -80,7 +82,7 @@ public class SysData {
 		if(question == null || content.equals(""))
 			return false;
 		else {
-			question.setQuestion(content);
+			question.setContent(content);
 			return true;
 		}
 	}
@@ -204,7 +206,7 @@ public class SysData {
 		JSONArray questionsList = new JSONArray();
 		for(Question que : this.questionList) {
 			JSONObject questionDetails = new JSONObject();
-			questionDetails.put("question", que.getQuestion());
+			questionDetails.put("question", que.getContent());
 			questionDetails.put("answers", que.getAnswers());
 			questionDetails.put("correct_ans",que.getAnswers().indexOf(que.getRightAnswer())+1);
 			
@@ -221,7 +223,7 @@ public class SysData {
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("questions", questionsList);
-		FileWriter file = new FileWriter("questionList.json");
+		FileWriter file = new FileWriter("Questions.json");
 		file.write(obj.toJSONString());
 		file.flush();
 		

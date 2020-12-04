@@ -37,10 +37,9 @@
                </font>
             </Button>
             <TableView fx:id="quesTable" layoutX="85.0" layoutY="51.0" prefHeight="224.0" prefWidth="997.0" style="-fx-background-color: #C0C0C0;">
-              <columns>
-                <TableColumn prefWidth="995.0" style="-fx-background-color: #FFB266;" text="Question" />
-              </columns>
-            </TableView>
+               <columns>
+                  <TableColumn fx:id="questionCol" prefWidth="996.0" text="Question" />
+               </columns></TableView>
             <Label alignment="CENTER" layoutX="383.0" layoutY="-23.0" prefHeight="58.0" prefWidth="442.0" style="-fx-background-color: #FFE2E2; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-radius: 15;" text="Question Management">
                <font>
                   <Font name="Roboto" size="40.0" />
