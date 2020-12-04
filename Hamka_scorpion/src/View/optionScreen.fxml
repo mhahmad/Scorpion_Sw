@@ -36,7 +36,7 @@
                   <InnerShadow />
                </effect>
             </Label>
-            <Button fx:id="mngQuesBtn" layoutX="185.0" layoutY="141.0" mnemonicParsing="false" prefHeight="65.0" prefWidth="295.0" style="-fx-background-color: #F1B237; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 2; -fx-background-insets: 0;" text="Manage Questions">
+            <Button fx:id="mngQuesBtn" layoutX="185.0" layoutY="141.0" mnemonicParsing="false" onAction="#manageQuestionClicked" prefHeight="65.0" prefWidth="295.0" style="-fx-background-color: #F1B237; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-radius: 15; -fx-border-width: 2; -fx-background-insets: 0;" text="Manage Questions">
                <font>
                   <Font name="Roboto" size="28.0" />
                </font>
