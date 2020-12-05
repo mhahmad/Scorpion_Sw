@@ -662,7 +662,6 @@ public class Game {
 				}else {
 					Tile middleEnemySoldierTile = getMiddleEnemySoldier(solWithKillStreak, nextMove);
 					Soldier middleEnemySoldier = board.getSoldier(middleEnemySoldierTile);
-					System.out.println("mes "+middleEnemySoldierTile);
 					if(isTileInFrame(nextMove) && middleEnemySoldier!=null && getTileContent(nextMove)==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
 						board.removeSoldier(middleEnemySoldier, middleEnemySoldierTile);
 						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
@@ -735,10 +734,7 @@ public class Game {
 	  * @return
 	  *///int color ,Tile current 
 	 public Tile getMiddleEnemySoldier(Soldier s , Tile next) {
-		 int color = s.getSoldierNumber();
 		 Tile current=board.getTileOfSoldier(s);
-		// System.out.println(next);
-		// System.out.println(s.getPosition());
 		 if(current.getX()+2 == next.getX() && current.getY()+2 ==next.getY()) 
 			 return new Tile(current.getX()+1,current.getY()+1);
 		 if(current.getX()+2==next.getX() && current.getY()-2 == next.getY())
@@ -747,7 +743,6 @@ public class Game {
 			 return new Tile(current.getX()-1,current.getY()+1);
 		 if(current.getX()-2==next.getX() && current.getY()-2 == next.getY())
 			 return new Tile(current.getX()-1,current.getY()-1);
-
 		 return null;
 	 }
 	 
@@ -963,7 +958,7 @@ public class Game {
 					System.out.println(counter);
 					return false;
 				}
-				if(getTileContent(new Tile(i, j)) == null) counter ++;//System.out.println(counter);
+				if(getTileContent(new Tile(i, j)) == null) counter ++;
 			}
 			   it++;
 		}
