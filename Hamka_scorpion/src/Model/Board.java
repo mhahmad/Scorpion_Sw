@@ -95,8 +95,8 @@ public class Board {
 		s.setPosition(t);
 		tilesBySoldiers.put(s, t);
 		board[t.getX()][t.getY()] = s.getSoldierNumber();
-		//System.out.println("this "+board[t.getX()][t.getY()]);
 	}
+	
 	public void removeSoldier(Soldier s,Tile t) {
 		soldiersByTiles.put(t, null);
 		tilesBySoldiers.remove(s);

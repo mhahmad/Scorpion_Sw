@@ -662,7 +662,7 @@ public class Game {
 				}else {
 					Tile middleEnemySoldierTile = getMiddleEnemySoldier(solWithKillStreak, nextMove);
 					Soldier middleEnemySoldier = board.getSoldier(middleEnemySoldierTile);
-					System.out.println(middleEnemySoldierTile);
+					System.out.println(middleEnemySoldierTile + " SDSSD ");
 					if(isTileInFrame(nextMove) && middleEnemySoldier!=null && getTileContent(nextMove)==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
 						board.removeSoldier(middleEnemySoldier, middleEnemySoldierTile);
 						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
@@ -735,31 +735,15 @@ public class Game {
 	  * @return
 	  *///int color ,Tile current 
 	 public Tile getMiddleEnemySoldier(Soldier s , Tile next) {
-		 int color = s.getSoldierNumber();
 		 Tile current=board.getTileOfSoldier(s);
-		 System.out.println(next);
-		 System.out.println(s.getPosition());
-		 if(color == 1 || color == 11) {
-			 if(next.getY() - 2 == current.getY() && next.getX() - 2 == current.getX())
-				 return  new Tile(next.getX() + 1,next.getY() - 1);
-			  if(next.getY() + 2 == current.getY() && next.getX() - 2 == current.getX())
-				 return new Tile(next.getX() + 1,next.getY() + 1);
-			  if(next.getY() - 2 == current.getY() && next.getX() + 2 == current.getX())
-				  return new Tile(next.getX() - 1,next.getY() - 1);
-			  if(next.getY() + 2 == current.getY() && next.getX() + 2 == current.getX())
-				  return new Tile(next.getX() - 1,next.getY() + 1);
-		 }else if(color==2 || color==22) {
-			 if(next.getY() - 2 == current.getY() && next.getX() + 2 == current.getX()) 
-				 return new Tile(next.getX() - 1,next.getY() + 1);
-			  if(next.getY() + 2 == current.getY() && next.getX() + 2 == current.getX()) 
-				 return new Tile(next.getX() - 1 , next.getY() - 1);}
-		 	if(next.getY() - 2 == current.getY() && next.getX() - 2 == current.getX()) 
-			 return new Tile(next.getX() + 1 , next.getY() + 1);
-			  if(next.getY() + 2 == current.getY() && next.getX() - 2 == current.getX()) 
-			 return new Tile(next.getX() + 1 , next.getY() - 1);
-
-
-		 	
+		 if(current.getX()+2 == next.getX() && current.getY()+2 ==next.getY()) 
+             return new Tile(current.getX()+1,current.getY()+1);
+         if(current.getX()+2==next.getX() && current.getY()-2 == next.getY())
+             return new Tile(current.getX()+1,current.getY()-1);
+         if(current.getX()-2==next.getX() && current.getY()+2 == next.getY())
+             return new Tile(current.getX()-1,current.getY()+1);
+         if(current.getX()-2==next.getX() && current.getY()-2 == next.getY())
+             return new Tile(current.getX()-1,current.getY()-1);	 	
 		 return null;
 	 }
 	 
