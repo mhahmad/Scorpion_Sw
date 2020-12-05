@@ -1,9 +1,13 @@
 package View;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 import Model.Game;
+import Model.Queen;
+import Model.Soldier;
 import Model.StopWatch;
+import Model.Tile;
 import Model.Color;
 import Model.Game;
 
@@ -28,7 +32,7 @@ public class Main  {
 //		System.out.println(leg);
 //		game.getBiasMovesQueen(game.getContentWithXandY(2, 5), game.getTile(2, 5));
 //		game.getQueenMoves(game.getContentWithXandY(2, 5), game.getTile(2, 5));
-		Scanner scan = new Scanner(System.in);
+		/*Scanner scan = new Scanner(System.in);
 		System.out.println("Enter first name : ");
 		String firstP = scan.nextLine();
 		System.out.println("Enter second name : ");
@@ -110,7 +114,26 @@ public class Main  {
 		sw.stop();
 		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
 		sw2.stop();
-		System.out.println("The winner is : " + game.winner());
+		System.out.println("The winner is : " + game.winner());*/
+		int[][] board = {{-1,2,-1,2,-1,2,-1,2},
+			          	 {2,-1,2,-1,2,-1,2,-1},
+			        	 {-1,0,-1,2,-1,2,-1,2},
+		          		 {2,-1,1,-1,1,-1,0,-1},
+				         {-1,0,-1,0,-1,0,-1,1},
+				         {1,-1,1,-1,1,-1,0,-1},
+				         {-1,0,-1,1,-1,1,-1,1},
+				         {1,-1,1,-1,1,-1,1,-1}
+};
+	Game g = new Game("M","A",board);
+;
 	
+	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
+	ArrayList<Tile> moves = g.getPossibleMovesForBlackSoldier(g.getTileContent(new Tile(2,5)));
+
+	Soldier s = g.getTileContent(new Tile(2,5));
+	Tile next = new Tile(4,3);
+	g.moveBlackSoldier(s, next ,moves);
+		System.out.println(g.getKillStreak(s));
+	g.moveStreak(s, g.getTileContent(new Tile(3,0)), new Tile(3,1));
 	}
 }

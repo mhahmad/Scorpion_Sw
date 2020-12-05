@@ -10,11 +10,6 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game {
-	
-	// aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-		private int DeleteMe = 5 ; 
-		 
-		
 	private static int gameID;
 	private String whitePlayer;
 	private String blackPlayer;
@@ -29,7 +24,9 @@ public class Game {
 	private String date;
 	public int seconds = 0;
 	private Tile[] yellowPanels;
-	private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
+	private Board board;
+//	private int[][] gameBoard = board.getBoard();
+	/*private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 							{2,-1,2,-1,2,-1,2,-1},
 							{-1,2,-1,2,-1,2,-1,2},
 							{0,-1,0,-1,0,-1,0,-1},
@@ -37,10 +34,10 @@ public class Game {
 							{1,-1,1,-1,1,-1,1,-1},
 							{-1,1,-1,1,-1,1,-1,1},
 							{1,-1,1,-1,1,-1,1,-1}
-};
+};*/
 	Color turn;
 	
-	public Game(String whitePlayer , String blackPlayer) {
+	public Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.whitePlayerPoints = 0;
@@ -50,6 +47,8 @@ public class Game {
 		this.blackPlayerSoldiers = 12;
 		// Time is needed here
 		turn = Color.Black;
+		
+		board = new Board(gameBoard);
 		
 	}
 
@@ -149,14 +148,7 @@ public class Game {
 	}
 
 
-	public int[][] getBoard() {
-		return board;
-	}
 
-
-	public void setBoard(int[][] board) {
-		this.board = board;
-	}
 
 	public Color getTurn() {
 		return this.turn;
@@ -164,7 +156,9 @@ public class Game {
 	
 	
 		
-	
+	 public Tile getTile(int x,int y) {
+		 return new Tile(x,y);
+	 }
 	 /**
 	  * This method changes the turn when a player hands over the turn to the other player.
 	  * 
@@ -183,39 +177,104 @@ public class Game {
 	  * @param y column
 	  * @return the content (0/1/2/11/22)
 	  */
-	 public int getContentWithXandY(int x , int y) {
-		 return getTileContent(new Tile(x,y));
-	 }
-	 /**
-	  * 
-	  * @param x row
-	  * @param y column
-	  * @return generates Tile object from x and y
-	  */
-	 public Tile getTile(int x,int y) {
-		 return new Tile(x,y);
-	 }
+
 	 /***
-	  * return what insided the tile (empty ? , soldier ? , queen ? )
+	  * return what soldier
 	  * @param x
 	  * @param y
 	  * @return
 	  */
-	 public int getTileContent(Tile Tile) {
-		 if(Tile.x >=0 && Tile.x <= 7 && Tile.y >=0 && Tile.y <=7)
-			 return this.getBoard()[Tile.x][Tile.y];
-		 return -2;
+	 public Soldier getTileContent(Tile tile) {
+		 if(board.getSoldier(tile)== null) {
+			 return null;
+		 }
+		 return board.getSoldier(tile);
 	 }
 	 
 	 
 	 /*****************************  Code Regarding Moves ***************************\
+	 
+	 
+	 
+	  /***
+	  * This method gets the possible moves for the white soldier and return them in an array
+	  * @param obj
+	  * @param Tile
+	  * @return
+	  */
+	 public ArrayList<Tile> getPossibleMovesForBlackSoldier(Soldier s) {
+		 ArrayList<Tile> possibleMoves = new ArrayList<Tile>();
+		 if(s.getColor() != Color.Black && s.getSoldierNumber()!=1 || board.getTileOfSoldier(s)==null)
+			 return null;
+		 else {
+			 Tile t = s.getPosition();
+			/* if(s.getSoldierNumber()!=2) {
+				 System.out.println("the number of soldier"+"["+t.getX()+","+t.getY() + "] is: " + s.getSoldierNumber());
+				 return null;
+			 }*/
+			 int x = t.getX();
+			 int y = t.getY();
+			 if(y == 0 && x < 7 ) { // column =0 and row 1-6
+				if( board.getSoldier(new Tile(x+1,y+1)) == null) {
+					possibleMoves.add(new Tile(x+1,y+1));
+					 //System.out.println(TileMoves);
+					 return possibleMoves;
+				}
+				else if ((board.getSoldier(new Tile(x+1,y+1)).getSoldierNumber() == 1 || board.getSoldier(new Tile(x+1,y+1)).getSoldierNumber()== 11) && isTileInFrame(new Tile(x+2,y+2)) && board.getSoldier(new Tile(x  + 2 , y + 2)) == null && x <6 ) { //if eat is possible and row 1-5
+					possibleMoves.add(new Tile(x + 2, y + 2));
+						// System.out.println(TileMoves);
+						return possibleMoves;
+				}
+			 }else if(y == 7 && x < 7 ) { // if column =7 and row 0-6
+				 if(board.getSoldier(new Tile(x + 1,y - 1)) == null) { // move possible
+					 possibleMoves.add(new Tile(x+1,y-1));
+					// System.out.println(TileMoves);
+
+					 return possibleMoves;
+				 }else if ((board.getSoldier(new Tile(x+1,y-1)).getSoldierNumber() == 1 || board.getSoldier(new Tile(x+1,y-1)).getSoldierNumber() ==11)  && x <6 && isTileInFrame(new Tile(x+2,y-2))&& board.getSoldier(new Tile(x + 2,y - 2)) == null) {//if eat possible and row 1-5
+					 possibleMoves.add(new Tile(x + 2, y - 2));
+					// System.out.println(TileMoves);
+					 return possibleMoves;
+				 }
+			 }else if (x <7 && y>0 && y<7 ) {  
+				 if(board.getSoldier(new Tile(x + 1, y - 1)) == null || board.getSoldier(new Tile(x + 1,y + 1)) == null) {// row 1-6 and column 1-6 and move possible
+					 if(board.getSoldier(new Tile(x + 1, y - 1)) == null )
+						 possibleMoves.add(new Tile(x + 1, y -1 ));
+					 if(board.getSoldier(new Tile(x + 1,y + 1)) == null)
+						 possibleMoves.add(new Tile(x + 1, y + 1 ));
+				 }
+				 if (x < 6 ) { // row 0-5 and column 2-5 
+					 if(board.getSoldier(new Tile(x+1,y+1)) != null) {
+						 if(y<6  &&(board.getSoldier(new Tile(x+1,y+1)).getSoldierNumber() == 1 || board.getSoldier(new Tile(x+1,y+1)).getSoldierNumber() ==11)&& isTileInFrame(new Tile(x+2,y+2)) && board.getSoldier(new Tile(x + 2,y + 2)) == null) //if eat to the right possible
+							 possibleMoves.add(new Tile(x + 2,y + 2));
+					 }
+					if(getTileContent(new Tile(x+1,y-1))!=null) {
+						 if(y>1 && (getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == 1 || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() ==11) && isTileInFrame(new Tile(x+2,y-2)) && board.getSoldier(new Tile(x + 2 , y - 2)) == null) // if eat to the left possible
+							 possibleMoves.add(new Tile(x + 2,y - 2));
+					}		
+			 }
+				 //System.out.println(TileMoves);
+
+				 return possibleMoves;
+		 }}
+		 return null;
+		 
+	 }
+	 
+	 
+	 public boolean isTileInFrame(Tile tile) {
+		 if(tile.getX() > 7 ||tile.getX()<0 || tile.getY()>7 || tile.getY()<0) {
+			 return false;
+		 }
+		return true;
+	 }
 	 
 	 /***
 	  * This method gets the possible moves for the white soldier and return them in an array
 	  * @param obj
 	  * @param Tile
 	  * @return
-	  */
+	  
 	 public ArrayList<Tile> getPossibleMovesForBlackSoldier( int obj , Tile Tile) {
 		 ArrayList<Tile> TileMoves = new ArrayList<Tile>();
 		 if(obj != 2)
@@ -263,7 +322,7 @@ public class Game {
 		 }}
 		 return null;
 		 
-	 }
+	 }*/
 	 
 	 
 	 /***
@@ -272,45 +331,52 @@ public class Game {
 	  * @param Tile
 	  * @return
 	  */
-	 public ArrayList<Tile> getPossibleMovesForWhiteSoldier(int obj , Tile Tile) {
-		 ArrayList<Tile> TileMoves = new ArrayList<Tile>();
-		 if(obj != 1)
+	 public ArrayList<Tile> getPossibleMovesForWhiteSoldier(Soldier s) {
+		 ArrayList<Tile> possibleMoves = new ArrayList<Tile>();
+		 if(s.getColor()!=Color.White && s.getSoldierNumber() != 1)
 			 return null;
 		 else {
-			 if(Tile.y == 0 && Tile.x > 0 ) { // row 1-7 and col 0
-				if( getTileContent(new Tile(Tile.x-1,Tile.y+1)) == 0) { // if move possible
-					 TileMoves.add(new Tile(Tile.x-1,Tile.y+1));
-					 System.out.println(TileMoves);
-					 return TileMoves;
+			 Tile t = s.getPosition();
+			 int x = t.getX();
+			 int y = t.getY();
+			 if(y == 0 && x > 0 ) { // row 1-7 and col 0
+				if( getTileContent(new Tile(x-1,y+1)) == null) { // if move possible
+					possibleMoves.add(new Tile(x-1,y+1));
+					 System.out.println(possibleMoves);
+					 return possibleMoves;
 				}
-				else if ((getTileContent(new Tile(Tile.x-1,Tile.y+1)) == 2 || getTileContent(new Tile(Tile.x-1,Tile.y+1)) ==22 ) && getTileContent(new Tile(Tile.x  - 2 , Tile.y + 2)) == 0 && Tile.x>1 ) { // if eat possible and row 2-7
-						TileMoves.add(new Tile(Tile.x - 2, Tile.y + 2));
-						 System.out.println(TileMoves);
-						return TileMoves;
+				else if ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() ==22 ) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x  - 2 , y + 2)) == null && x>1 ) { // if eat possible and row 2-7
+					possibleMoves.add(new Tile(x - 2, y + 2));
+						 System.out.println(possibleMoves);
+						return possibleMoves;
 				}
-			 }else if(Tile.y == 7 && Tile.x >0 ) {
-				 if(getTileContent(new Tile(Tile.x - 1,Tile.y - 1)) == 0) {
-					 TileMoves.add(new Tile(Tile.x-1,Tile.y-1));
-					 return TileMoves;
-				 }else if ((getTileContent(new Tile(Tile.x-1,Tile.y-1)) == 2 || getTileContent(new Tile(Tile.x-1,Tile.y-1)) ==22 )  && Tile.x-1 != 0 && getTileContent(new Tile(Tile.x - 2,Tile.y - 2)) == 0) {
-					 TileMoves.add(new Tile(Tile.x - 2, Tile.y - 2));
-					 System.out.println(TileMoves);
-					 return TileMoves;
+			 }else if(y == 7 && x >0 ) {
+				 if(getTileContent(new Tile(x - 1,y - 1)) == null) {
+					 possibleMoves.add(new Tile(x-1,y-1));
+					 return possibleMoves;
+				 }else if ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() ==22 )  && x-1 != 0 && isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x - 2,y - 2)) == null) {
+					 possibleMoves.add(new Tile(x - 2, y - 2));
+					 System.out.println(possibleMoves);
+					 return possibleMoves;
 				 }
-			 }else if (Tile.x >0  && Tile.y>0 && Tile.y <7 ) {
-				 if(getTileContent(new Tile(Tile.x - 1, Tile.y - 1)) == 0 || getTileContent(new Tile(Tile.x - 1,Tile.y + 1)) == 0) {
-					 if(getTileContent(new Tile(Tile.x - 1, Tile.y - 1)) == 0 )
-						 TileMoves.add(new Tile(Tile.x - 1, Tile.y -1 ));
-					 if(getTileContent(new Tile(Tile.x - 1,Tile.y + 1)) == 0)
-						 TileMoves.add(new Tile(Tile.x - 1, Tile.y + 1 ));
+			 }else if (x >0  && y>0 && y <7 ) {
+				 if(getTileContent(new Tile(x - 1, y - 1)) == null || getTileContent(new Tile(x - 1,y + 1)) == null) {
+					 if(getTileContent(new Tile(x - 1, y - 1)) == null )
+						 possibleMoves.add(new Tile(x - 1, y -1 ));
+					 if(getTileContent(new Tile(x - 1,y + 1)) == null)
+						 possibleMoves.add(new Tile(x - 1, y + 1 ));
 				 }
-			  if (Tile.x > 1) {
-				 if(Tile.y>1 && (getTileContent(new Tile(Tile.x-1,Tile.y+1)) == 2 || getTileContent(new Tile(Tile.x-1,Tile.y+1)) ==22 ) && getTileContent(new Tile(Tile.x - 2,Tile.y + 2)) == 0) 
-					 TileMoves.add(new Tile(Tile.x - 2,Tile.y + 2));
-				 if(Tile.y<6  && (getTileContent(new Tile(Tile.x-1,Tile.y-1)) == 2 || getTileContent(new Tile(Tile.x-1,Tile.y-1)) ==22 ) && getTileContent(new Tile(Tile.x - 2 , Tile.y - 2)) == 0) 
-					TileMoves.add(new Tile(Tile.x - 2,Tile.y - 2));
+			  if (x > 1) {
+				  if(getTileContent(new Tile(x-1,y+1))!=null) {
+					   if(y>1 && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() ==22 ) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x - 2,y + 2)) == null) 
+						   possibleMoves.add(new Tile(x - 2,y + 2)); 
+				  }
+				  if(getTileContent(new Tile(x-1,y-1))!=null) {
+					   if(y<7  && (getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() ==22 ) && isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x - 2 , y - 2)) == null) 
+						   possibleMoves.add(new Tile(x - 2,y - 2));
+				  }
 			 }
-				 return TileMoves;
+				 return possibleMoves;
 		 }
 		 }		 
 		 return null;
@@ -322,40 +388,43 @@ public class Game {
 	  * @param currentPos
 	  * @param nextPos
 	  * @param possibleMoves
-	  */
-	 public void moveWhiteSoldier(Tile currentPos , Tile nextPos , ArrayList<Tile> possibleMoves) {
+	  *///Tile currentPos 
+	 public void moveWhiteSoldier(Soldier s, Tile nextPos , ArrayList<Tile> possibleMoves) {
 		 ArrayList<Tile> allKillsAvailable = getKills(Color.White);
-		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
+		 if(possibleMoves == null || !possibleMoves.contains(nextPos) || s.getSoldierNumber()!=1) {
 			 System.out.println("Wrong input");
 			 return;
 		 }
+		 Tile currentPos = board.getTileOfSoldier(s);
 		 if(ifKillExist(currentPos,possibleMoves)) {
 			 ArrayList<Tile> killMoves = getKillMove(possibleMoves,currentPos);
 			 if(killMoves.size() == 2) {
-				 Tile midEnemySol = getMiddleEnemySoldier(1,currentPos,nextPos);
-				 board[nextPos.x][nextPos.y] = 1;
-				 board[midEnemySol.x][midEnemySol.y] = 0;
-				 board[currentPos.x][currentPos.y] = 0;
+				 Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
+				 Soldier midEnemySol = board.getSoldier(midEnemyTile);
+				 board.removeSoldier(s, currentPos);
+				 board.setSoldier(s, nextPos);
+				 board.removeSoldier(midEnemySol, midEnemyTile);
 				 System.out.println("You killed enemy soldier!");
 				 this.blackPlayerSoldiers--;
 				 this.whitePlayerPoints+=100;
 			 }else {
 				 Tile priorityMove = killMoves.get(0);
-				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
+				 if(nextPos.getX() != priorityMove.getX()  && nextPos.getY() != priorityMove.getY()) {
 					 System.out.println("You shoud have killed , you lose a soldier!");
-					 board[currentPos.x][currentPos.y] = 0;
+					 board.removeSoldier(s, currentPos);
 					 this.whitePlayerSoldiers--;
 				 }else {
-						 Tile midEnemySol = getMiddleEnemySoldier(1,currentPos,nextPos);
+						 Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
+						 Soldier midEnemySol = board.getSoldier(midEnemyTile);
 						 String killed;
-						 if(getTileContent(midEnemySol)==2 ) {
+						 if(midEnemySol.getSoldierNumber()==2 ) {
 							 killed = "soldier!";
 						 }else {
 							 killed = "queen!";
 						 }
-						 board[nextPos.x][nextPos.y] = 1;
-						 board[midEnemySol.x][midEnemySol.y] = 0;
-						 board[currentPos.x][currentPos.y] = 0;
+						 board.removeSoldier(s, currentPos);
+						 board.setSoldier(s, nextPos);
+						 board.removeSoldier(midEnemySol, midEnemyTile);
 						 System.out.println("You killed an enemy " + killed );
 						 if(killed.equals("soldier!")) {
 							 this.whitePlayerSoldiers--;
@@ -367,44 +436,46 @@ public class Game {
 				 		}
 			 		}
 			 }else {
-				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && !allKillsAvailable.contains(nextPos)) {
-					 Tile soldierHasToDie = getSoldierWithKill(Color.White);
-					 if(soldierHasToDie != null) {
-						 if(nextPos.x != 7) {
-							 board[currentPos.x][currentPos.y] = 0;
-							 board[nextPos.x][nextPos.y]=1;
-							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && (!allKillsAvailable.contains(nextPos) || !isThisMoveAKill(s, nextPos))) {
+					 Tile deadSoldierTile = getSoldierWithKill(Color.White);
+					 Soldier deadSoldier = board.getSoldier(deadSoldierTile);
+					 if(deadSoldierTile != null) {
+						 if(nextPos.getX() != 7) {
+							 board.removeSoldier(s, currentPos);
+							 board.setSoldier(s, nextPos);
+							 board.removeSoldier(deadSoldier, deadSoldierTile);
 							 this.whitePlayerSoldiers--;
-							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " , you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " , you also missed a kill , your soldier " + deadSoldierTile + " is dead.");
 						 	}
 						 else {
-							 board[currentPos.x][currentPos.y] = 0;
-							 board[nextPos.x][nextPos.y]=11;
-							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 board.removeSoldier(s, currentPos);
+							 board.setSoldier(new Queen(11), nextPos);
+							 board.removeSoldier(deadSoldier, deadSoldierTile);
+		
 							 this.whitePlayerSoldiers--;
-							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + "  and became a queen, you also missed a kill , your soldier " + deadSoldierTile + " is dead.");
 							 this.whitePlayerQueens++;
 						 }
 						 }
 				 }else {
 			 if(possibleMoves.contains(nextPos)) {
-				 if(nextPos.x == 0) {
-					 board[currentPos.x][currentPos.y] = 0;
-					 board[nextPos.x][nextPos.y] = 11;
-					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen !");
+				 if(nextPos.getX() == 0) {
+					 board.removeSoldier(s,currentPos);
+					 board.setSoldier(new Queen(11), nextPos);
+					 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen !");
 					 this.whitePlayerQueens++;
 
 				 }else {
-					 board[currentPos.x][currentPos.y] = 0;
-					 board[nextPos.x][nextPos.y]=1;
-					 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+					 board.removeSoldier(s, currentPos);
+					 board.setSoldier(s, nextPos);
+					 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY());
 				 }
 			 }
 		 }}
 		 
 		 for(int i=0;i<8;i++) {
 			 for(int j=0; j<8;j++)
-				 System.out.print(board[i][j] + ",");
+				 System.out.print(board.board[i][j] + ",");
 			 System.out.println();
 		 }
 	 }
@@ -416,25 +487,27 @@ public class Game {
 	  * @param nextPos
 	  * @param possibleMoves
 	  */
-	 public void moveBlackSoldier(Tile currentPos , Tile nextPos , ArrayList<Tile> possibleMoves) {
+	 public void moveBlackSoldier(Soldier s , Tile nextPos , ArrayList<Tile> possibleMoves) {
 		 ArrayList<Tile> allKillsAvailable = getKills(Color.Black);
-		 if(possibleMoves == null || !possibleMoves.contains(nextPos)) {
+		 if(possibleMoves == null || !possibleMoves.contains(nextPos) || s.getSoldierNumber()!=2) {
 			 System.out.println("Wrong input"); 
 			 return;
 		 }
+		 Tile currentPos = board.getTileOfSoldier(s);
 		 if(ifKillExist(currentPos,possibleMoves)) {
 			 ArrayList<Tile> killMoves = getKillMove(possibleMoves,currentPos);
 			 if(killMoves.size() == 2) {
-				 Tile midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
+				 Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
+				 Soldier midEnemySol = board.getSoldier(midEnemyTile);
 				 String killed;
-				 if(getTileContent(midEnemySol) == 1 ) {
+				 if(midEnemySol.getSoldierNumber() == 1 ) {
 					killed = "soldier!"; 
 				 }else {
 					 killed = "queen!";
 				 }
-				 board[nextPos.x][nextPos.y] = 2;
-				 board[midEnemySol.x][midEnemySol.y] = 0;
-				 board[currentPos.x][currentPos.y] = 0;
+				 board.removeSoldier(s, currentPos);
+				 board.setSoldier(s,nextPos);
+				 board.removeSoldier(midEnemySol, midEnemyTile);
 				 System.out.println("You killed an enemy " + killed );
 				 if(killed.equals("soldier!")) {
 					 this.whitePlayerSoldiers--;
@@ -444,98 +517,110 @@ public class Game {
 				 this.blackPlayerPoints+=100;
 			 }else {
 				 Tile priorityMove = killMoves.get(0);
-				 if(nextPos.x != priorityMove.x && nextPos.y != priorityMove.y) {
+				 if(nextPos.getX() != priorityMove.getX() && nextPos.getY() != priorityMove.getY()) {
 					 System.out.println("You missed a kill , you lose this soldier!");
-					 board[currentPos.x][currentPos.y] = 0;
+					 board.removeSoldier(s,currentPos);
 					 this.blackPlayerSoldiers--;
 				 }else {
-						 Tile midEnemySol = getMiddleEnemySoldier(2,currentPos,nextPos);
-						 board[nextPos.x][nextPos.y] = 2;
-						 board[midEnemySol.x][midEnemySol.y] = 0;
-						 board[currentPos.x][currentPos.y] = 0;
+						 Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
+						 Soldier midEnemySol = board.getSoldier(midEnemyTile);
+						 board.removeSoldier(s, currentPos);
+						 board.removeSoldier(midEnemySol,midEnemyTile);
+						 board.setSoldier(s, nextPos);
 						 System.out.println("You killed enemy soldier");
 						 this.whitePlayerSoldiers--;
 						 this.blackPlayerPoints+=100;
 				 	}
 			 	}
 			 }else {
-				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && !allKillsAvailable.contains(nextPos)) {
-					 Tile soldierHasToDie = getSoldierWithKill(Color.Black);
+				 System.out.println(allKillsAvailable);
+				 if(allKillsAvailable != null && !allKillsAvailable.isEmpty() && (!allKillsAvailable.contains(nextPos) || !isThisMoveAKill(s, nextPos)) ) {
+					 Tile soldierHasToDieTile = getSoldierWithKill(Color.Black);
+					
+					 Soldier soldierHasToDie = board.getSoldier(soldierHasToDieTile);
 					 if(soldierHasToDie != null) {
-						 if(nextPos.x != 7) {
-							 board[currentPos.x][currentPos.y] = 0;
-							 board[nextPos.x][nextPos.y]=2;
-							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+						 if(nextPos.getX() != 7) {
+							 board.removeSoldier(s, currentPos);
+							 board.setSoldier(s, nextPos);
+							 board.removeSoldier(soldierHasToDie, soldierHasToDieTile);
 							 this.blackPlayerSoldiers--;
-							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " , you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " , you also missed a kill , your soldier " + soldierHasToDieTile + " is dead.");
 						 	}
 						 else {
-							 board[currentPos.x][currentPos.y] = 0;
-							 board[nextPos.x][nextPos.y]=22;
-							 board[soldierHasToDie.x][soldierHasToDie.y] = 0;
+							 board.removeSoldier(s, currentPos);
+							 board.setSoldier(new Queen(22), nextPos);
+							 board.removeSoldier(soldierHasToDie, soldierHasToDieTile);
 							 this.blackPlayerSoldiers--;
-							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDie + " is dead.");
+							 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDieTile + " is dead.");
 							 this.blackPlayerQueens++;
 						 }
 						 }
 				 }else {
 					 if(possibleMoves.contains(nextPos)) {
-						 if(nextPos.x == 7) {
-							 board[currentPos.x][currentPos.y] = 0;
-							 board[nextPos.x][nextPos.y]=22;
-							 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y + " and became a queen!");
+						 if(nextPos.getX() == 7) {
+							 board.removeSoldier(s, currentPos);
+							 board.setSoldier(new Queen(22), nextPos);
+							 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen!");
 							 this.blackPlayerQueens++;
 						 }else {
-						 board[currentPos.x][currentPos.y] = 0;
-						 board[nextPos.x][nextPos.y]=2;
-						 System.out.println("soldier moved to " + nextPos.x + "," + nextPos.y);
+						 board.removeSoldier(s, currentPos);
+						 board.setSoldier(s, nextPos);
+						 System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY());
 						 }
 					 }
 				 }
 		 }
 		 
-//		 for(int i=0;i<8;i++) {
-//			 for(int j=0; j<8;j++)
-//				 System.out.print(board[i][j] + ",");
-//			 System.out.println();
-//		 }
+		 for(int i=0;i<8;i++) {
+			 for(int j=0; j<8;j++)
+				 System.out.print(board.board[i][j] + ",");
+			 System.out.println();
+		 }
 	 }
 	 
-	 
-		public void moveQueen(int obj , Tile cur , Tile next , HashMap<Tile,Tile> possibleMoves) {
+	 public boolean isThisMoveAKill(Soldier s, Tile next) {
+		 if(s.getPosition().getX()-1 == next.getX() || s.getPosition().getX()+1 == next.getX()) {
+			 return false;
+		 }
+		 return true;
+	 }
+		public void moveQueen(Soldier s , Tile next , HashMap<Tile,Tile> possibleMoves) {
 			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
 				System.out.println("Wrong Input");
 				return;
 			}
-			else if(getTileContent(next) != 0) {
+			else if(board.getSoldier(next).getSoldierNumber() != 0) {
 				System.out.println("Wrong Destination");
 				return;
 			}
 			else {
-				if(obj == 22) {
-					this.board[next.x][next.y] = 22;
-					this.board[cur.x][cur.y] = 0;
+				Tile cur = board.getTileOfSoldier(s);
+				if(s.getSoldierNumber() == 22) {
+					board.removeSoldier(s, cur);
+					board.setSoldier(s, next);
 					if(possibleMoves.get(next) == null) {
 						System.out.println("You have moved your queen from " + cur + " to " + next);
 					}else {
 						Tile midKill = possibleMoves.get(next);
-						this.board[midKill.x][midKill.y]= 0;
-						if(getTileContent(midKill) == 1)
+						Soldier midKillSol = board.getSoldier(midKill);
+						board.removeSoldier(midKillSol,midKill);
+						if(getTileContent(midKill).getSoldierNumber() == 1)
 							this.whitePlayerSoldiers--;
 						else
 							this.whitePlayerQueens--;
 						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
 						this.blackPlayerPoints+=100;
 					}
-				}else if ( obj == 11) {
-					this.board[next.x][next.y]= 11;
-					this.board[cur.x][cur.y]= 0;
+				}else if ( s.getSoldierNumber() == 11) {
+					board.removeSoldier(s, cur);
+					board.setSoldier(s, next);
 					if(possibleMoves.get(next) == null) {
 						System.out.println("You have moved your queen from " + cur + " to " + next);
 					}else {
 						Tile midKill = possibleMoves.get(next);
-						this.board[midKill.x][midKill.y]= 0;
-						if(getTileContent(midKill) == 2)
+						Soldier midKillSol = board.getSoldier(midKill);
+						board.removeSoldier(midKillSol, midKill);
+						if(getTileContent(midKill).getSoldierNumber() == 2)
 							this.blackPlayerSoldiers--;
 						else
 							this.blackPlayerQueens--;
@@ -547,10 +632,31 @@ public class Game {
 			
 //			for(int i = 0 ; i < 8; i++) {
 //				for(int j = 0; j < 8; j++) 
-//					System.out.print(board[i][j] + ",");
+//					System.out.print(gameBoard[i][j] + ",");
 //				 System.out.println();
 				
 		//	}
+		}
+		
+		public void moveStreak(Soldier solWithKillStreak,Soldier currentSol , Tile nextMove) {
+			if(solWithKillStreak == null || currentSol == null || !isTileInFrame(nextMove)) {
+				return;
+			}
+			int solNum = solWithKillStreak.getSoldierNumber();
+			if(!solWithKillStreak.equals(currentSol)) {
+				board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
+				System.out.println("The kill streak was supposed to be for another soldier , therefore you lose it.");
+			}else {
+				if(solNum == 2) {
+					ArrayList<Tile> moves = getKillStreak(solWithKillStreak);
+					if(!moves.contains(nextMove)) {
+						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
+						System.out.println("You didn't go for the kill , therefore you lose the chosen soldier.");
+					}
+				}else {
+					
+				}
+			}
 		}
 		/***
 		 * This method returns a random soldier that has a kill move.
@@ -558,19 +664,24 @@ public class Game {
 		 * @return
 		 */
 		public Tile getSoldierWithKill(Color turn) {
-			
-			for(int i = 0; i < 8;i++) {
-				for(int j = 0; j < 8; j++) {
-					if(board[i][j] == 2 && turn.equals(Color.Black)) {
-						if(ifKillExist(getTile(i,j), getPossibleMovesForBlackSoldier(board[i][j], getTile(i,j)))) {
-							return new Tile(i,j);
+			HashMap<Tile, Soldier> soldiers ;
+			if(turn.equals(Color.Black)) {
+				soldiers = board.getSameColorSoldiers(2);
+			}else {
+				soldiers = board.getSameColorSoldiers(1);
+			}
+			for(Map.Entry<Tile, Soldier> entry : soldiers.entrySet()) {
+				Tile t = entry.getKey();
+				Soldier s = entry.getValue();
+					if(turn.equals(Color.Black)) {
+						if(ifKillExist(t, getPossibleMovesForBlackSoldier(s))) {
+							return t;
 						}
-					}else if(board[i][j] == 1 && turn.equals(Color.White)) {
-						if(ifKillExist(getTile(i,j),getPossibleMovesForWhiteSoldier(board[i][j], getTile(i,j)))) {
-							return new Tile(i,j);
-						}
+					}else {
+						if(ifKillExist(t, getPossibleMovesForWhiteSoldier(s))) {
+							return t;
+					    }
 					}
-				}
 			}
 			return null;
 		}
@@ -580,31 +691,27 @@ public class Game {
 		 * @return
 		 */
 		public ArrayList<Tile> getKills(Color turn){
+			if(turn == null) return null;
 			ArrayList<Tile> blackKillsMoves = new ArrayList<Tile>();
 			ArrayList<Tile> whiteKillsMoves = new ArrayList<Tile>();
-			if(turn == null) return null;
-			
-				for(int i=0; i < 8;i++) {
-					for(int j = 0; j < 8;j++) {
-						if(board[i][j] == 2 && turn.equals(Color.Black)) {
-							ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board[i][j], getTile(i,j));
-							if(ifKillExist(getTile(i,j), possibleMoves)) {
-								blackKillsMoves.addAll(getKillMove(possibleMoves, getTile(i,j)));
-							}
-						}else if(board[i][j] == 1 && turn.equals(Color.White)) {
-							ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board[i][j], getTile(i,j));
-							if(ifKillExist(getTile(i,j), possibleMoves)) {
-								whiteKillsMoves.addAll(getKillMove(possibleMoves, getTile(i,j)));
-							}
-						}
+			ArrayList<Tile> tiles = board.getPlayerPositions(turn);
+			for(Tile t : tiles) {
+				if( getTileContent(t).getSoldierNumber()==2 &&  turn.equals(Color.Black)) {
+					ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board.getSoldier(t));
+					if(ifKillExist(t, possibleMoves)) {
+						blackKillsMoves.addAll(getKillMove(possibleMoves, t));
+					}
+				}else if(getTileContent(t).getSoldierNumber()==1 && turn.equals(Color.White)) {
+					ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board.getSoldier(t));
+					if(ifKillExist(t, possibleMoves)) {
+						whiteKillsMoves.addAll(getKillMove(possibleMoves, t));
 					}
 				}
-				
-				if(turn.equals(Color.Black))
+			}
+				if(turn.equals(Color.Black)) {
 					return blackKillsMoves;
-				else
+				}
 					return whiteKillsMoves;
-			
 		}
 	 /***
 	  * This method returns the coordinate of the enemy soldier that sits between current position and next position
@@ -612,18 +719,21 @@ public class Game {
 	  * @param current
 	  * @param next
 	  * @return
-	  */
-	 public Tile getMiddleEnemySoldier(int color ,Tile current , Tile next) {
+	  *///int color ,Tile current 
+	 public Tile getMiddleEnemySoldier(Soldier s , Tile next) {
+		 int color = s.getSoldierNumber();
+		 Tile current=board.getTileOfSoldier(s);
+		
 		 if(color == 1 || color == 11) {
-			 if(next.y - 2 == current.y)
-				 return  new Tile(next.x + 1,next.y - 1);
-			  if(next.y + 2 == current.y)
-				 return new Tile(next.x + 1,next.y + 1);
+			 if(next.getY() - 2 == current.getY())
+				 return  new Tile(next.getX() + 1,next.getY() - 1);
+			  if(next.getY() + 2 == current.getY())
+				 return new Tile(next.getX() + 1,next.getY() + 1);
 		 }else if(color==2 || color==22) {
-			 if(next.y - 2 == current.y )
-				 return new Tile(next.x - 1,next.y - 1);
-			  if(next.y + 2 == current.y)
-				 return new Tile(next.x - 1 , next.y + 1);
+			 if(next.getY() - 2 == current.getY() )
+				 return new Tile(next.getX() - 1,next.getY() - 1);
+			  if(next.getY() + 2 == current.getY())
+				 return new Tile(next.getX()- 1 , next.getY() + 1);
 		 }
 		 return null;
 	 }
@@ -637,7 +747,7 @@ public class Game {
 	 public boolean ifKillExist(Tile currentPos , ArrayList<Tile> possibleMoves) {
 		if(possibleMoves != null) {
 			for(Tile Tile : possibleMoves) {
-				if(Tile.x - 2 == currentPos.x || Tile.x + 2 == currentPos.x) {
+				if(Tile.getX() - 2 == currentPos.getX() || Tile.getX() + 2 == currentPos.getX()) {
 					return true;
 				}
 			}
@@ -646,7 +756,7 @@ public class Game {
 	 }
 	 
 	 /***
-	  * This method returns the kill moves of the possible moves .
+	  * This method returns the kill moves out of the possible moves .
 	  * @param moves
 	  * @param currentPos
 	  * @return
@@ -655,7 +765,7 @@ public class Game {
 		 ArrayList<Tile> toReturn = new ArrayList<Tile>();
 		 if(moves != null) {
 			 for(Tile Tile : moves) {
-				 if(Tile.x - 2 == currentPos.x || Tile.x + 2 == currentPos.x) {
+				 if(Tile.getX() - 2 == currentPos.getX() || Tile.getX() + 2 == currentPos.getX()) {
 					 toReturn.add(Tile);
 				 }
 			 }return toReturn;
@@ -663,84 +773,68 @@ public class Game {
 		 return null;
 	 }
 	 
-	 
 	 /**
 	  * method to use after a kill to check if a kill streak is possible
 	  * @param obj 1 or 2 the type of the soldier
 	  * @param Tile is the current position of the soldier  
 	  * @return list of the kills possible including backwards kills
 	  */
-	public ArrayList<Tile> getKillStreak(int obj , Tile Tile){
-		if(obj != 1 || obj !=2) return null; //if wasnt soldier then theres something wrong
+	public ArrayList<Tile> getKillStreak(Soldier s){
+		if(s.getSoldierNumber() != 1 && s.getSoldierNumber()  !=2) return null; //if wasnt soldier then theres something wrong
 		ArrayList<Tile> toReturn = new ArrayList<Tile>(); 
-		int x = Tile.x;
-		int y = Tile.y;
-		if(obj ==1 ) {// if white soldier possible kill backwards
-			ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(obj, Tile);	//the soldiers current possible moves
+		Tile Tile =board.getTileOfSoldier(s);
+		int x = board.getTileOfSoldier(s).getX();
+		int y =  board.getTileOfSoldier(s).getY();
+		int obj = s.getSoldierNumber();
+		
+		if(obj ==1 || obj == 11) {// if white soldier possible kill backwards
+			ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(s);	//the soldiers current possible moves
 			if(ifKillExist(Tile, possibleMoves)) {  // if theres a kill possible in the ordinary moves add it
 				for( Tile p : getKillMove(possibleMoves, Tile)) 
-					toReturn.add(Tile);
+					toReturn.add(p);
 			}
 			if((y==0 || y==1) && x<6 ) {
-				if( getTileContent(new Tile(x+1,y+1)) == 2 && getTileContent(new Tile(x+2,y+2))==0) 
-					toReturn.add(new Tile(x+1,y+1)); 
+				if(getTileContent(new Tile(x+1,y+1))!= null && (getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == 22) && isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2))==null ) 
+					toReturn.add(new Tile(x+2,y+2));
 			}
 			if(y>1 && y<6 && x<6) {
-				if(getTileContent(new Tile(x+1,y-1)) == 2 && getTileContent(new Tile(x+2,y-2)) == 0  )
-					toReturn.add(new Tile(x+1, y-1));
-				if(getTileContent(new Tile(x+1,y+1)) == 2 && getTileContent(new Tile(x+2,y+2)) == 0  )
-					toReturn.add(new Tile(x+1, y+1));
+				if(getTileContent(new Tile(x+1,y-1))!= null && (getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == 2 || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == 22) && isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null  )
+					toReturn.add(new Tile(x+2, y-2));
+				if(getTileContent(new Tile(x+1,y+1))!= null && (getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == 22) && isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null )
+					toReturn.add(new Tile(x+2, y+2));
 			}
 			if((y==6 || y==7) && x<6) {
-				if(getTileContent(new Tile(x+1,y-1)) == 2 && getTileContent(new Tile(x+2,y-2)) == 0 )
-					toReturn.add(new Tile(x-1,y-1));
+				if(getTileContent(new Tile(x+1,y-1))!= null && (getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == 2 || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == 22) && isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null)
+					toReturn.add(new Tile(x+2,y-2));
 			}
 		}else {  // if black soldier possible kill backwards.
-			ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(obj, Tile);	//the soldiers current possible moves
+			ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(s);	//the soldiers current possible moves
 			if(ifKillExist(Tile, possibleMoves)) {  // if theres a kill possible in the ordinary moves add it
 				for( Tile p : getKillMove(possibleMoves, Tile)) 
-					toReturn.add(Tile);
+					toReturn.add(p);
 			}
 			if( (y==0 || y==1) && x>1 ) {
-				if(getTileContent(new Tile(x-1,y+1)) ==1 && getTileContent(new Tile(x-2,y+2))==0)
-					toReturn.add(new Tile(x-1,y+1));
+				if(getTileContent(new Tile(x-1,y+1))!= null && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() ==1 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 11) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2))==null)
+					toReturn.add(new Tile(x-2,y+2));
 			}
 			if(y>1 && y<6 && x>1) {
-				if(getTileContent(new Tile(x-1,y+1)) ==1 && getTileContent(new Tile(x-2,y+2))==0)
-					toReturn.add(new Tile(x-1, y+1));
-				if(getTileContent(new Tile(x-1,y-1)) ==1 && getTileContent(new Tile(x-2,y-2))==0)
-					toReturn.add(new Tile(x-1,y-1));
+				if(getTileContent(new Tile(x-1,y+1))!= null && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 1 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 11) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2))==null)
+					toReturn.add(new Tile(x-2, y+2));
+				if(getTileContent(new Tile(x-1,y-1))!= null && (getTileContent(new Tile(x-1,y-1)).getSoldierNumber() ==1 || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == 11) && isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2))==null)
+					toReturn.add(new Tile(x-2,y-2));
 			}
 			if((y==6 || y==7) && x>1) {
-				if(getTileContent(new Tile(x-1,y-1)) ==1 && getTileContent(new Tile(x-2,y-2))==0)
-					toReturn.add(new Tile(x-1,y-1));
+				if(getTileContent(new Tile(x-1,y-1))!= null && (getTileContent(new Tile(x-1,y-1)).getSoldierNumber() ==1 || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == 11) && isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2))==null)
+					toReturn.add(new Tile(x-2,y-2));
 			}
 		}
 		return toReturn;
 	}
-	
-	
-	
 	
 	/*********************** Code Regarding Special (Colored) Tile ************************************\
 	 * 
 	 *** YELLOW TILE ***
 	 */
-	/**
-	 * method that return the empty tiles in the board
-	 * @return list of Tiles
-	 */
-	public ArrayList<Tile> getEmptyTiles(){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		for( int i=0 ; i< 8 ; i++) {
-			for(int j=0 ; j<8; j++) {
-				if(i%2==0 && j%2==1 && board[i][j]==0) toReturn.add(new Tile(i,j));
-				if(i%2==1 && j%2==0 && board[i][j]==0) toReturn.add(new Tile(i,j));
-			}
-		}
-		return toReturn;
-	}
-	
 	/***
 	 * This method generates a 3 random tiles and returns them.
 	 * @return
@@ -751,7 +845,7 @@ public class Game {
 		for(;;) {
 			int x = (int)(Math.random()*8);
 			int y = (int)(Math.random()*8);
-			if(getEmptyTiles().contains(new Tile(x,y))) {
+			if(board.getEmptyTiles().contains(new Tile(x,y))) {
 				count++;
 				toReturn.add(new Tile(x,y));
 			}
@@ -770,46 +864,29 @@ public class Game {
 		TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
 		ArrayList<Tile> possibleMovesArray = new ArrayList<Tile>();
 		if(turn == Color.Black) {
-				for(int i=0 ; i < 8 ; i++) {
-					for(int j=0; j < 8; j++) {
-						if(getContentWithXandY(i, j) == 2) {
-							allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(getContentWithXandY(i, j), getTile(i, j)));
-						}
-					}
-				}
-		}else {
-			for(int i=0 ; i < 8 ; i++) {
-				for(int j=0; j < 8; j++) {
-					if(getContentWithXandY(i, j) == 1) {
-						allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(getContentWithXandY(i, j), getTile(i, j)));
-					}
-				}}			
+			HashMap<Tile, Soldier> blackSoldiers = board.getSameColorSoldiers(2);
+			for(Soldier s : blackSoldiers.values()) {
+				allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
+			}
+		}		
+		else {
+			
+			HashMap<Tile, Soldier> whiteSoldiers = board.getSameColorSoldiers(1);
+			for(Soldier s : whiteSoldiers.values()) {
+				allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
+			}			
 		}
 		possibleMovesArray.addAll(allPossibleMoves);
 		int numberOfMoves = possibleMovesArray.size();
 		int randomNumber = ThreadLocalRandom.current().nextInt(0 , numberOfMoves );
 		return possibleMovesArray.get(randomNumber);
 	}
-	/*** BLUE TILE ****/ 
-	/**
-	 * method that counts the number of pieces from a certain type 
-	 * @param obj white or black soldier or queen
-	 * @return count of the pieces from obj type
-	 */
-	public int countPiece(int obj) {
-		int count =0;
-		for(int i=0; i<8 ;i++) {
-			for(int j=0; j<8;j++) {
-				if(getContentWithXandY(i, j)==obj) count++;
-			}
-		}
-		return count;
-	}
+
 	/**
 	 * @return true if player has exactly 2 soldiers and at least 1 queen, false otherwise
 	 */
 	public boolean checkIfBlueTile() {
-		if((countPiece(1)==2 && countPiece(11)>=1) || (countPiece(2)==2 && countPiece(22)>=1)) return true;
+		if((board.countPiece(1)==2 && board.countPiece(11)>=1) || (board.countPiece(2)==2 && board.countPiece(22)>=1)) return true;
 		return false;
 	}
 	/**
@@ -831,8 +908,8 @@ public class Game {
  * @return true if legal position, false otherwise
  */
 	public boolean checkIfLegalPosition(int obj,Tile pos){
-		int x = pos.x;
-		int y = pos.y;
+		int x = pos.getX();
+		int y = pos.getY();
 		int op;
 		int queOp;
 		if(obj == 1 ) {
@@ -843,8 +920,8 @@ public class Game {
 			op = 1;
 			queOp=11;
 		}
-		if(getContentWithXandY(x-2, y)==op || getContentWithXandY(x-2, y)==queOp || getContentWithXandY(x+2, y)==op ||  getContentWithXandY(x+2, y)==queOp ||
-				getContentWithXandY(x, y-2)==op || getContentWithXandY(x, y-2)==queOp || getContentWithXandY(x, y+2)==op ||  getContentWithXandY(x, y+2)==queOp) 
+		if(getTileContent(new Tile(x-2, y)).getSoldierNumber()==op || getTileContent(new Tile(x-2, y)).getSoldierNumber()==queOp || getTileContent(new Tile(x+2, y)).getSoldierNumber()==op ||  getTileContent(new Tile(x+2, y)).getSoldierNumber()==queOp ||
+				getTileContent(new Tile(x, y-2)).getSoldierNumber()==op || getTileContent(new Tile(x, y-2)).getSoldierNumber()==queOp || getTileContent(new Tile(x, y+2)).getSoldierNumber()==op ||  getTileContent(new Tile(x, y+2)).getSoldierNumber()==queOp) 
 			return false;
 		
 		int it = 1;
@@ -852,7 +929,7 @@ public class Game {
 			int i = x;
 			int j = y;
 			int counter =0;
-			while(getContentWithXandY(i, j) != -2) {
+			while(i>=0 && i<8 && j<8 && j>=0) {
 				if(it == 1) {
 					i--;
 					j--;
@@ -869,11 +946,11 @@ public class Game {
 					j++;
 				}
 				if(counter ==2 ) break;		
-				if(counter<2 && ( getContentWithXandY(i,j) == op || getContentWithXandY(i,j) == queOp )) {
+				if(counter<2 && ( getTileContent(new Tile(i,j)).getSoldierNumber() == op || getTileContent(new Tile(i,j)).getSoldierNumber() == queOp )) {
 					System.out.println(counter);
 					return false;
 				}
-				if(getContentWithXandY(i, j) == 0) counter ++;//System.out.println(counter);
+				if(getTileContent(new Tile(i, j)) == null) counter ++;//System.out.println(counter);
 			}
 			   it++;
 		}
@@ -884,7 +961,7 @@ public class Game {
         if(checkIfLegalPosition(obj, pos)) {
             if(obj == 1) whitePlayerSoldiers++;
             else blackPlayerSoldiers++;
-            board[pos.x][pos.y] = obj;
+            board.setSoldier(new Soldier(obj), pos);
             return true;
         }
         return false;
@@ -901,20 +978,13 @@ public class Game {
 		if(turn == null)
 			return null;
 		if(turn == Color.Black) {
-		for(int i = 0 ; i < 8 ; i++) {
-			for(int j = 0 ; j < 8 ; j++) {
-				if(getContentWithXandY(i, j) == 2) {
-					allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(2, getTile(i, j)));
-				}
+			for(Soldier s : board.getSameColorSoldiers(2).values()) {
+				allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
 			}
-		}
-		}else {
-			for(int i = 0 ; i < 8 ; i++) {
-				for(int j = 0 ; j < 8 ; j++) {
-					if(getContentWithXandY(i, j) == 1) {
-						allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(1, getTile(i, j)));
-					}
-				}
+		}	
+		else {
+			for(Soldier s : board.getSameColorSoldiers(1).values()) {
+				allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
 			}
 		}
 		toReturn.addAll(allPossibleMoves);
@@ -935,7 +1005,7 @@ public class Game {
 	 * @param obj
 	 * @param pos
 	 * @return
-	 */
+	 *//*
 	public HashMap<Tile,Tile> getQueenBiasMoves(int obj , Tile pos,String dir,HashMap<Tile,Tile> mapMoves){
 		int i = 1 ,j = 1;
 		ArrayList<Tile> toReturn = new ArrayList<Tile>();
@@ -1057,14 +1127,14 @@ public class Game {
 //		}
 		return myMoves;
 	}
-	
+	*/
 	/***
 	 * This method gets the possible moves crossing the board (NOT FINISHED - may have bugs).
 	 * @param obj
 	 * @param pos
 	 * @param map
 	 * @return
-	 */
+	 *//*
 	public HashMap<Tile,Tile> getQueenCrossBoardMoves(int obj , Tile pos,HashMap<Tile,Tile> map){
 		ArrayList<Tile> boardEdgesMoves = getLastPossibleMoveInBias(obj, pos,map);
 		HashSet<Tile> treeMoves = new HashSet<>();
@@ -1169,7 +1239,7 @@ public class Game {
 	 * @param pos
 	 * @param queenMoves
 	 * @return
-	 */
+	 *//*
 	private ArrayList<Tile> getLastPossibleMoveInBias(int obj ,Tile pos,HashMap<Tile,Tile> queenMoves){
 		ArrayList<Tile> movesToReturn = new ArrayList<Tile>();
 		
@@ -1183,7 +1253,7 @@ public class Game {
 		}
 		return movesToReturn;
 	}
-	
+	*/
 	/***
 	 * Checks if the game is over or not.
 	 * @return
@@ -1214,18 +1284,13 @@ public class Game {
 	public void printBoard() {
 		for(int i = 0 ; i < 8; i++) {
 			for(int j = 0; j < 8; j++) 
-				System.out.print(board[i][j] + ",");
+				System.out.print(board.board[i][j] + ",");
 			 System.out.println();
 			
 		}
 	}
 	
-	public ArrayList<Tile> getPossibleMovesForSoldiers(int obj, Tile Tile){
-        if(obj == 1 ) {
-            return getPossibleMovesForSoldiers(obj, Tile);
-        }
-        return getPossibleMovesForBlackSoldier(obj, Tile);
-     }
+
 	
 	
 }
