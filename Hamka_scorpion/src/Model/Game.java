@@ -24,7 +24,7 @@ public class Game {
 	private String date;
 	public int seconds = 0;
 	private Tile[] yellowPanels;
-	private Board board;
+	public Board board;
 //	private int[][] gameBoard = board.getBoard();
 	/*private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
 							{2,-1,2,-1,2,-1,2,-1},
@@ -853,7 +853,7 @@ public class Game {
 		for(;;) {
 			int x = (int)(Math.random()*8);
 			int y = (int)(Math.random()*8);
-			if(board.getEmptyTiles().contains(new Tile(x,y))) {
+			if(board.getEmptyTiles().contains(new Tile(x,y)) && !toReturn.contains(new Tile(x,y))) {
 				count++;
 				toReturn.add(new Tile(x,y));
 			}
@@ -1006,7 +1006,23 @@ public class Game {
 	 * @return
 	 */
 	public Tile generateRedTile(Color turn) {
-		return null;
+		if(turn == null) return null;
+		
+		ArrayList<Tile> candidates = new ArrayList<Tile>();
+	   if(getKills(turn)!= null && getKills(turn).size()>0) {
+		   for(Tile tile : board.getPlayerPositions(turn)) {
+
+			   if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null) {
+				   candidates.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
+			   }else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null){
+				   candidates.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
+			   }
+		   }
+	   }
+	   int max = candidates.size();
+	 //  System.out.println(candidates);
+	   int random = (int)(Math.random()*max);
+		return candidates.get(random);
 	}
 	/***
 	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
