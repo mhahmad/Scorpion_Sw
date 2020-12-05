@@ -647,14 +647,28 @@ public class Game {
 				board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
 				System.out.println("The kill streak was supposed to be for another soldier , therefore you lose it.");
 			}else {
+				ArrayList<Tile> moves = getKillStreak(solWithKillStreak);
+				int op, queenOp;
 				if(solNum == 2) {
-					ArrayList<Tile> moves = getKillStreak(solWithKillStreak);
-					if(!moves.contains(nextMove)) {
-						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
-						System.out.println("You didn't go for the kill , therefore you lose the chosen soldier.");
-					}
+					op = 1;
+					queenOp=11;
 				}else {
-					
+					op=2;
+					queenOp=22;
+				}
+				if(!moves.contains(nextMove)) {
+					board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
+					System.out.println("You didn't go for the kill , therefore you lose the chosen soldier.");
+				}else {
+					Tile middleEnemySoldierTile = getMiddleEnemySoldier(solWithKillStreak, nextMove);
+					Soldier middleEnemySoldier = board.getSoldier(middleEnemySoldierTile);
+					Soldier nextMoveContent = getTileContent(nextMove);
+					if(middleEnemySoldier!=null && nextMoveContent==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
+						board.removeSoldier(middleEnemySoldier, middleEnemySoldierTile);
+						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
+						board.setSoldier(solWithKillStreak, nextMove);
+						System.out.println("Soldier in [" + middleEnemySoldierTile.getX()+","+middleEnemySoldierTile.getY()+"] was killed!");
+					}
 				}
 			}
 		}
