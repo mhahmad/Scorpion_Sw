@@ -1,10 +1,10 @@
 package Model;
 
 public class Queen extends Soldier {
-
-	public Queen(int soldierNumber, Tile positon) {
-		super(soldierNumber, positon);
-		// TODO Auto-generated constructor stub
+	//private HashMap<Tile,> keef dk tjebhen ?
+	public Queen(int soldierNumber) {
+		super(soldierNumber);
+		
 	}
 	
 
