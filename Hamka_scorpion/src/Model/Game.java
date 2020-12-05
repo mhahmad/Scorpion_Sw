@@ -649,7 +649,7 @@ public class Game {
 			}else {
 				ArrayList<Tile> moves = getKillStreak(solWithKillStreak);
 				int op, queenOp;
-				if(solNum == 2) {
+				if(solNum == 2 || solNum == 22) {
 					op = 1;
 					queenOp=11;
 				}else {
@@ -662,8 +662,8 @@ public class Game {
 				}else {
 					Tile middleEnemySoldierTile = getMiddleEnemySoldier(solWithKillStreak, nextMove);
 					Soldier middleEnemySoldier = board.getSoldier(middleEnemySoldierTile);
-					Soldier nextMoveContent = getTileContent(nextMove);
-					if(middleEnemySoldier!=null && nextMoveContent==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
+					System.out.println(middleEnemySoldierTile);
+					if(isTileInFrame(nextMove) && middleEnemySoldier!=null && getTileContent(nextMove)==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
 						board.removeSoldier(middleEnemySoldier, middleEnemySoldierTile);
 						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
 						board.setSoldier(solWithKillStreak, nextMove);
@@ -737,18 +737,29 @@ public class Game {
 	 public Tile getMiddleEnemySoldier(Soldier s , Tile next) {
 		 int color = s.getSoldierNumber();
 		 Tile current=board.getTileOfSoldier(s);
-		
+		 System.out.println(next);
+		 System.out.println(s.getPosition());
 		 if(color == 1 || color == 11) {
-			 if(next.getY() - 2 == current.getY())
+			 if(next.getY() - 2 == current.getY() && next.getX() - 2 == current.getX())
 				 return  new Tile(next.getX() + 1,next.getY() - 1);
-			  if(next.getY() + 2 == current.getY())
+			  if(next.getY() + 2 == current.getY() && next.getX() - 2 == current.getX())
 				 return new Tile(next.getX() + 1,next.getY() + 1);
+			  if(next.getY() - 2 == current.getY() && next.getX() + 2 == current.getX())
+				  return new Tile(next.getX() - 1,next.getY() - 1);
+			  if(next.getY() + 2 == current.getY() && next.getX() + 2 == current.getX())
+				  return new Tile(next.getX() - 1,next.getY() + 1);
 		 }else if(color==2 || color==22) {
-			 if(next.getY() - 2 == current.getY() )
-				 return new Tile(next.getX() - 1,next.getY() - 1);
-			  if(next.getY() + 2 == current.getY())
-				 return new Tile(next.getX()- 1 , next.getY() + 1);
-		 }
+			 if(next.getY() - 2 == current.getY() && next.getX() + 2 == current.getX()) 
+				 return new Tile(next.getX() - 1,next.getY() + 1);
+			  if(next.getY() + 2 == current.getY() && next.getX() + 2 == current.getX()) 
+				 return new Tile(next.getX() - 1 , next.getY() - 1);}
+		 	if(next.getY() - 2 == current.getY() && next.getX() - 2 == current.getX()) 
+			 return new Tile(next.getX() + 1 , next.getY() + 1);
+			  if(next.getY() + 2 == current.getY() && next.getX() - 2 == current.getX()) 
+			 return new Tile(next.getX() + 1 , next.getY() - 1);
+
+
+		 	
 		 return null;
 	 }
 	 

@@ -134,6 +134,6 @@ public class Main  {
 	Tile next = new Tile(4,3);
 	g.moveBlackSoldier(s, next ,moves);
 		System.out.println(g.getKillStreak(s));
-	g.moveStreak(s, g.getTileContent(new Tile(3,0)), new Tile(3,1));
+	g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(2,1));
 	}
 }
