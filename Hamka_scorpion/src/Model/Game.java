@@ -1006,8 +1006,23 @@ public class Game {
 	 * @return
 	 */
 	public Tile generateRedTile(Color turn) {
-		return null;
-	}
+        if(turn == null) return null;
+        ArrayList<Tile> candidates = new ArrayList<Tile>();
+       if(getKills(turn)!= null && getKills(turn).size()>0) {
+           for(Tile tile : board.getPlayerPositions(turn)) {
+
+               if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null) {
+                   candidates.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
+               }else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null){
+                   candidates.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
+               }
+           }
+       }
+       int max = candidates.size();
+     //  System.out.println(candidates);
+       int random = (int)(Math.random()*max);
+        return candidates.get(random);
+    }
 	
 	
 	public HashMap<Tile,Soldier> getQueenBiasMoves(Queen queen , String direction){
