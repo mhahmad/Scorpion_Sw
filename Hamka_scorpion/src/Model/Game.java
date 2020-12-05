@@ -1007,7 +1007,6 @@ public class Game {
 	 */
 	public Tile generateRedTile(Color turn) {
 		if(turn == null) return null;
-		
 		ArrayList<Tile> candidates = new ArrayList<Tile>();
 	   if(getKills(turn)!= null && getKills(turn).size()>0) {
 		   for(Tile tile : board.getPlayerPositions(turn)) {
