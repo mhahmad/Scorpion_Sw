@@ -683,7 +683,7 @@ public class Game {
 			}
 			if((y==0 || y==1) && x<6 ) {
 				if( getTileContent(new Tile(x+1,y+1)) == 2 && getTileContent(new Tile(x+2,y+2))==0) 
-					toReturn.add(new Tile(x+1,y+1));
+					toReturn.add(new Tile(x+1,y+1)); 
 			}
 			if(y>1 && y<6 && x<6) {
 				if(getTileContent(new Tile(x+1,y-1)) == 2 && getTileContent(new Tile(x+2,y-2)) == 0  )
