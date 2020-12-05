@@ -116,11 +116,11 @@ public class Main  {
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
 		int[][] board = {{-1,2,-1,2,-1,2,-1,2},
-			          	 {2,-1,2,-1,2,-1,2,-1},
+			          	 {2,-1,2,-1,2,-1,0,-1},
 			        	 {-1,0,-1,2,-1,2,-1,2},
-		          		 {2,-1,1,-1,1,-1,0,-1},
+		          		 {2,-1,1,-1,0,-1,0,-1},
 				         {-1,0,-1,0,-1,0,-1,1},
-				         {1,-1,1,-1,1,-1,0,-1},
+				         {1,-1,11,-1,1,-1,0,-1},
 				         {-1,0,-1,1,-1,1,-1,1},
 				         {1,-1,1,-1,1,-1,1,-1}
 };
@@ -133,7 +133,8 @@ public class Main  {
 	Soldier s = g.getTileContent(new Tile(2,5));
 	Tile next = new Tile(4,3);
 	g.moveBlackSoldier(s, next ,moves);
-		System.out.println(g.getKillStreak(s));
-	g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(6,1));
+	System.out.println(g.getKillStreak(s));
+	g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(2,1));
+	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(5,2)), "BR"));
 	}
 }

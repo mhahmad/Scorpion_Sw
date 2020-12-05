@@ -662,7 +662,6 @@ public class Game {
 				}else {
 					Tile middleEnemySoldierTile = getMiddleEnemySoldier(solWithKillStreak, nextMove);
 					Soldier middleEnemySoldier = board.getSoldier(middleEnemySoldierTile);
-					System.out.println(middleEnemySoldierTile + " SDSSD ");
 					if(isTileInFrame(nextMove) && middleEnemySoldier!=null && getTileContent(nextMove)==null && (middleEnemySoldier.getSoldierNumber()==op || middleEnemySoldier.getSoldierNumber()==queenOp )) {
 						board.removeSoldier(middleEnemySoldier, middleEnemySoldierTile);
 						board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
@@ -1008,6 +1007,74 @@ public class Game {
 	 */
 	public Tile generateRedTile(Color turn) {
 		return null;
+	}
+	
+	
+	public HashMap<Tile,Soldier> getQueenBiasMoves(Queen queen , String direction){
+		HashMap<Tile,Soldier> movesMap = new HashMap<>();
+		if(queen == null || queen.getSoldierNumber() == 1 || queen.getSoldierNumber() == 2 || direction.equals(""))
+			return null;
+		int opSol,opQue;
+		int x = queen.getPosition().getX();
+		int y = queen.getPosition().getY();
+		if(queen.getSoldierNumber() == 11) {
+			opSol = 2;
+			opQue = 22;
+		}else {
+			opSol = 1;
+			opQue = 11;
+		}
+		if(direction.equals("TR")) {// if top right
+			while((isTileInFrame(new Tile(x-1,y+1)) && getTileContent(new Tile(x-1,y+1)) == null) || ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null))) {
+				if(getTileContent(new Tile(x-1,y+1)) == null){
+					queen.getQueenMoves().put(new Tile(x-1,y+1), null);
+					movesMap.put(new Tile(x-1,y+1), null);
+				}else if ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null)) {
+					queen.getQueenMoves().put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
+					movesMap.put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
+				}
+				x--;
+				y++;
+			}
+		}else if(direction.equals("TL")) {//if top left
+			while((isTileInFrame(new Tile(x-1,y-1)) && getTileContent(new Tile(x-1,y-1)) == null) || ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2)) == null))) {
+				if(getTileContent(new Tile(x-1,y-1)) == null){
+					queen.getQueenMoves().put(new Tile(x-1,y-1), null);
+					movesMap.put(new Tile(x-1,y-1), null);
+				}else if ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2)) == null)) {
+					queen.getQueenMoves().put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
+					movesMap.put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
+				}
+				x--;
+				y--;
+			}
+		}else if(direction.equals("BR")) { //if bottom right
+			while((isTileInFrame(new Tile(x+1,y+1)) && getTileContent(new Tile(x+1,y+1)) == null) || ((getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null))) {
+				if(getTileContent(new Tile(x+1,y+1)) == null){
+					queen.getQueenMoves().put(new Tile(x+1,y+1), null);
+					movesMap.put(new Tile(x+1,y+1), null);
+				}else if ((getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null)) {
+					queen.getQueenMoves().put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
+					movesMap.put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
+				}
+				x++;
+				y++;
+			}
+		}else if(direction.equals("BL")) { //if Bottom left
+			while((isTileInFrame(new Tile(x+1,y-1)) && getTileContent(new Tile(x+1,y-1)) == null) || ((getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null))) {
+				if(getTileContent(new Tile(x+1,y-1)) == null){
+					queen.getQueenMoves().put(new Tile(x+1,y-1), null);
+					movesMap.put(new Tile(x+1,y-1), null);
+				}else if ((getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null)) {
+					queen.getQueenMoves().put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
+					movesMap.put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
+				}
+				x++;
+				y--;
+			}
+			
+		}
+		return movesMap;
 	}
 	/***
 	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
