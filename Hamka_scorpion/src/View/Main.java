@@ -124,16 +124,17 @@ public class Main  {
 				         {-1,0,-1,1,-1,1,-1,1},
 				         {1,-1,1,-1,1,-1,1,-1}
 };
-		Game g = new Game("M","A",board);
-//	    System.out.println(g.board.getPlayerPositions(Color.Black));
+	
+	Game g = new Game("M","A",board);
+//	System.out.println(g.board.getPlayerPositions(Color.Black));
 
-	    //System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
-	    /*ArrayList<Tile> moves = g.getPossibleMovesForBlackSoldier(g.getTileContent(new Tile(2,5)));
+	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
+	/*ArrayList<Tile> moves = g.getPossibleMovesForBlackSoldier(g.getTileContent(new Tile(2,5)));
 
-	    Soldier s = g.getTileContent(new Tile(2,5));
-	    Tile next = new Tile(4,3);
-	    g.moveBlackSoldier(s, next ,moves);
-	        System.out.println(g.getKillStreak(s));
-	    g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(2,1));*/
+	Soldier s = g.getTileContent(new Tile(2,5));
+	Tile next = new Tile(4,3);
+	g.moveBlackSoldier(s, next ,moves);
+		System.out.println(g.getKillStreak(s));
+	g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(2,1));*/
 	}
 }
