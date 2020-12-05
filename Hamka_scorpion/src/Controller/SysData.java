@@ -54,10 +54,14 @@ public class SysData {
 	}
 	
 	public boolean removeQuestion(Question question) {
-		return questionList.remove(question);
+		 questionList.remove(question);
+		 writeQuestionsToJson();
+		 return true;
 	}
 	
 	public ArrayList<Question> getQuestions(){
+		questionList.clear();
+		readQuestionsFromJson();
 		return questionList;
 	}
 	
@@ -76,12 +80,21 @@ public class SysData {
 	 * @param content
 	 * @return true if the question has been changed successfully , otherwise returns false
 	 */
-	public boolean editQuestion(Question question , String content) {
-		if(question == null || content.equals(""))
+	public boolean editQuestion(Question question , String content,ArrayList<String> answers,String level,String rightAnswer) {
+		if(question == null || content.equals("") || !questionList.contains(question))
 			return false;
 		else {
-			question.setQuestion(content);
-			return true;
+			for(Question que : questionList) {
+				if(que.equals(question)) {
+					que.setContent(content);
+					que.setAnswers(answers);
+					que.setLevel(level);
+					que.setRightAnswer(rightAnswer);
+					writeQuestionsToJson();
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	
@@ -204,7 +217,7 @@ public class SysData {
 		JSONArray questionsList = new JSONArray();
 		for(Question que : this.questionList) {
 			JSONObject questionDetails = new JSONObject();
-			questionDetails.put("question", que.getQuestion());
+			questionDetails.put("question", que.getContent());
 			questionDetails.put("answers", que.getAnswers());
 			questionDetails.put("correct_ans",que.getAnswers().indexOf(que.getRightAnswer())+1);
 			
@@ -221,7 +234,7 @@ public class SysData {
 		}
 		JSONObject obj = new JSONObject();
 		obj.put("questions", questionsList);
-		FileWriter file = new FileWriter("questionList.json");
+		FileWriter file = new FileWriter("Questions.json");
 		file.write(obj.toJSONString());
 		file.flush();
 		

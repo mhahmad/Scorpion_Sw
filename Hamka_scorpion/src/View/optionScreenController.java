@@ -74,4 +74,12 @@ public class optionScreenController extends Application {
 				   this.toggleThemeBtn.setStyle("-fx-text-fill: #19d300;");
 			   }
 	    }
+	    
+	    @FXML
+		   public void manageQuestionClicked(ActionEvent event) throws IOException {
+			   Stage stage = (Stage)this.mngQuesBtn.getScene().getWindow();
+			   Parent toLoad = FXMLLoader.load(getClass().getResource("ManageQuestionScreen.fxml"));
+			   Scene scene = new Scene(toLoad);
+			   stage.setScene(scene);
+		    }
 }

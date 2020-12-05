@@ -20,11 +20,11 @@ public class Question {
 			this.level = Level.hard;
 	}
 
-	public String getQuestion() {
+	public String getContent() {
 		return content;
 	}
 
-	public void setQuestion(String content) {
+	public void setContent(String content) {
 		this.content = content;
 	}
 
@@ -32,8 +32,13 @@ public class Question {
 		return level;
 	}
 
-	public void setLevel(Level level) {
-		this.level = level;
+	public void setLevel(String level) {
+		if(level.equals("1"))
+			this.level = Level.easy;
+		else if(level.equals("2"))
+			this.level = Level.medium;
+		else
+			this.level = Level.hard;
 	}
 
 	public ArrayList<String> getAnswers() {
@@ -51,7 +56,15 @@ public class Question {
 	public void setRightAnswer(String rightAnswer) {
 		this.rightAnswer = rightAnswer;
 	}
-
+	
+	public String getLevelNumber() {
+		if(this.level == Level.easy)
+			return "1";
+		else if(this.level == Level.medium)
+			return "2";
+		else
+			return "3";
+	}
 	@Override
 	public String toString() {
 		return "Question [content=" + content + ", level=" + level + ", answers=" + answers + ", rightAnswer="
