@@ -126,8 +126,7 @@ public class Main  {
 };
 	Game g = new Game("M","A",board);
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
-	while(true)
-	System.out.println(g.generateRedTile(Color.Black));
+
 	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
 	/*ArrayList<Tile> moves = g.getPossibleMovesForBlackSoldier(g.getTileContent(new Tile(2,5)));
 
