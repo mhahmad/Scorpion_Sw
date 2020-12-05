@@ -54,7 +54,9 @@ public class SysData {
 	}
 	
 	public boolean removeQuestion(Question question) {
-		return questionList.remove(question);
+		 questionList.remove(question);
+		 writeQuestionsToJson();
+		 return true;
 	}
 	
 	public ArrayList<Question> getQuestions(){
@@ -78,12 +80,21 @@ public class SysData {
 	 * @param content
 	 * @return true if the question has been changed successfully , otherwise returns false
 	 */
-	public boolean editQuestion(Question question , String content) {
-		if(question == null || content.equals(""))
+	public boolean editQuestion(Question question , String content,ArrayList<String> answers,String level,String rightAnswer) {
+		if(question == null || content.equals("") || !questionList.contains(question))
 			return false;
 		else {
-			question.setContent(content);
-			return true;
+			for(Question que : questionList) {
+				if(que.equals(question)) {
+					que.setContent(content);
+					que.setAnswers(answers);
+					que.setLevel(level);
+					que.setRightAnswer(rightAnswer);
+					writeQuestionsToJson();
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	

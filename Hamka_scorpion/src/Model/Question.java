@@ -32,8 +32,13 @@ public class Question {
 		return level;
 	}
 
-	public void setLevel(Level level) {
-		this.level = level;
+	public void setLevel(String level) {
+		if(level.equals("1"))
+			this.level = Level.easy;
+		else if(level.equals("2"))
+			this.level = Level.medium;
+		else
+			this.level = Level.hard;
 	}
 
 	public ArrayList<String> getAnswers() {

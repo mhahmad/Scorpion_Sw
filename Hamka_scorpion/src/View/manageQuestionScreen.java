@@ -136,7 +136,6 @@ public class manageQuestionScreen extends Application implements Initializable {
 	}
 	
 	
-	
 	public static void main(String[] arg) {
 		launch(arg);
 	}
@@ -155,6 +154,9 @@ public class manageQuestionScreen extends Application implements Initializable {
 			this.editBtn.setDisable(true);
 			this.innerPanel.setVisible(false);
 			this.removeBtn.setDisable(true);
+			Question ques = this.quesTable.getSelectionModel().getSelectedItem();
+			this.quesTable.getItems().remove(ques);
+			SysData.getInstance().removeQuestion(ques);
 	    }
 	
 	@FXML
@@ -193,8 +195,19 @@ public class manageQuestionScreen extends Application implements Initializable {
 		answers.add(this.ans3Field.getText());
 		answers.add(this.ans4Field.getText());
 		rightAnswer = answers.get((Integer.parseInt(this.combo.getSelectionModel().getSelectedItem())-1));
+		if(this.innerBtn.getText().equals("Add")) {
 		Question ques = new Question(this.quesField.getText(),this.levelCombo.getSelectionModel().getSelectedItem(),answers,rightAnswer);
 		quesTable.getItems().add(ques);
+		if(SysData.getInstance().addQuestion(ques))
+			SysData.getInstance().writeQuestionsToJson();
+		}
+		else if(this.innerBtn.getText().equals("Save")) {
+			Question ques = this.quesTable.getSelectionModel().getSelectedItem();
+			SysData.getInstance().editQuestion(ques, this.quesField.getText(), answers, this.levelCombo.getSelectionModel().getSelectedItem(), rightAnswer);
+			this.quesTable.getItems().clear();
+			this.quesTable.setItems(getQuestions());
+			
+		}
 		this.ans1Field.clear();
 		this.ans2Field.clear();
 		this.ans3Field.clear();
@@ -204,8 +217,8 @@ public class manageQuestionScreen extends Application implements Initializable {
 		this.levelCombo.getSelectionModel().clearSelection();;
 		this.innerPanel.setVisible(false);
 		this.addBtn.setDisable(false);
-		if(SysData.getInstance().addQuestion(ques))
-			SysData.getInstance().writeQuestionsToJson();
+		
+		
 
 	}
 	
