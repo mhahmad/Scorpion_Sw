@@ -1027,6 +1027,7 @@ public class Game {
 	
 	public HashMap<Tile,Soldier> getQueenBiasMoves(Queen queen , String direction){
 		HashMap<Tile,Soldier> movesMap = new HashMap<>();
+		Tile lastTileInBias = null;
 		if(queen == null || queen.getSoldierNumber() == 1 || queen.getSoldierNumber() == 2 || direction.equals(""))
 			return null;
 		int opSol,opQue;
@@ -1044,9 +1045,11 @@ public class Game {
 				if(getTileContent(new Tile(x-1,y+1)) == null){
 					queen.getQueenMoves().put(new Tile(x-1,y+1), null);
 					movesMap.put(new Tile(x-1,y+1), null);
+					lastTileInBias = new Tile(x-1,y+1);
 				}else if ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null)) {
 					queen.getQueenMoves().put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
 					movesMap.put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
+					lastTileInBias = new Tile(x-2,y+2);
 				}
 				x--;
 				y++;
@@ -1056,9 +1059,11 @@ public class Game {
 				if(getTileContent(new Tile(x-1,y-1)) == null){
 					queen.getQueenMoves().put(new Tile(x-1,y-1), null);
 					movesMap.put(new Tile(x-1,y-1), null);
+					lastTileInBias = new Tile(x-1,y-1);
 				}else if ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2)) == null)) {
 					queen.getQueenMoves().put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
 					movesMap.put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
+					lastTileInBias = new Tile(x-2,y-2);
 				}
 				x--;
 				y--;
@@ -1068,9 +1073,11 @@ public class Game {
 				if(getTileContent(new Tile(x+1,y+1)) == null){
 					queen.getQueenMoves().put(new Tile(x+1,y+1), null);
 					movesMap.put(new Tile(x+1,y+1), null);
+					lastTileInBias = new Tile(x+1,y+1);
 				}else if ((getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null)) {
 					queen.getQueenMoves().put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
 					movesMap.put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
+					lastTileInBias = new Tile(x+2,y+2);
 				}
 				x++;
 				y++;
@@ -1080,16 +1087,172 @@ public class Game {
 				if(getTileContent(new Tile(x+1,y-1)) == null){
 					queen.getQueenMoves().put(new Tile(x+1,y-1), null);
 					movesMap.put(new Tile(x+1,y-1), null);
+					lastTileInBias = new Tile(x+1,y-1);
+
 				}else if ((getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null)) {
 					queen.getQueenMoves().put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
 					movesMap.put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
+					lastTileInBias = new Tile(x+2,y-2);
 				}
 				x++;
 				y--;
 			}
 			
 		}
+		
 		return movesMap;
+	}
+	
+	public HashMap<Tile,Soldier> getCrossBoardMoves(Queen queen , Tile lastTileInBias , String direction){
+		HashMap<Tile,Soldier> extraMoves = new HashMap<Tile,Soldier>();
+		int opSol,opQue;
+		if(queen.getSoldierNumber() == 22) {
+			opSol = 1;
+			opQue = 11;
+		}else {
+			opSol = 2;
+			opQue = 22;
+		}
+		if(direction.equals("TR")) {
+			if(lastTileInBias.getX() == 0 && lastTileInBias.getY() == 7) {
+				extraMoves = topRightMovement(queen,new Tile(7,0));
+			}else if(lastTileInBias.getX() == 0) {
+				extraMoves = topRightMovement(queen,new Tile(7,lastTileInBias.getY() + 1));
+			}else if(lastTileInBias.getY() == 7) {
+				extraMoves = topRightMovement(queen, new Tile(lastTileInBias.getX() - 1, 0));
+			}
+			
+			else if(lastTileInBias.getX() - 1 == 0 && lastTileInBias.getY() + 1 == 7 && (getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opSol 
+					|| getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
+				if(getTileContent(new Tile(7,0)) == null) {
+					extraMoves.put(new Tile(7,0), getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
+				}
+			}else if(lastTileInBias.getX() - 1 == 0 && (getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)).getSoldierNumber() == opSol || 
+					getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
+				if(getTileContent(new Tile(7,lastTileInBias.getY() + 1)) == null) {
+					extraMoves.put(new Tile(7,lastTileInBias.getY() + 1), getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)));
+				}
+			}else if(lastTileInBias.getY() + 1 == 7 && (getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opSol || 
+					getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
+				if(getTileContent(new Tile(lastTileInBias.getX() - 1, 0)) == null) {
+					extraMoves.put(new Tile(lastTileInBias.getX() - 1, 0),getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
+				}
+			}
+		}else if(direction.equals("TL")) {
+			
+		}else if(direction.equals("BR")) {
+			
+		}else if(direction.equals("BL")) {
+			
+		}
+		return null;
+	}
+	
+	public HashMap<Tile,Soldier> topRightMovement(Queen queen,Tile tile ){
+		if(tile == null)
+			return null;
+		HashMap<Tile,Soldier> toReturn = new HashMap<>();
+		int opSol,opQue;
+		int x = tile.getX();
+		int y = tile.getY();
+		if(queen.getSoldierNumber() == 22) {
+			opSol = 1;
+			opQue = 11;
+		}else {
+			opSol = 2;
+			opQue = 22;
+		}
+		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
+			toReturn.put(tile, null);
+			x--;
+			y++;
+		}
+		if(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) != null && (getTileContent(new Tile(x,y)).getSoldierNumber() == opSol || 
+				getTileContent(new Tile(x,y)).getSoldierNumber() == opQue) && isTileInFrame(new Tile(x-1,y+1)) && getTileContent(new Tile(x-1,y+1)) == null) {
+			toReturn.put(new Tile(x-1,y+1), getTileContent(new Tile(x,y)));
+		}
+		return toReturn;
+	}
+	
+	
+	public HashMap<Tile,Soldier> topLeftMovement(Queen queen,Tile tile ){
+		if(tile == null)
+			return null;
+		HashMap<Tile,Soldier> toReturn = new HashMap<>();
+		int opSol,opQue;
+		int x = tile.getX();
+		int y = tile.getY();
+		if(queen.getSoldierNumber() == 22) {
+			opSol = 1;
+			opQue = 11;
+		}else {
+			opSol = 2;
+			opQue = 22;
+		}
+		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
+			toReturn.put(tile, null);
+			x--;
+			y--;
+		}
+		if(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) != null && (getTileContent(new Tile(x,y)).getSoldierNumber() == opSol || 
+				getTileContent(new Tile(x,y)).getSoldierNumber() == opQue) && isTileInFrame(new Tile(x-1,y-1)) && getTileContent(new Tile(x-1,y-1)) == null) {
+			toReturn.put(new Tile(x-1,y-1), getTileContent(new Tile(x,y)));
+		}
+		return toReturn;
+	}
+	
+	
+	public HashMap<Tile,Soldier> bottomRightMovement(Queen queen,Tile tile ){
+		if(tile == null)
+			return null;
+		HashMap<Tile,Soldier> toReturn = new HashMap<>();
+		int opSol,opQue;
+		int x = tile.getX();
+		int y = tile.getY();
+		if(queen.getSoldierNumber() == 22) {
+			opSol = 1;
+			opQue = 11;
+		}else {
+			opSol = 2;
+			opQue = 22;
+		}
+		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
+			toReturn.put(tile, null);
+			x++;
+			y++;
+		}
+		if(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) != null && (getTileContent(new Tile(x,y)).getSoldierNumber() == opSol || 
+				getTileContent(new Tile(x,y)).getSoldierNumber() == opQue) && isTileInFrame(new Tile(x+1,y+1)) && getTileContent(new Tile(x+1,y+1)) == null) {
+			toReturn.put(new Tile(x+1,y+1), getTileContent(new Tile(x,y)));
+		}
+		return toReturn;
+	}
+	
+	
+	public HashMap<Tile,Soldier> bottomLeftMovement(Queen queen,Tile tile ){
+		if(tile == null)
+			return null;
+		HashMap<Tile,Soldier> toReturn = new HashMap<>();
+		int opSol,opQue;
+		int x = tile.getX();
+		int y = tile.getY();
+		if(queen.getSoldierNumber() == 22) {
+			opSol = 1;
+			opQue = 11;
+		}else {
+			opSol = 2;
+			opQue = 22;
+		}
+		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
+			toReturn.put(tile, null);
+			x++;
+			y--;
+		}
+		if(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) != null && (getTileContent(new Tile(x,y)).getSoldierNumber() == opSol || 
+				getTileContent(new Tile(x,y)).getSoldierNumber() == opQue) && isTileInFrame(new Tile(x+1,y-1)) && getTileContent(new Tile(x+1,y-1)) == null) {
+			toReturn.put(new Tile(x+1,y-1), getTileContent(new Tile(x,y)));
+		}
+		return toReturn;
 	}
 	/***
 	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
