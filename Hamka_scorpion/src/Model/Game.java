@@ -1041,21 +1041,22 @@ public class Game {
 			opQue = 11;
 		}
 		if(direction.equals("TR")) {// if top right
-			while((isTileInFrame(new Tile(x-1,y+1)) && getTileContent(new Tile(x-1,y+1)) == null) || ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null))) {
+			while(isTileInFrame(new Tile(x-1,y+1)) && (getTileContent(new Tile(x-1,y+1)) == null || ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null)))) {
 				if(getTileContent(new Tile(x-1,y+1)) == null){
 					queen.getQueenMoves().put(new Tile(x-1,y+1), null);
 					movesMap.put(new Tile(x-1,y+1), null);
 					lastTileInBias = new Tile(x-1,y+1);
-				}else if ((getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null)) {
+				}else if (isTileInFrame(new Tile(x-1,y+1)) && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x-2,y+2)) == null)) {
 					queen.getQueenMoves().put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
 					movesMap.put(new Tile(x-2,y+2),getTileContent(new Tile(x-1,y+1)));
 					lastTileInBias = new Tile(x-2,y+2);
+					break;
 				}
 				x--;
 				y++;
 			}
 		}else if(direction.equals("TL")) {//if top left
-			while((isTileInFrame(new Tile(x-1,y-1)) && getTileContent(new Tile(x-1,y-1)) == null) || ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2)) == null))) {
+			while(isTileInFrame(new Tile(x-1,y-1)) && (getTileContent(new Tile(x-1,y-1)) == null || ((getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x-1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x-2,y-2)) && getTileContent(new Tile(x-2,y-2)) == null)))) {
 				if(getTileContent(new Tile(x-1,y-1)) == null){
 					queen.getQueenMoves().put(new Tile(x-1,y-1), null);
 					movesMap.put(new Tile(x-1,y-1), null);
@@ -1064,12 +1065,13 @@ public class Game {
 					queen.getQueenMoves().put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
 					movesMap.put(new Tile(x-2,y-2),getTileContent(new Tile(x-1,y-1)));
 					lastTileInBias = new Tile(x-2,y-2);
+					break;
 				}
 				x--;
 				y--;
 			}
 		}else if(direction.equals("BR")) { //if bottom right
-			while((isTileInFrame(new Tile(x+1,y+1)) && getTileContent(new Tile(x+1,y+1)) == null) || ((getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null))) {
+			while(isTileInFrame(new Tile(x+1,y+1)) && (getTileContent(new Tile(x+1,y+1)) == null || ((getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y+1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y+2)) && getTileContent(new Tile(x+2,y+2)) == null)))) {
 				if(getTileContent(new Tile(x+1,y+1)) == null){
 					queen.getQueenMoves().put(new Tile(x+1,y+1), null);
 					movesMap.put(new Tile(x+1,y+1), null);
@@ -1078,12 +1080,13 @@ public class Game {
 					queen.getQueenMoves().put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
 					movesMap.put(new Tile(x+2,y+2),getTileContent(new Tile(x+1,y+1)));
 					lastTileInBias = new Tile(x+2,y+2);
+					break;
 				}
 				x++;
 				y++;
 			}
 		}else if(direction.equals("BL")) { //if Bottom left
-			while((isTileInFrame(new Tile(x+1,y-1)) && getTileContent(new Tile(x+1,y-1)) == null) || ((getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null))) {
+			while(isTileInFrame(new Tile(x+1,y-1)) && (getTileContent(new Tile(x+1,y-1)) == null || ((getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opSol || getTileContent(new Tile(x+1,y-1)).getSoldierNumber() == opQue) && (isTileInFrame(new Tile(x+2,y-2)) && getTileContent(new Tile(x+2,y-2)) == null)))) {
 				if(getTileContent(new Tile(x+1,y-1)) == null){
 					queen.getQueenMoves().put(new Tile(x+1,y-1), null);
 					movesMap.put(new Tile(x+1,y-1), null);
@@ -1093,13 +1096,37 @@ public class Game {
 					queen.getQueenMoves().put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
 					movesMap.put(new Tile(x+2,y-2),getTileContent(new Tile(x+1,y-1)));
 					lastTileInBias = new Tile(x+2,y-2);
+					break;
 				}
 				x++;
 				y--;
 			}
 			
 		}
-		
+		// if there is a kill in the queen moves , then dont search for cross board movements .
+		boolean flag = true;
+		for(Map.Entry<Tile, Soldier> searchForKill : movesMap.entrySet()) {
+			if(searchForKill.getValue() != null){
+				flag= false;
+			}
+		}
+		if(direction.equals("TR") && flag) {
+			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
+				movesMap.put(temp.getKey(), temp.getValue());
+			}
+		}else if(direction.equals("TL") && flag) {
+			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
+				movesMap.put(temp.getKey(), temp.getValue());
+			}
+		}else if(direction.equals("BL") && flag) {
+			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
+				movesMap.put(temp.getKey(), temp.getValue());
+			}
+		}else if(direction.equals("BR") && flag) {
+			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
+				movesMap.put(temp.getKey(), temp.getValue());
+			}
+		}
 		return movesMap;
 	}
 	
@@ -1126,26 +1153,45 @@ public class Game {
 					|| getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
 				if(getTileContent(new Tile(7,0)) == null) {
 					extraMoves.put(new Tile(7,0), getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
+					queen.getQueenMoves().put(new Tile(7,0), getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
 				}
 			}else if(lastTileInBias.getX() - 1 == 0 && (getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)).getSoldierNumber() == opSol || 
 					getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
 				if(getTileContent(new Tile(7,lastTileInBias.getY() + 1)) == null) {
 					extraMoves.put(new Tile(7,lastTileInBias.getY() + 1), getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)));
+					queen.getQueenMoves().put(new Tile(7,lastTileInBias.getY() + 1), getTileContent(new Tile(lastTileInBias.getX() - 1 , lastTileInBias.getY() + 1)));
 				}
 			}else if(lastTileInBias.getY() + 1 == 7 && (getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opSol || 
 					getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)).getSoldierNumber() == opQue)) {
 				if(getTileContent(new Tile(lastTileInBias.getX() - 1, 0)) == null) {
 					extraMoves.put(new Tile(lastTileInBias.getX() - 1, 0),getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
+					queen.getQueenMoves().put(new Tile(lastTileInBias.getX() - 1, 0),getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() + 1)));
 				}
 			}
 		}else if(direction.equals("TL")) {
-			
+			if(lastTileInBias.getX() == 0) {
+				extraMoves = topLeftMovement(queen, new Tile(7,lastTileInBias.getY() - 1));
+			}else if(lastTileInBias.getY() == 0) {
+				extraMoves = topLeftMovement(queen, new Tile(lastTileInBias.getX() - 1, 7));
+			}else if(lastTileInBias.getX() - 1 == 0 && (getTileContent(new Tile(lastTileInBias.getX() - 1, lastTileInBias.getY() - 1)).getSoldierNumber() == opSol || 
+					getTileContent(new Tile(lastTileInBias.getX() - 1, lastTileInBias.getY() - 1)).getSoldierNumber() == opQue)) {
+				if(getTileContent(new Tile(7,lastTileInBias.getY() - 1)) == null) {
+					extraMoves.put(new Tile(7,lastTileInBias.getY() - 1) , getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)));
+					queen.getQueenMoves().put(new Tile(7,lastTileInBias.getY() - 1) , getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)));
+				}
+			}else if(lastTileInBias.getY() - 1 == 0 &&(getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)).getSoldierNumber() == opSol ||
+					getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)).getSoldierNumber() == opQue)) {
+				if(getTileContent(new Tile(lastTileInBias.getX() - 1, 7 )) == null) {
+					extraMoves.put(new Tile(lastTileInBias.getX() - 1, 7), getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)));
+					queen.getQueenMoves().put(new Tile(lastTileInBias.getX() - 1, 7), getTileContent(new Tile(lastTileInBias.getX() - 1,lastTileInBias.getY() - 1)));
+				}
+			}
 		}else if(direction.equals("BR")) {
 			
 		}else if(direction.equals("BL")) {
 			
 		}
-		return null;
+		return extraMoves;
 	}
 	
 	public HashMap<Tile,Soldier> topRightMovement(Queen queen,Tile tile ){
@@ -1163,7 +1209,8 @@ public class Game {
 			opQue = 22;
 		}
 		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
-			toReturn.put(tile, null);
+			toReturn.put(new Tile(x,y), null);
+
 			x--;
 			y++;
 		}
@@ -1190,7 +1237,7 @@ public class Game {
 			opQue = 22;
 		}
 		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
-			toReturn.put(tile, null);
+			toReturn.put(new Tile(x,y), null);
 			x--;
 			y--;
 		}
@@ -1217,7 +1264,7 @@ public class Game {
 			opQue = 22;
 		}
 		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
-			toReturn.put(tile, null);
+			toReturn.put(new Tile(x,y), null);
 			x++;
 			y++;
 		}
@@ -1244,7 +1291,7 @@ public class Game {
 			opQue = 22;
 		}
 		while(isTileInFrame(new Tile(x,y)) && getTileContent(new Tile(x,y)) == null ) {
-			toReturn.put(tile, null);
+			toReturn.put(new Tile(x,y), null);
 			x++;
 			y--;
 		}

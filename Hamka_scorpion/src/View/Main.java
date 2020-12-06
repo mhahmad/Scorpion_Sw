@@ -115,17 +115,20 @@ public class Main  {
 		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
-		int[][] board = {{-1,2,-1,2,-1,2,-1,2},
-			          	 {2,-1,2,-1,2,-1,0,-1},
-			        	 {-1,0,-1,2,-1,2,-1,2},
+		int[][] board = {{-1,0,-1,2,-1,0,-1,0},
+			          	 {2,-1,0,-1,0,-1,0,-1},
+			        	 {-1,0,-1,22,-1,2,-1,2},
 		          		 {2,-1,1,-1,0,-1,0,-1},
 				         {-1,0,-1,0,-1,0,-1,1},
-				         {1,-1,11,-1,1,-1,0,-1},
-				         {-1,0,-1,1,-1,1,-1,1},
-				         {1,-1,1,-1,1,-1,1,-1}
+				         {1,-1,1,-1,1,-1,0,-1},
+				         {-1,0,-1,1,-1,1,-1,0},
+				         {0,-1,1,-1,1,-1,0,-1}
 };
 	
 	Game g = new Game("M","A",board);
+	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(2,3)), "TL"));
+	
+
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
 
 	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
