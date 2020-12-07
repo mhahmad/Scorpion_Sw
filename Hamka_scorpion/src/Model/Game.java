@@ -191,8 +191,18 @@ public class Game {
 		 return board.getSoldier(tile);
 	 }
 	 
-	 
-	 /*****************************  Code Regarding Moves ***************************\
+
+	 public Board getBoard() {
+		return board;
+	}
+
+
+	public void setBoard(Board board) {
+		this.board = board;
+	}
+
+
+	/*****************************  Code Regarding Moves ***************************\
 	 
 	 
 	 
