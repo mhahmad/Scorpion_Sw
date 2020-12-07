@@ -1238,19 +1238,19 @@ public class Game {
 					}
 				}
 			}
-		if(lastTileInBias != null && direction.equals("TR") && flag) {
+		if( direction.equals("TR") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(lastTileInBias != null && direction.equals("TL") && flag) {
+		}else if( direction.equals("TL") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(lastTileInBias != null && direction.equals("BL") && flag) {
+		}else if( direction.equals("BL") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(lastTileInBias != null && direction.equals("BR") && flag) {
+		}else if(direction.equals("BR") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}

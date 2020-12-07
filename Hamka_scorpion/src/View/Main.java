@@ -116,8 +116,8 @@ public class Main  {
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
 		int[][] board = {{-1,1,-1,0,-1,1,-1,0},
-			          	 {0,-1,0,-1,22,-1,0,-1},
-			        	 {-1,22,-1,2,-1,0,-1,0},
+			          	 {0,-1,0,-1,0,-1,22,-1},
+			        	 {-1,2,-1,2,-1,0,-1,0},
 		          		 {1,-1,1,-1,1,-1,22,-1},
 				         {-1,0,-1,0,-1,0,-1,0},
 				         {1,-1,1,-1,1,-1,0,-1},
@@ -126,8 +126,8 @@ public class Main  {
 };
 	
 	Game g = new Game("M","A",board);
-	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(6,5)) ));
-	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(6,5)), "BL"));
+	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(1,6)) ));
+	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
 
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
 
