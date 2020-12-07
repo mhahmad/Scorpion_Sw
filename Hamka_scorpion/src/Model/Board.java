@@ -123,7 +123,6 @@ public class Board {
 	
 	public ArrayList<Tile> getPlayerPositions(Color color){
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
-		
 		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
 			Soldier s =entry.getValue();
 			if(s!=null) {
