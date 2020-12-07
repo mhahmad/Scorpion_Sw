@@ -191,18 +191,17 @@ public class Game {
 		 return board.getSoldier(tile);
 	 }
 	 
-
 	 public Board getBoard() {
-		return board;
-	}
+	        return board;
+	    }
 
 
-	public void setBoard(Board board) {
-		this.board = board;
-	}
+	    public void setBoard(Board board) {
+	        this.board = board;
+	    }
 
 
-	/*****************************  Code Regarding Moves ***************************\
+	 /*****************************  Code Regarding Moves ***************************\
 	 
 	 
 	 
@@ -629,9 +628,17 @@ public class Game {
 		 }
 		 return  priorKills;
 	 }
-	 //Not complete
+	 
+	 
+	 /***
+	  * This method is responsible for moving queen accross the board :DD:D:D:D
+	  * @param queen
+	  * @param next
+	  * @param possibleMoves
+	  */
 	 public void queenMove(Queen queen, Tile next , HashMap<Tile,Soldier> possibleMoves) {
-		 if(queen == null || !isTileInFrame(next) || possibleMoves.containsKey(next)) {
+		 Color turn = getTurn();
+		 if(queen == null || !isTileInFrame(next) || !possibleMoves.containsKey(next)) {
 			 System.out.println("Wrong Input");
 			 return;
 		 }
@@ -639,10 +646,131 @@ public class Game {
 			 System.out.println("Cant go there, wrong destination");
 			 return;
 		 }
+		 else {
+			 int opSol,opQue;
+			 if(queen.getSoldierNumber() == 22) {
+				 opSol = 1;
+				 opQue = 11;
+			 }else {
+				 opSol = 2;
+				 opQue = 22;
+			 }
+			 if(!priorityKill(queen).isEmpty()) {
+				 if(priorityKill(queen).containsKey(next)) {
+					 Soldier middleKill = priorityKill(queen).get(next);
+					 String type = "";
+					 if(middleKill.getSoldierNumber() == opSol) {
+						 type = "soldier";
+					 }else {
+						 type = "queen";
+					 }
+					 board.removeSoldier(middleKill, middleKill.getPosition());
+					 board.removeSoldier(queen, queen.getPosition());
+					 board.setSoldier(queen, next);
+					 System.out.println("Queen moved to " + next.getX() + " , " + next.getY() + " and killed an enemy " + type);
+					 if(type.equals("soldier")) {
+						 if(opSol == 1) {
+							 this.whitePlayerSoldiers--;
+							 this.blackPlayerPoints+=100;
+						 }
+						 else {
+							 this.blackPlayerSoldiers--;
+							 this.whitePlayerPoints+=100;
+						 }
+					 }else if(type.equals("queen")) {
+						 if(opSol == 1) {
+							 this.whitePlayerQueens--;
+							 this.blackPlayerPoints+=100;
+						 }
+						 else {
+							 this.blackPlayerQueens--;
+							 this.whitePlayerPoints+=100;
+						 }
+					 }
+				 }else {
+					 System.out.println("You missed a prior kill , therefore your queen is burned");
+					 board.removeSoldier(queen, queen.getPosition());
+				 }
+			 }else if(((getKills(turn) != null && !getKills(turn).isEmpty()) || (getAllQueensKills(turn) != null &&!getAllQueensKills(turn).isEmpty())) && possibleMoves.get(next) == null) {
+				 if(!getKills(turn).isEmpty()) {
+					 System.out.println(getKills(turn).isEmpty());
+					 Soldier soldier = getTileContent(getSoldierWithKill(turn));
+					 board.removeSoldier(soldier, soldier.getPosition());
+					 board.removeSoldier(queen, queen.getPosition());
+					 board.setSoldier(queen, next);
+					 System.out.println("Queen moved to " + next + ", but your soldier in "+ soldier.getPosition()+" is burned");
+					 if(soldier.getSoldierNumber() == 2) 
+						 this.blackPlayerSoldiers--;
+					 else
+						 this.whitePlayerSoldiers--;
+				 }else if(!getAllQueensKills(turn).isEmpty()) {
+					 Queen queenToBurn = getQueenWithKill(turn);
+					 board.removeSoldier(queenToBurn, queenToBurn.getPosition());
+					 board.removeSoldier(queen, queen.getPosition());
+					 board.setSoldier(queen, next);
+					 System.out.println("Queen moved to " + next + ", but your queen in "+ queenToBurn.getPosition()+" is burned");
+					 if(queenToBurn.getSoldierNumber() == 22)
+						 this.blackPlayerQueens--;
+					 else
+						 this.whitePlayerQueens--;
+				 }
+			 }else {
+				 if(possibleMoves.get(next) != null) {
+					 Soldier sol = possibleMoves.get(next);
+					 if(sol.getSoldierNumber() == opSol) {
+						 System.out.println("Queen moved to " +next +" and killed enemy soldier in " + sol.getPosition());
+						 if(opSol == 2) {
+							 this.blackPlayerSoldiers--;
+							 this.whitePlayerPoints+=100;
+						 }
+						 else {
+							 this.blackPlayerPoints+=100;
+							 this.whitePlayerSoldiers--;
+						 }
+					 }else if (sol.getSoldierNumber() == opQue) {
+						 System.out.println("Queen moved to " +next +" and killed enemy queen in " + sol.getPosition());
+						 if(opQue == 22) {
+							 this.blackPlayerQueens--;
+							 this.whitePlayerPoints+=100;
+						 }
+						 else {
+							 this.blackPlayerPoints+=100;
+							 this.whitePlayerQueens--;
+						 }
+					 }
+					 board.removeSoldier(sol, sol.getPosition());
+					 board.removeSoldier(queen, queen.getPosition());
+					 board.setSoldier(queen, next);
+				 }else {
+					 System.out.println("Queen moved to " + next);
+					 board.removeSoldier(queen, queen.getPosition());
+					 board.setSoldier(queen, next);
+				 }
+			 }
+		 }
 	 }
 	 
 	 
+	 public ArrayList<Tile> getAllQueensKills(Color turn){
+		 ArrayList<Tile> allKills = new ArrayList<>();
+		 for(Tile t: board.getPlayerPositions(turn)) {
+			 if(getTileContent(t).getSoldierNumber() == 22 || getTileContent(t).getSoldierNumber()==11)
+				 if(priorityKill((Queen)getTileContent(t)) != null && !priorityKill((Queen)getTileContent(t)).isEmpty()) {
+					 allKills.addAll(priorityKill((Queen)getTileContent(t)).keySet());
+				 }
+		 }
+		 return allKills;
+	 }
 	 
+	 public Queen getQueenWithKill(Color turn) {
+		 for(Tile t: board.getPlayerPositions(turn)) {
+			 if(getTileContent(t).getSoldierNumber() == 22 || getTileContent(t).getSoldierNumber()==11)
+				 if(priorityKill((Queen)getTileContent(t)) != null || !priorityKill((Queen)getTileContent(t)).isEmpty()) {
+					 return (Queen)getTileContent(t);
+				 }
+		 }
+		 return null;
+	 }
 //		public void moveQueen(Queen queen , Tile next , HashMap<Tile,Soldier> possibleMoves) {
 //			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
 //				System.out.println("Wrong Input");
@@ -763,28 +891,62 @@ public class Game {
 		 * @return
 		 */
 		public ArrayList<Tile> getKills(Color turn){
-			if(turn == null) return null;
-			ArrayList<Tile> blackKillsMoves = new ArrayList<Tile>();
-			ArrayList<Tile> whiteKillsMoves = new ArrayList<Tile>();
-			ArrayList<Tile> tiles = board.getPlayerPositions(turn);
-			for(Tile t : tiles) {
-				if( getTileContent(t).getSoldierNumber()==2 &&  turn.equals(Color.Black)) {
-					ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board.getSoldier(t));
-					if(ifKillExist(t, possibleMoves)) {
-						blackKillsMoves.addAll(getKillMove(possibleMoves, t));
-					}
-				}else if(getTileContent(t).getSoldierNumber()==1 && turn.equals(Color.White)) {
-					ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board.getSoldier(t));
-					if(ifKillExist(t, possibleMoves)) {
-						whiteKillsMoves.addAll(getKillMove(possibleMoves, t));
-					}
-				}
-			}
-				if(turn.equals(Color.Black)) {
-					return blackKillsMoves;
-				}
-					return whiteKillsMoves;
-		}
+            if(turn == null) return null;
+            ArrayList<Tile> blackKillsMoves = new ArrayList<Tile>();
+            ArrayList<Tile> whiteKillsMoves = new ArrayList<Tile>();
+            ArrayList<Tile> tiles = board.getPlayerPositions(turn);
+            for(Tile t : tiles) {
+                if( getTileContent(t).getSoldierNumber()==2 &&  turn.equals(Color.Black)) {
+                    ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board.getSoldier(t));
+                    if(ifKillExist(t, possibleMoves)) {
+                        blackKillsMoves.addAll(getKillMove(possibleMoves, t));
+                    }
+                }else if(getTileContent(t).getSoldierNumber()==1 && turn.equals(Color.White)) {
+                    ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board.getSoldier(t));
+                    if(ifKillExist(t, possibleMoves)) {
+                        whiteKillsMoves.addAll(getKillMove(possibleMoves, t));
+                    }
+                }
+            }
+                if(turn.equals(Color.Black)) {
+                    return blackKillsMoves;
+                }
+                    return whiteKillsMoves;
+        }
+//		public ArrayList<Tile> getKills(Color turn){
+//			if(turn == null) return null;
+//			ArrayList<Tile> blackKillsMoves = new ArrayList<Tile>();
+//			ArrayList<Tile> whiteKillsMoves = new ArrayList<Tile>();
+//			HashMap<Tile,Soldier> queenKills = new HashMap<>();
+//			ArrayList<Tile> tiles = board.getPlayerPositions(turn);
+//			System.out.println(tiles);
+//			for(Tile t : tiles) {
+//				System.out.println(t);
+//				if( getTileContent(t).getSoldierNumber()==2 &&  turn.equals(Color.Black)) {
+//					ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board.getSoldier(t));
+//					if(ifKillExist(t, possibleMoves)) {
+//						blackKillsMoves.addAll(getKillMove(possibleMoves, t));
+//					}
+//				}else if(getTileContent(t).getSoldierNumber()==22 &&  turn.equals(Color.Black)){
+//					queenKills = priorityKill((Queen)getTileContent(t));
+//					if(queenKills != null)
+//						blackKillsMoves.addAll(queenKills.keySet());
+//				}else if(getTileContent(t).getSoldierNumber()==1 && turn.equals(Color.White)) {
+//					ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board.getSoldier(t));
+//					if(ifKillExist(t, possibleMoves)) {
+//						whiteKillsMoves.addAll(getKillMove(possibleMoves, t));
+//					}
+//				}else if(getTileContent(t).getSoldierNumber()==11 && turn.equals(Color.White)) {
+//					queenKills = priorityKill((Queen)getTileContent(t));
+//					if(queenKills != null)
+//						whiteKillsMoves.addAll(queenKills.keySet());
+//				}
+//			}
+//				if(turn.equals(Color.Black)) {
+//					return blackKillsMoves;
+//				}
+//					return whiteKillsMoves;
+//		}
 	 /***
 	  * This method returns the coordinate of the enemy soldier that sits between current position and next position
 	  * @param color
@@ -1777,7 +1939,59 @@ public class Game {
 		}
 		return movesToReturn;
 	}
+	
+	
 	*/
+	public HashMap<Tile,Soldier> getQueenAllDirectionsMoves(Queen queen){
+		HashMap<Tile,Soldier> allMoves = new HashMap<>();
+		 allMoves.putAll(getQueenBiasMoves(queen, "TR"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "TL"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "BR"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "BL"));
+		 return allMoves;
+	}
+	
+	/***
+	 * This method checks if there are no more moves for the player to make.
+	 * @param turn
+	 * @return
+	 */
+	public boolean noMoreMovesForPlayer(Color turn) {
+		ArrayList<Tile> blackMoves = new ArrayList<Tile>();
+		ArrayList<Tile> whiteMoves = new ArrayList<Tile>();
+		if(turn.equals(Color.Black)) {
+			for(Tile tile : board.getPlayerPositions(Color.Black)) {
+				if(getTileContent(tile).getSoldierNumber() == 2) {
+					if(getPossibleMovesForBlackSoldier(getTileContent(tile)) != null) {
+						blackMoves.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
+					}
+				}else if(getTileContent(tile).getSoldierNumber() == 22) {
+					if(getQueenAllDirectionsMoves((Queen)getTileContent(tile)) != null) {
+						blackMoves.addAll(getQueenAllDirectionsMoves((Queen)getTileContent(tile)).keySet());
+					}
+				}
+			}
+		}else {
+		
+			for(Tile tile : board.getPlayerPositions(Color.White)) {
+				if(getTileContent(tile).getSoldierNumber() == 1) {
+					if(getPossibleMovesForWhiteSoldier(getTileContent(tile)) != null) {
+						whiteMoves.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
+					}
+				}else if(getTileContent(tile).getSoldierNumber() == 11) {
+					if(getQueenAllDirectionsMoves((Queen)getTileContent(tile)) != null) {
+						whiteMoves.addAll(getQueenAllDirectionsMoves((Queen)getTileContent(tile)).keySet());
+					}
+				}
+			}
+		}
+		
+		if(turn.equals(Color.Black) && blackMoves.isEmpty())
+			return true;
+		if(turn.equals(Color.White) && whiteMoves.isEmpty())
+			return true;
+		return false;
+	}	
 	/***
 	 * Checks if the game is over or not.
 	 * @return
