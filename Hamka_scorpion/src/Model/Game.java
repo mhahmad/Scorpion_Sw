@@ -584,59 +584,108 @@ public class Game {
 		 }
 		 return true;
 	 }
-		public void moveQueen(Soldier s , Tile next , HashMap<Tile,Tile> possibleMoves) {
-			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
-				System.out.println("Wrong Input");
-				return;
-			}
-			else if(board.getSoldier(next).getSoldierNumber() != 0) {
-				System.out.println("Wrong Destination");
-				return;
-			}
-			else {
-				Tile cur = board.getTileOfSoldier(s);
-				if(s.getSoldierNumber() == 22) {
-					board.removeSoldier(s, cur);
-					board.setSoldier(s, next);
-					if(possibleMoves.get(next) == null) {
-						System.out.println("You have moved your queen from " + cur + " to " + next);
-					}else {
-						Tile midKill = possibleMoves.get(next);
-						Soldier midKillSol = board.getSoldier(midKill);
-						board.removeSoldier(midKillSol,midKill);
-						if(getTileContent(midKill).getSoldierNumber() == 1)
-							this.whitePlayerSoldiers--;
-						else
-							this.whitePlayerQueens--;
-						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
-						this.blackPlayerPoints+=100;
-					}
-				}else if ( s.getSoldierNumber() == 11) {
-					board.removeSoldier(s, cur);
-					board.setSoldier(s, next);
-					if(possibleMoves.get(next) == null) {
-						System.out.println("You have moved your queen from " + cur + " to " + next);
-					}else {
-						Tile midKill = possibleMoves.get(next);
-						Soldier midKillSol = board.getSoldier(midKill);
-						board.removeSoldier(midKillSol, midKill);
-						if(getTileContent(midKill).getSoldierNumber() == 2)
-							this.blackPlayerSoldiers--;
-						else
-							this.blackPlayerQueens--;
-						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
-						this.whitePlayerPoints+=100;
-					}
-				}
-			}
-			
+	 
+	 /***
+	  * This method returns a hashmap of priority moves(kills) for queen.
+	  * @param queen
+	  * @return
+	  */
+	 public HashMap<Tile,Soldier> priorityKill(Queen queen){
+		 HashMap<Tile,Soldier> allMoves = new HashMap<Tile,Soldier>();
+		 HashMap<Tile,Soldier> killsMoves  = new HashMap<>();
+		 HashMap<Tile,Soldier> priorKills = new HashMap<>();
+		 allMoves.putAll(getQueenBiasMoves(queen, "TR"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "TL"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "BR"));
+		 allMoves.putAll(getQueenBiasMoves(queen, "BL"));
+		 
+		 for(Map.Entry<Tile, Soldier> temp : allMoves.entrySet()) {
+			 if(temp.getValue() != null) {
+				 killsMoves.put(temp.getKey(), temp.getValue());
+			 }
+		 }
+		 
+		 for(Map.Entry<Tile, Soldier> temp : killsMoves.entrySet()) {
+			 if(temp.getValue().getPosition().getX() == 0 && temp.getValue().getPosition().getY() == 7 && ((queen.getPosition().getX() == 7 && queen.getPosition().getY() == 0) 
+					 || (queen.getPosition().getX() == 1 && queen.getPosition().getY() == 6))) {
+				 priorKills.put(temp.getKey(), temp.getValue());
+			 }else if (temp.getValue().getPosition().getX() == 7 && temp.getValue().getPosition().getY() == 0 && ((queen.getPosition().getX() == 0 && queen.getPosition().getY()==7) 
+					 || (queen.getPosition().getX() == 6 && queen.getPosition().getY() == 1))) {
+				 priorKills.put(temp.getKey(), temp.getValue());
+			 }else if(temp.getValue().getPosition().getX() - 1 == queen.getPosition().getX() || temp.getValue().getPosition().getX() + 1 == queen.getPosition().getX() ||
+					 temp.getValue().getPosition().getY() + 1 == queen.getPosition().getY() || temp.getValue().getPosition().getY() - 1 == queen.getPosition().getY()) {
+				 priorKills.put(temp.getKey(), temp.getValue());
+			 }
+		 }
+		 return  priorKills;
+	 }
+	 //Not complete
+	 public void queenMove(Queen queen, Tile next , HashMap<Tile,Soldier> possibleMoves) {
+		 if(queen == null || !isTileInFrame(next) || possibleMoves.containsKey(next)) {
+			 System.out.println("Wrong Input");
+			 return;
+		 }
+		 else if(board.getSoldier(next) != null) {
+			 System.out.println("Cant go there, wrong destination");
+			 return;
+		 }
+	 }
+	 
+	 
+	 
+//		public void moveQueen(Queen queen , Tile next , HashMap<Tile,Soldier> possibleMoves) {
+//			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
+//				System.out.println("Wrong Input");
+//				return;
+//			}
+//			else if(board.getSoldier(next).getSoldierNumber() != 0) {
+//				System.out.println("Wrong Destination");
+//				return;
+//			}
+//			else {
+//				Tile cur = board.getTileOfSoldier(queen);
+//				if(queen.getSoldierNumber() == 22) {
+//					board.removeSoldier(queen, cur);
+//					board.setSoldier(queen, next);
+//					if(possibleMoves.get(next) == null) {
+//						System.out.println("You have moved your queen from " + cur + " to " + next);
+//					}else {
+//						Tile midKill = possibleMoves.get(next);
+//						Soldier midKillSol = board.getSoldier(midKill);
+//						board.removeSoldier(midKillSol,midKill);
+//						if(getTileContent(midKill).getSoldierNumber() == 1)
+//							this.whitePlayerSoldiers--;
+//						else
+//							this.whitePlayerQueens--;
+//						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
+//						this.blackPlayerPoints+=100;
+//					}
+//				}else if ( queen.getSoldierNumber() == 11) {
+//					board.removeSoldier(queen, cur);
+//					board.setSoldier(queen, next);
+//					if(possibleMoves.get(next) == null) {
+//						System.out.println("You have moved your queen from " + cur + " to " + next);
+//					}else {
+//						Tile midKill = possibleMoves.get(next);
+//						Soldier midKillSol = board.getSoldier(midKill);
+//						board.removeSoldier(midKillSol, midKill);
+//						if(getTileContent(midKill).getSoldierNumber() == 2)
+//							this.blackPlayerSoldiers--;
+//						else
+//							this.blackPlayerQueens--;
+//						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
+//						this.whitePlayerPoints+=100;
+//					}
+//				}
+//			}
+//			
 //			for(int i = 0 ; i < 8; i++) {
 //				for(int j = 0; j < 8; j++) 
 //					System.out.print(gameBoard[i][j] + ",");
 //				 System.out.println();
 				
 		//	}
-		}
+		//}
 		
 		public void moveStreak(Soldier solWithKillStreak,Soldier currentSol , Tile nextMove) {
 			if(solWithKillStreak == null || currentSol == null || !isTileInFrame(nextMove)) {
@@ -1110,19 +1159,19 @@ public class Game {
 				flag= false;
 			}
 		}
-		if(direction.equals("TR") && flag) {
+		if(lastTileInBias != null && direction.equals("TR") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(direction.equals("TL") && flag) {
+		}else if(lastTileInBias != null && direction.equals("TL") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(direction.equals("BL") && flag) {
+		}else if(lastTileInBias != null && direction.equals("BL") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
-		}else if(direction.equals("BR") && flag) {
+		}else if(lastTileInBias != null && direction.equals("BR") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
 			}
@@ -1146,6 +1195,10 @@ public class Game {
 		}else {
 			opSol = 2;
 			opQue = 22;
+		}
+		
+		if(lastTileInBias == null) {
+			lastTileInBias = queen.getPosition();
 		}
 		if(direction.equals("TR")) {
 			if(lastTileInBias.getX() == 0 && lastTileInBias.getY() == 7) {
@@ -1380,6 +1433,8 @@ public class Game {
 		}
 		return toReturn;
 	}
+	
+	
 	/***
 	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
 	 * @param obj
