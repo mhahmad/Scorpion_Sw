@@ -115,19 +115,19 @@ public class Main  {
 		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
-		int[][] board = {{-1,1,-1,2,-1,0,-1,22},
-			          	 {2,-1,0,-1,1,-1,1,-1},
-			        	 {-1,0,-1,2,-1,0,-1,0},
-		          		 {0,-1,1,-1,1,-1,1,-1},
+		int[][] board = {{-1,1,-1,0,-1,1,-1,0},
+			          	 {0,-1,0,-1,22,-1,0,-1},
+			        	 {-1,22,-1,2,-1,0,-1,0},
+		          		 {1,-1,1,-1,1,-1,22,-1},
 				         {-1,0,-1,0,-1,0,-1,0},
-				         {0,-1,1,-1,1,-1,1,-1},
-				         {-1,0,-1,1,-1,1,-1,0},
-				         {1,-1,0,-1,1,-1,0,-1}
+				         {1,-1,1,-1,1,-1,0,-1},
+				         {-1,0,-1,1,-1,22,-1,0},
+				         {1,-1,0,-1,1,-1,1,-1}
 };
 	
 	Game g = new Game("M","A",board);
-	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(0,7)) ));
-	
+	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(6,5)) ));
+	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(6,5)), "BL"));
 
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
 

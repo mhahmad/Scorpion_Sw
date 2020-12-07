@@ -1159,6 +1159,85 @@ public class Game {
 				flag= false;
 			}
 		}
+		
+		if(lastTileInBias == null ) {
+			if(direction.equals("TR")) {
+				if(queen.getPosition().getX() - 1 == 0 && queen.getPosition().getY() + 1 == 7 && (getTileContent(new Tile(0,7)) != null && (getTileContent(new Tile(0,7)).getSoldierNumber() == opSol ||
+						getTileContent(new Tile(0,7)).getSoldierNumber() == opQue))) {
+					if(getTileContent(new Tile(7,0)) == null) {
+						queen.getQueenMoves().put(new Tile(7,0),getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() + 1)));
+						movesMap.put(new Tile(7,0),getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() + 1)));
+					}
+				}else if(queen.getPosition().getX() - 1 == 0 && queen.getPosition().getY() + 1 != 7 &&getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)) != null && 
+					 (getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)).getSoldierNumber() == opSol || getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)).getSoldierNumber() == opQue)){
+							if(getTileContent(new Tile(7,queen.getPosition().getY() + 2)) == null) {
+								movesMap.put(new Tile(7,queen.getPosition().getY()+2),getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)));
+								queen.getQueenMoves().put(new Tile(7,queen.getPosition().getY()+2),getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)));
+							}
+						}else if(queen.getPosition().getY() + 1 == 7 && queen.getPosition().getX() - 1 != 0 && getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() + 1)) != null
+								&& (getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opSol || getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opQue)) {
+							if(getTileContent(new Tile(queen.getPosition().getX() - 2, 0)) == null) {
+								movesMap.put(new Tile(queen.getPosition().getX() - 2,0),getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)));
+								queen.getQueenMoves().put(new Tile(queen.getPosition().getX() - 2,0),getTileContent(new Tile(queen.getPosition().getX()-1,queen.getPosition().getY()+1)));
+							}
+						}
+				}else if(direction.equals("BR")) {
+					if(queen.getPosition().getX() + 1 ==7 && getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1))!=null &&
+							(getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opSol ||
+							getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(0,queen.getPosition().getY() + 2)) == null && isTileInFrame(new Tile(0,queen.getPosition().getY() + 2))) {
+							queen.getQueenMoves().put(new Tile(0,queen.getPosition().getY() + 2),getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)));
+							movesMap.put(new Tile(0,queen.getPosition().getY() + 2),getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)));
+						}
+					}else if(queen.getPosition().getY() + 1 == 7 && getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1))!=null
+							&& (getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opSol ||
+							getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(queen.getPosition().getX() + 2,0)) == null) {
+							queen.getQueenMoves().put(new Tile(queen.getPosition().getX() + 2,0), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)));
+							movesMap.put(new Tile(queen.getPosition().getX() + 2,0), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() + 1)));
+						}
+					}
+				}else if(direction.equals("TL")) {
+					if(queen.getPosition().getX() - 1 == 0 && getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)) != null 
+							&& (getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opSol || 
+									getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(7,queen.getPosition().getY() - 2)) == null && isTileInFrame(new Tile(7,queen.getPosition().getY() - 2))) {
+							movesMap.put(new Tile(7,queen.getPosition().getY() - 2), getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)));
+							queen.getQueenMoves().put(new Tile(7,queen.getPosition().getY() - 2), getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)));
+						}
+					}else if(queen.getPosition().getY() - 1 == 0 && getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)) != null 
+							&& (getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opSol || 
+									getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(queen.getPosition().getX() - 2,7)) == null && isTileInFrame(new Tile(queen.getPosition().getX() - 2,7))) {
+							movesMap.put(new Tile(queen.getPosition().getX() - 2,7), getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY()-1)));
+							queen.getQueenMoves().put(new Tile(queen.getPosition().getX() - 2,7), getTileContent(new Tile(queen.getPosition().getX() - 1,queen.getPosition().getY()-1)));
+						}
+					}
+				}else if(direction.equals("BL")) {
+					if(queen.getPosition().getX() + 1 == 7 && queen.getPosition().getY() - 1 == 0 && getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)) != null
+							&& (getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opSol || 
+									getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(0,7)) == null) {
+							movesMap.put(new Tile(0,7), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+							queen.getQueenMoves().put(new Tile(0,7), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+						}
+					}else if(queen.getPosition().getX()+ 1 == 7 && queen.getPosition().getY() - 1!= 0 && getTileContent(new Tile(queen.getPosition().getX()+1,queen.getPosition().getY() -1)) != null
+							&& (getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opSol || 
+									getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(0,queen.getPosition().getY() - 2)) == null && isTileInFrame(new Tile(0,queen.getPosition().getY() -2))) {
+							movesMap.put(new Tile(0,queen.getPosition().getY() - 2), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+							queen.getQueenMoves().put(new Tile(0,queen.getPosition().getY() - 2), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+						}
+					}else if(queen.getPosition().getY() -1 == 0 && queen.getPosition().getX()+ 1 != 7 && getTileContent(new Tile(queen.getPosition().getX()+1,queen.getPosition().getY()-1))!= null && 
+							(getTileContent(new Tile(queen.getPosition().getX()+1,queen.getPosition().getY() - 1)).getSoldierNumber() == opSol || 
+							getTileContent(new Tile(queen.getPosition().getX()+1,queen.getPosition().getY() - 1)).getSoldierNumber() == opQue)) {
+						if(getTileContent(new Tile(queen.getPosition().getX() + 2, 7)) == null && isTileInFrame(new Tile(queen.getPosition().getX() + 2,7))) {
+							movesMap.put(new Tile(queen.getPosition().getX() + 2,7), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+							queen.getQueenMoves().put(new Tile(queen.getPosition().getX() + 2,7), getTileContent(new Tile(queen.getPosition().getX() + 1,queen.getPosition().getY() - 1)));
+						}
+					}
+				}
+			}
 		if(lastTileInBias != null && direction.equals("TR") && flag) {
 			for(Map.Entry<Tile, Soldier> temp : getCrossBoardMoves(queen, lastTileInBias, direction).entrySet()) {
 				movesMap.put(temp.getKey(), temp.getValue());
