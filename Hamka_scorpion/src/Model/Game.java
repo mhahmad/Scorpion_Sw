@@ -1236,6 +1236,7 @@ public class Game {
 	}
 	
 	
+	
 	/*** RED TILE ***
 	 * This method generates a random red tile from the player's possible moves and returns it.
 	 * @param turn
