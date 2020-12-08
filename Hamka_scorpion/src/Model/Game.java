@@ -1244,7 +1244,7 @@ public class Game {
 	public Tile generateRedTile(Color turn) {
         if(turn == null) return null;
         ArrayList<Tile> candidates = new ArrayList<Tile>();
-       if(getKills(turn)!= null && getKills(turn).size()>0) {
+       if(getKills(turn)== null || getKills(turn).size()< 1) {
            for(Tile tile : board.getPlayerPositions(turn)) {
 
                if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null) {
@@ -1257,7 +1257,13 @@ public class Game {
        int max = candidates.size();
      //  System.out.println(candidates);
        int random = (int)(Math.random()*max);
+       System.out.println(" red Tile Feild random : "+ random);
+       System.out.println(candidates +" this is candidates ! ");
+       if(candidates.size() > random)
         return candidates.get(random);
+
+       System.out.println("Returning  NULLL ! ");
+       return null ; 
     }
 	
 	

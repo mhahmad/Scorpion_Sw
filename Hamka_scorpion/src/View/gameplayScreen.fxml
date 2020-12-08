@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -11,48 +13,168 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.gameplayScreenController">
    <children>
-      <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0">
+      <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
-            <Pane layoutX="256.0" layoutY="122.0" prefHeight="576.0" prefWidth="565.0" style="-fx-background-color: FBF5E2;">
+            <Pane layoutX="252.0" layoutY="130.0" prefHeight="573.0" prefWidth="573.0" style="-fx-background-color: FBF5E2; -fx-border-color: #000000;">
                <children>
-                  <Pane layoutX="29.0" layoutY="38.0" prefHeight="512.0" prefWidth="506.0" style="-fx-border-color: #000000; -fx-border-radius: 3;" />
-                  <Pane layoutX="22.0" layoutY="31.0" prefHeight="527.0" prefWidth="520.0" style="-fx-border-color: #000000; -fx-border-width: 3;" />
-                  <Label layoutX="55.0" layoutY="4.0" text="A">
+                  <Pane layoutX="26.0" layoutY="23.0" prefHeight="526.0" prefWidth="520.0" style="-fx-border-color: #000000; -fx-border-width: 3;" />
+                  <Pane layoutX="33.0" layoutY="30.0" prefHeight="512.0" prefWidth="506.0" style="-fx-border-color: #000000; -fx-border-radius: 3;" />
+                  <Label layoutX="61.0" text="A">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="118.0" layoutY="4.0" text="B">
+                  <Label layoutX="124.0" text="B">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="181.0" layoutY="4.0" text="C">
+                  <Label layoutX="187.0" text="C">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="244.0" layoutY="4.0" text="D">
+                  <Label layoutX="250.0" text="D">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="307.0" layoutY="4.0" text="E">
+                  <Label layoutX="313.0" text="E">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="370.0" layoutY="4.0" text="F">
+                  <Label layoutX="376.0" text="F">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="433.0" layoutY="4.0" text="G">
+                  <Label layoutX="439.0" text="G">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <Label layoutX="496.0" layoutY="4.0" text="H">
+                  <Label layoutX="502.0" text="H">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="502.0" layoutY="548.0" text="A">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="439.0" layoutY="548.0" text="B">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="376.0" layoutY="548.0" text="C">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="313.0" layoutY="548.0" text="D">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="250.0" layoutY="548.0" text="E">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="187.0" layoutY="548.0" text="F">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="124.0" layoutY="548.0" text="G">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="61.0" layoutY="548.0" text="H">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="49.0" text="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="113.0" text="2">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="178.0" text="3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="241.0" text="4">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="306.0" text="5">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="367.0" text="6">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="431.0" text="7">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="9.0" layoutY="496.0" text="8">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="49.0" text="1">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="113.0" text="2">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="178.0" text="3">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="241.0" text="4">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="306.0" text="5">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="367.0" text="6">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="431.0" text="7">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="555.0" layoutY="496.0" text="8">
                      <font>
                         <Font size="16.0" />
                      </font>
@@ -169,6 +291,27 @@
                   </VBox>
                </children>
             </HBox>
+            <Pane layoutX="42.0" layoutY="4.0" prefHeight="48.0" prefWidth="981.0" style="-fx-background-color: #4D0000;" />
+            <ImageView fitHeight="32.0" fitWidth="39.0" layoutX="85.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../bin/Resources/blackSoldier.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="34.0" fitWidth="32.0" layoutX="938.0" layoutY="69.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../bin/Resources/whiteSoldier.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="p1" layoutX="126.0" layoutY="74.0" text="Player 1" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="p2" layoutX="875.0" layoutY="71.0" text="Player 2" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

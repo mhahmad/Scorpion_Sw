@@ -395,6 +395,7 @@ public class gameplayScreenController extends Application implements Initializab
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
 		//tile1.setStyle("-fx-background-color: yellow");
+		GenerateYellowTiles(scene);
 		Button currentTile;
 		Board gBoard = game.getBoard();
 		int[][] board = gBoard.getBoard();
@@ -779,6 +780,133 @@ public class gameplayScreenController extends Application implements Initializab
 
 	}
 
+	//------------------------------colored tiles  ;
+	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
+	        //Clear all Empty Tiles 
+
+	        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+	            String possibleTile = tile.getX()+","+tile.getY();
+	            String check = null;
+	            String key = null;
+	            for (String ks : tilesBoardMap.keySet()) {
+	                check = tilesBoardMap.get(ks);
+	                if(check!=null) {
+	                    if(check.equals(possibleTile)) {
+	                        key = ks;
+	                        System.out.println(key);
+	                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+	                        //break;
+	                    }
+	                }
+	            }
+	        }
+
+
+	        // color 3 random Empty tiles
+	     Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+	     if(redTile != null ) { 
+	            String possibleTile = redTile.getX()+","+redTile.getY();
+	            String check = null;
+	            String key = null;
+	            for (String ks : tilesBoardMap.keySet()) {
+	                check = tilesBoardMap.get(ks);
+	                if(check!=null) {
+	                    if(check.equals(possibleTile)) {
+	                        key = ks;
+	                        System.out.println("should be red  :: "+key);
+	                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+	                        break;
+	                    }
+	                }
+	            }
+	     }
+
+	    }
+	
+	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
+        //Clear all Empty Tiles 
+
+//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+//            String possibleTile = tile.getX()+","+tile.getY();
+//            String check = null;
+//            String key = null;
+//            for (String ks : tilesBoardMap.keySet()) {
+//                check = tilesBoardMap.get(ks);
+//                if(check!=null) {
+//                    if(check.equals(possibleTile)) {
+//                        key = ks;
+//                        System.out.println(key);
+//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+//                        //break;
+//                    }
+//                }
+//            }
+//        }
+
+
+        // color 3 random Empty tiles
+        for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
+            String possibleTile = tile.getX()+","+tile.getY();
+            String check = null;
+            String key = null;
+            for (String ks : tilesBoardMap.keySet()) {
+                check = tilesBoardMap.get(ks);
+                if(check!=null) {
+                    if(check.equals(possibleTile)) {
+                        key = ks;
+                        System.out.println("should be orange  :: "+key);
+                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+	
+	
+	public void GenerateYellowTiles( Scene s)  {
+        //Clear all Empty Tiles 
+        System.out.println("empty Tiles : "+this.game.getBoard().getEmptyTiles());
+
+        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+            String possibleTile = tile.getX()+","+tile.getY();
+            String check = null;
+            String key = null;
+            for (String ks : tilesBoardMap.keySet()) {
+                check = tilesBoardMap.get(ks);
+                if(check!=null) {
+                    if(check.equals(possibleTile)) {
+                        key = ks;
+                        System.out.println(key);
+                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+                        //break;
+                    }
+                }
+            }
+        }
+
+
+        // color 3 random Empty tiles
+        for (Tile tile : this.game.generateYellowTiles()) {
+            String possibleTile = tile.getX()+","+tile.getY();
+            String check = null;
+            String key = null;
+            for (String ks : tilesBoardMap.keySet()) {
+                check = tilesBoardMap.get(ks);
+                if(check!=null) {
+                    if(check.equals(possibleTile)) {
+                        key = ks;
+                        System.out.println(key);
+                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #c8de59;");;
+                        break;
+                    }
+                }
+            }
+        }
+
+
+    }
 
 	public Button getButtonById(String id) {
 		//Button toReturn =null;
