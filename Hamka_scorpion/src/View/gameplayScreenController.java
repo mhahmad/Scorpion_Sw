@@ -481,7 +481,7 @@ public class gameplayScreenController extends Application implements Initializab
 							game.handTurn(); //Switch  turn to white.
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
-							//break;
+							break;
 
 							//							System.out.println("Yes" + currentTile.getId());
 							//							System.out.println();
@@ -554,13 +554,9 @@ public class gameplayScreenController extends Application implements Initializab
 						int coordinateI = t.getX();
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
-							//	Button to = getButtonById(currentTile.getId());
-							//to.setGraphic(blackSoldier);
-							//Button from = getButtonById(clickedSoldier);
-							//	from.setGraphic(null);
+
 							String prev = tilesBoardMap.get(clickedSoldier);
-							//System.out.println("sdsds" + prev);
-							//Convert tile to i,j
+
 							String[] parts2= prev.split(",");
 							String part21 = parts2[0]; 
 							String part22 = parts2[1]; 
@@ -576,19 +572,10 @@ public class gameplayScreenController extends Application implements Initializab
 							game.handTurn(); //Switch  turn to black.
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
-							//break;
+							break;
 
-							//							System.out.println("Yes" + currentTile.getId());
-							//							System.out.println();
-							//							System.out.println();
-							//	board = game.getBoard();
-							//	System.out.println("Game id: " + game.getGameID());
 
 						}
-						//Else don't do anything.
-						//						else {
-						//							System.out.println("Nope");
-						//						}
 
 					}
 					refreshBoard(game,scene, root);
@@ -599,9 +586,7 @@ public class gameplayScreenController extends Application implements Initializab
 				//*change selection icon
 				refreshBoard(game, scene, root);
 				if(clickedSoldier==null) {
-					//			System.out.println("Here");
 					System.out.println(b);
-					//			System.out.println("End");
 					b.setGraphic(chosenWhiteSoldier);
 					clickedSoldier = b.getId();
 				}else {
@@ -627,10 +612,6 @@ public class gameplayScreenController extends Application implements Initializab
 							}
 						}
 						System.out.println("Possible Move:" + key);
-						//						Button myB = getButtonById(key);
-						//						Button myB2 = getButtonById("tile15");
-						//						myB.setGraphic(possibleMove);
-						//						myB2.setGraphic(possibleMove);
 					}
 				}
 				System.out.println("Here are the possible moves: " + possible);

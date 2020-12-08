@@ -387,7 +387,7 @@ public class Game {
 				 }
 			  if (x > 1) {
 				  if(getTileContent(new Tile(x-1,y+1))!=null) {
-					   if(y>1 && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() ==22 ) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x - 2,y + 2)) == null) 
+					   if(y>0 && (getTileContent(new Tile(x-1,y+1)).getSoldierNumber() == 2 || getTileContent(new Tile(x-1,y+1)).getSoldierNumber() ==22 ) && isTileInFrame(new Tile(x-2,y+2)) && getTileContent(new Tile(x - 2,y + 2)) == null) 
 						   possibleMoves.add(new Tile(x - 2,y + 2)); 
 				  }
 				  if(getTileContent(new Tile(x-1,y-1))!=null) {
@@ -1079,19 +1079,22 @@ public class Game {
 	 * @return
 	 */
 	public ArrayList<Tile> generateYellowTiles(){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		int count = 0;
-		for(;;) {
-			int x = (int)(Math.random()*8);
-			int y = (int)(Math.random()*8);
-			if(board.getEmptyTiles().contains(new Tile(x,y))) {
-				count++;
-				toReturn.add(new Tile(x,y));
-			}
-				if(count ==3) break;	
-			}
-		return toReturn;
-	}
+        ArrayList<Tile> toReturn = new ArrayList<Tile>();
+        int count = 0;
+        for(;;) {
+            int x = (int)(Math.random()*8);
+            int y = (int)(Math.random()*8);
+            if(board.getEmptyTiles().contains(new Tile(x,y))) {
+
+                if(!toReturn.contains(new Tile(x,y))) {
+                toReturn.add(new Tile(x,y));
+                count++;
+                }
+            }
+                if(count ==3) break;
+            }
+        return toReturn;
+    }
 	
 
 	/***GREEN TILE ***
@@ -1212,23 +1215,25 @@ public class Game {
 	 * @return
 	 */
 	public ArrayList<Tile> generateOrangeTiles(Color turn){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
-		if(turn == null)
-			return null;
-		if(turn == Color.Black) {
-			for(Soldier s : board.getSameColorSoldiers(2).values()) {
-				allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
-			}
-		}	
-		else {
-			for(Soldier s : board.getSameColorSoldiers(1).values()) {
-				allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
-			}
-		}
-		toReturn.addAll(allPossibleMoves);
-		return toReturn;
-	}
+        ArrayList<Tile> toReturn = new ArrayList<Tile>();
+        TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
+        if(turn == null)
+            return null;
+        if(turn == Color.Black) {
+            for(Soldier s : board.getSameColorSoldiers(2).values()) {
+                if(getPossibleMovesForBlackSoldier(s) != null)
+                    allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
+            }
+        }
+        else {
+            for(Soldier s : board.getSameColorSoldiers(1).values()) {
+                if(getPossibleMovesForWhiteSoldier(s) != null)
+                    allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
+            }
+        }
+        toReturn.addAll(allPossibleMoves);
+        return toReturn;
+    }
 	
 	
 	/*** RED TILE ***
