@@ -31,7 +31,7 @@
          <children>
             <VBox layoutX="101.0" layoutY="42.0" prefHeight="597.0" prefWidth="365.0" spacing="20.0">
                <children>
-                  <Button fx:id="startBtn" mnemonicParsing="false" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Start Game">
+                  <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Start Game">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>

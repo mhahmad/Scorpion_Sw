@@ -89,4 +89,9 @@ public class mainMenuController extends Application {
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
     }
+    
+    @FXML
+    void startBtnClicked(ActionEvent event) throws IOException {
+		enterNameController.display();
+    }
 }

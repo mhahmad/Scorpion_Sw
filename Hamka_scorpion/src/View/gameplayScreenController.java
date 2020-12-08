@@ -174,7 +174,7 @@ public class gameplayScreenController extends Application implements Initializab
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
-
+		
 
 		//		try {
 		//			for(int i = 0; i<=7; i++) {
