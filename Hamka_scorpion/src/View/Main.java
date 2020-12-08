@@ -117,20 +117,20 @@ public class Main  {
 		System.out.println("The winner is : " + game.winner());*/
 		int[][] board = {{-1,1,-1,0,-1,1,-1,0},
 			          	 {0,-1,0,-1,0,-1,22,-1},
-			        	 {-1,2,-1,2,-1,0,-1,0},
-		          		 {1,-1,1,-1,1,-1,22,-1},
-				         {-1,0,-1,0,-1,0,-1,0},
+			        	 {-1,2,-1,0,-1,0,-1,0},
+		          		 {0,-1,2,-1,1,-1,22,-1},
+				         {-1,1,-1,0,-1,0,-1,0},
 				         {1,-1,1,-1,1,-1,0,-1},
 				         {-1,0,-1,1,-1,22,-1,0},
 				         {1,-1,0,-1,1,-1,1,-1}
 };
 	
-	//Game g = new Game("M","A",board);
-	Game g = Game.getInstance("White", "Black", board); 
+//	Game g = new Game("M","A",board);
+	Game g = Game.getInstance("White", "Black", board);
 
 	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(1,6)) ));
 	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
-
+	
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
 
 	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));

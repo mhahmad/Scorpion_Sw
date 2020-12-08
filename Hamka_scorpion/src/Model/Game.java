@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game {
-	private static Game game_single = null; 
+	private static Game game_single = null;
 	private static int gameID;
 	private String whitePlayer;
 	private String blackPlayer;
@@ -53,16 +53,17 @@ public class Game {
 		
 	}
 	
-	  // static method to create instance of Singleton class 
+
+	// static method to create instance of Singleton class 
     public static Game getInstance(String whitePlayer , String blackPlayer, int[][] gameBoard) 
     { 
         if (game_single == null) 
-        	game_single = new Game(blackPlayer, whitePlayer, gameBoard); 
-  
+            game_single = new Game(blackPlayer, whitePlayer, gameBoard); 
+
         return game_single; 
-    } 
+    }
 
-
+    
 	public String getDate() {
 		return date;
 	}
@@ -1214,26 +1215,28 @@ public class Game {
 	 * @param turn
 	 * @return
 	 */
-	public ArrayList<Tile> generateOrangeTiles(Color turn){
-        ArrayList<Tile> toReturn = new ArrayList<Tile>();
-        TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
-        if(turn == null)
-            return null;
-        if(turn == Color.Black) {
-            for(Soldier s : board.getSameColorSoldiers(2).values()) {
-                if(getPossibleMovesForBlackSoldier(s) != null)
-                    allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
-            }
-        }
-        else {
-            for(Soldier s : board.getSameColorSoldiers(1).values()) {
-                if(getPossibleMovesForWhiteSoldier(s) != null)
-                    allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
-            }
-        }
-        toReturn.addAll(allPossibleMoves);
-        return toReturn;
-    }
+	 public ArrayList<Tile> generateOrangeTiles(Color turn){
+	        ArrayList<Tile> toReturn = new ArrayList<Tile>();
+	        HashSet<Tile> allPossibleMoves = new HashSet<Tile>();
+	        if(turn == null)
+	            return null;
+	        if(turn == Color.Black) {
+	            for(Soldier s : board.getSameColorSoldiers(2).values()) {
+	if(getPossibleMovesForBlackSoldier(s) != null )
+	                allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
+	            }
+	        }
+	        else {
+	            for(Soldier s : board.getSameColorSoldiers(1).values()) {
+	                if(getPossibleMovesForWhiteSoldier(s)!=null)
+	                allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
+	            }
+	        }
+	        toReturn.addAll(allPossibleMoves);
+	        System.out.println("orange tiles : "+toReturn);
+	        return toReturn;
+	    }
+	
 	
 	
 	/*** RED TILE ***
