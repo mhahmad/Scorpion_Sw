@@ -38,7 +38,7 @@ public class Game {
 };*/
 	Color turn;
 	
-	public Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
+	private Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.whitePlayerPoints = 0;
@@ -52,6 +52,7 @@ public class Game {
 		board = new Board(gameBoard);
 		
 	}
+	
 
 	// static method to create instance of Singleton class 
     public static Game getInstance(String whitePlayer , String blackPlayer, int[][] gameBoard) 
@@ -1214,26 +1215,27 @@ public class Game {
 	 * @param turn
 	 * @return
 	 */
-	public ArrayList<Tile> generateOrangeTiles(Color turn){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
-		if(turn == null)
-			return null;
-		if(turn == Color.Black) {
-			for(Soldier s : board.getSameColorSoldiers(2).values()) {
-				if(getPossibleMovesForBlackSoldier(s) != null)
-					allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
-			}
-		}	
-		else {
-			for(Soldier s : board.getSameColorSoldiers(1).values()) {
-				if(getPossibleMovesForWhiteSoldier(s) != null)
-					allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
-			}
-		}
-		toReturn.addAll(allPossibleMoves);
-		return toReturn;
-	}
+	 public ArrayList<Tile> generateOrangeTiles(Color turn){
+	        ArrayList<Tile> toReturn = new ArrayList<Tile>();
+	        HashSet<Tile> allPossibleMoves = new HashSet<Tile>();
+	        if(turn == null)
+	            return null;
+	        if(turn == Color.Black) {
+	            for(Soldier s : board.getSameColorSoldiers(2).values()) {
+	if(getPossibleMovesForBlackSoldier(s) != null )
+	                allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
+	            }
+	        }
+	        else {
+	            for(Soldier s : board.getSameColorSoldiers(1).values()) {
+	                if(getPossibleMovesForWhiteSoldier(s)!=null)
+	                allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
+	            }
+	        }
+	        toReturn.addAll(allPossibleMoves);
+	        System.out.println("orange tiles : "+toReturn);
+	        return toReturn;
+	    }
 	
 	
 	

@@ -162,13 +162,15 @@ public class gameplayScreenController extends Application implements Initializab
 	public static Parent  root;
 	public static Scene scene;
 
-	private Game game = new Game("White", "Black", startBoard);
+	//private Game game  = new Game("White", "Black", startBoard);
+	private Game game =  Game.getInstance("White", "Black", startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
+		//game.handTurn();
 
 		stage.setScene(scene);
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
@@ -301,6 +303,7 @@ public class gameplayScreenController extends Application implements Initializab
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		buildTilesBoardMap();
 
+
 		//	FillBoard();
 
 
@@ -389,7 +392,6 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
-		System.out.println("Game id: " + game.getGameID());
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
 		//tile1.setStyle("-fx-background-color: yellow");
@@ -417,15 +419,18 @@ public class gameplayScreenController extends Application implements Initializab
 		ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
 		chosenBlackSoldier.setFitHeight(45);
 		chosenBlackSoldier.setFitWidth(45);
+		ImageView chosenWhiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteSoldier.png")));
+		chosenWhiteSoldier.setFitHeight(45);
+		chosenWhiteSoldier.setFitWidth(45);
 		ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 		blackSoldier.setFitHeight(45);
 		blackSoldier.setFitWidth(45);
-		//		ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
-		//		whiteSoldier.setFitHeight(45);
-		//		whiteSoldier.setFitWidth(45);
-		//		ImageView possibleMove = new ImageView(new Image(getClass().getResourceAsStream("/Resources/possibleMove.png")));
-		//		possibleMove.setFitHeight(45);
-		//		possibleMove.setFitWidth(45);
+		ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
+		whiteSoldier.setFitHeight(45);
+		whiteSoldier.setFitWidth(45);
+		ImageView possibleMove = new ImageView(new Image(getClass().getResourceAsStream("/Resources/possibleMove.png")));
+		possibleMove.setFitHeight(45);
+		possibleMove.setFitWidth(45);
 
 		System.out.println();
 		//		System.out.println(currentTile);
@@ -473,9 +478,10 @@ public class gameplayScreenController extends Application implements Initializab
 							Soldier prevS = game.getTileContent(prevT);
 							//System.out.println(prevS);
 							game.moveBlackSoldier(prevS, t, possible);
+							game.handTurn(); //Switch  turn to white.
+							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
-							System.out.println("???????????????????");
-							//break;
+							break;
 
 							//							System.out.println("Yes" + currentTile.getId());
 							//							System.out.println();
@@ -539,9 +545,82 @@ public class gameplayScreenController extends Application implements Initializab
 				System.out.println("White Soldier clicked!");
 
 		}
-		else { //turn.color = Color.White
-			System.out.println("Call white method");
-		}
+		else if(color==Color.White) { //turn.color = Color.White
+			if(s==null) {
+				if(possible==null)
+					System.out.println("Please click a white  Soldier!");
+				else if(clickedSoldier!=null){
+					for (Tile t : possible) {
+						int coordinateI = t.getX();
+						int coordinateJ = t.getY();
+						if(i==coordinateI && j == coordinateJ){
+
+							String prev = tilesBoardMap.get(clickedSoldier);
+
+							String[] parts2= prev.split(",");
+							String part21 = parts2[0]; 
+							String part22 = parts2[1]; 
+							//Tile converted to i,j format to be used with the board 2d arary.
+							Integer desti = Integer.parseInt(part21);
+							Integer destj = Integer.parseInt(part22);
+							Tile prevT = new Tile(desti, destj);
+
+							//System.out.println("Prev Tile: " + prevT);
+							Soldier prevS = game.getTileContent(prevT);
+							//System.out.println(prevS);
+							game.moveWhiteSoldier(prevS, t, possible);
+							game.handTurn(); //Switch  turn to black.
+							System.out.println("Now It's Black's  turn");
+							clickedSoldier=null;
+							break;
+
+
+						}
+
+					}
+					refreshBoard(game,scene, root);
+				}
+
+			}else if( s.getColor().equals(Color.White)) {
+				Button b = getButtonById(currentTile.getId());
+				//*change selection icon
+				refreshBoard(game, scene, root);
+				if(clickedSoldier==null) {
+					System.out.println(b);
+					b.setGraphic(chosenWhiteSoldier);
+					clickedSoldier = b.getId();
+				}else {
+					Button last = getButtonById(clickedSoldier);
+					last.setGraphic(whiteSoldier);
+					b.setGraphic(chosenWhiteSoldier);
+					clickedSoldier = b.getId();
+				}
+				//*get possible moves
+				possible = game.getPossibleMovesForWhiteSoldier(s);
+				if(possible!=null) {
+					for (Tile tile : possible) {
+						String possibleTile = tile.getX()+","+tile.getY();
+						String check = null;
+						String key = null;
+						for (String ks : tilesBoardMap.keySet()) {
+							check = tilesBoardMap.get(ks);
+							if(check!=null) {
+								if(check.equals(possibleTile)) {
+									key = ks;
+									break;
+								}
+							}
+						}
+						System.out.println("Possible Move:" + key);
+					}
+				}
+				System.out.println("Here are the possible moves: " + possible);
+				System.out.println("TEST: "  + board[2][3]);
+			}else if(s.getColor().equals(Color.Black))
+				System.out.println("Black Soldier clicked!");
+
+
+		}//White turn end
 
 
 		//((Button) scene.lookup("#"+currentTile.getId())).setGraphic(chosenBlackSoldier);
@@ -600,6 +679,12 @@ public class gameplayScreenController extends Application implements Initializab
 				ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
 				whiteSoldier.setFitHeight(45);
 				whiteSoldier.setFitWidth(45);
+				ImageView blackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackQueen.png")));
+				blackQueen.setFitHeight(45);
+				blackQueen.setFitWidth(45);
+				ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
+				whiteQueen.setFitHeight(45);
+				whiteQueen.setFitWidth(45);
 				//clearBoard(game, scene, root);
 
 
@@ -628,16 +713,21 @@ public class gameplayScreenController extends Application implements Initializab
 				//System.out.println(key);
 
 
-				if(board[i][j]==1) {
+				if(board[i][j]==1) 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteSoldier);
-				}
-				if(board[i][j]==2) {
+				
+				else if(board[i][j]==2) 
 					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-				}
-				if(board[i][j]==0 && key!=null ) {
-					System.out.println(key);
+				
+				else if(board[i][j]==0 && key!=null ) 
 					((Button) scene.lookup("#"+key)).setGraphic(null);
+				else if (board[i][j]==11) {
+					System.out.println("Over here");
+					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
 				}
+				else if (board[i][j]==22)
+					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
+				
 
 
 				//					String value ; 
@@ -717,7 +807,8 @@ public class gameplayScreenController extends Application implements Initializab
 		case "tile22" : return tile22;
 		case "tile23" : return tile23;
 		case "tile24" : return tile24;
-		case "tile25" : return tile26;
+		case "tile25" : return tile25;
+		case "tile26" : return tile26;
 		case "tile27" : return tile27;
 		case "tile28" : return tile28;
 		case "tile29" : return tile29;
