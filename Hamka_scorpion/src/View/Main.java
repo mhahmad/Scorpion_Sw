@@ -125,7 +125,9 @@ public class Main  {
 				         {1,-1,0,-1,1,-1,1,-1}
 };
 	
-	Game g = new Game("M","A",board);
+	//Game g = new Game("M","A",board);
+	Game g = Game.getInstance("White", "Black", board); 
+
 	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(1,6)) ));
 	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
 

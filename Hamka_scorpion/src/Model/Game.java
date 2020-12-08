@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 
 public class Game {
+	private static Game game_single = null; 
 	private static int gameID;
 	private String whitePlayer;
 	private String blackPlayer;
@@ -37,7 +38,7 @@ public class Game {
 };*/
 	Color turn;
 	
-	public Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
+	private Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.whitePlayerPoints = 0;
@@ -51,6 +52,15 @@ public class Game {
 		board = new Board(gameBoard);
 		
 	}
+	
+	  // static method to create instance of Singleton class 
+    public static Game getInstance(String whitePlayer , String blackPlayer, int[][] gameBoard) 
+    { 
+        if (game_single == null) 
+        	game_single = new Game(blackPlayer, whitePlayer, gameBoard); 
+  
+        return game_single; 
+    } 
 
 
 	public String getDate() {
