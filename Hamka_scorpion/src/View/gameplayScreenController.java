@@ -327,18 +327,6 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		
 
-
-		//	FillBoard();
-
-
-
-		//ImageView img = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
-		//	tile1.setGraphic( img);
-
-		// ImageView img = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
-
-		//tile1.setGraphic( img);
-
 	}
 
 	//	@FXML
@@ -413,13 +401,22 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
+	
+	
 
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
 		//tile1.setStyle("-fx-background-color: yellow");
-		GenerateYellowTiles(scene);
+//		if(!isTileEmpty(scene, (Button) scene.lookup("#"+(String)((Control)event.getSource()).getId()))) {
+//		GenerateYellowTiles(scene);
+//	}
+		
+	//	if((!this.game.noMoreMovesForPlayer(Color.White))||(!this.game.noMoreMovesForPlayer(Color.Black) )) {
+		
+	//	GenerateRedTiles(scene, this.game.getTurn());
+		//GenerateGreenTiles(scene, this.game.getTurn());
 		Button currentTile;
 		Board gBoard = game.getBoard();
 		int[][] board = gBoard.getBoard();
@@ -457,9 +454,9 @@ public class gameplayScreenController extends Application implements Initializab
 		possibleMove.setFitHeight(45);
 		possibleMove.setFitWidth(45);
 
-		System.out.println();
+	//	System.out.println();
 		//		System.out.println(currentTile);
-		System.out.println("i is:" + i + ", j  is: "+ j);
+	//	System.out.println("i is:" + i + ", j  is: "+ j);
 		//System.out.println(currentTile.getId().equals("tile1"));
 		//((Button) scene.lookup("#"+"tile1")).setGraphic(null);
 		//		Button b = getButtonById(currentTile.getId());
@@ -478,95 +475,162 @@ public class gameplayScreenController extends Application implements Initializab
 //		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
 		if(color==Color.Black) { //Black's turn
+			System.out.println("switching to Black  !!");
+               
+			//SwitchTurntoBlack(sscene ,i , j , s , currentTile , blackSoldier, chosenBlackSoldier) ; 
+		}
+		else if(color==Color.White) { //turn.color = Color.White
+			System.out.println("switching to Wwhite !!");
+            SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier);
 
-			if(s==null) {
-				if(possible==null)
-					System.out.println("Please click a black Soldier!");
-				else if(clickedSoldier!=null){
-					for (Tile t : possible) {
-						int coordinateI = t.getX();
-						int coordinateJ = t.getY();
-						if(i==coordinateI && j == coordinateJ){
-							//	Button to = getButtonById(currentTile.getId());
-							//to.setGraphic(blackSoldier);
-							//Button from = getButtonById(clickedSoldier);
-							//	from.setGraphic(null);
-							String prev = tilesBoardMap.get(clickedSoldier);
-							//System.out.println("sdsds" + prev);
-							//Convert tile to i,j
-							String[] parts2= prev.split(",");
-							String part21 = parts2[0]; 
-							String part22 = parts2[1]; 
-							//Tile converted to i,j format to be used with the board 2d arary.
-							Integer desti = Integer.parseInt(part21);
-							Integer destj = Integer.parseInt(part22);
-							Tile prevT = new Tile(desti, destj);
 
-							//System.out.println("Prev Tile: " + prevT);
-							Soldier prevS = game.getTileContent(prevT);
-							//System.out.println(prevS);
-							game.moveBlackSoldier(prevS, t, possible);
-							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to white.
-							System.out.println("Now It's White's turn");
-							clickedSoldier=null;
-							break;
+	
+	}
+	}
+	
+	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier) {
+		
+		if(s==null) {
+			if(possible==null)
+				System.out.println("Please click a white  Soldier!");
+			else if(clickedSoldier!=null){
+				for (Tile t : possible) {
+					int coordinateI = t.getX();
+					int coordinateJ = t.getY();
+					if(i==coordinateI && j == coordinateJ){
 
-							//							System.out.println("Yes" + currentTile.getId());
-							//							System.out.println();
-							//							System.out.println();
-							//	board = game.getBoard();
-							//	System.out.println("Game id: " + game.getGameID());
+						String prev = tilesBoardMap.get(clickedSoldier);
 
-						}
-						//Else don't do anything.
-						//						else {
-						//							System.out.println("Nope");
-						//						}
+						String[] parts2= prev.split(",");
+						String part21 = parts2[0]; 
+						String part22 = parts2[1]; 
+						//Tile converted to i,j format to be used with the board 2d arary.
+						Integer desti = Integer.parseInt(part21);
+						Integer destj = Integer.parseInt(part22);
+						Tile prevT = new Tile(desti, destj);
+
+						//System.out.println("Prev Tile: " + prevT);
+						Soldier prevS = game.getTileContent(prevT);
+						//System.out.println(prevS);
+						game.moveWhiteSoldier(prevS, t, possible);
+						game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+						ClearColoredTiles(scene);
+			 			GenerateYellowTiles(scene);
+			 			  GenerateRedTiles(scene, Color.White);
+	                        GenerateGreenTiles(scene, Color.White);
+	                        
+						System.out.println("Now It's Black's  turn");
+						clickedSoldier=null;
+						break;
+
 
 					}
-					refreshBoard(game,scene, root);
-				}
 
-			}else if( s.getColor().equals(Color.Black)) {
-				Button b = getButtonById(currentTile.getId());
-				//*change selection icon
-				refreshBoard(game, scene, root);
-				if(clickedSoldier==null) {
-					//			System.out.println("Here");
-					System.out.println(b);
-					//			System.out.println("End");
-					b.setGraphic(chosenBlackSoldier);
-					clickedSoldier = b.getId();
-				}else {
-					Button last = getButtonById(clickedSoldier);
-					last.setGraphic(blackSoldier);
-					b.setGraphic(chosenBlackSoldier);
-					clickedSoldier = b.getId();
 				}
-				//*get possible moves
-				possible = game.getPossibleMovesForBlackSoldier(s);
-				if(possible!=null) {
-					for (Tile tile : possible) {
-						String possibleTile = tile.getX()+","+tile.getY();
-						String check = null;
-						String key = null;
-						for (String ks : tilesBoardMap.keySet()) {
-							check = tilesBoardMap.get(ks);
-							if(check!=null) {
-								if(check.equals(possibleTile)) {
-									key = ks;
-									break;
-								}
+				try {
+					refreshBoard(game,scene, root);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}else if( s.getColor().equals(Color.White)) {
+			Button b = getButtonById(currentTile.getId());
+			//*change selection icon
+			try {
+				refreshBoard(game, scene, root);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(clickedSoldier==null) {
+				System.out.println(b);
+				b.setGraphic(chosenWhiteSoldier);
+				clickedSoldier = b.getId();
+			}else {
+				Button last = getButtonById(clickedSoldier);
+				last.setGraphic(whiteSoldier);
+				b.setGraphic(chosenWhiteSoldier);
+				clickedSoldier = b.getId();
+			}
+			//*get possible moves
+			possible = game.getPossibleMovesForWhiteSoldier(s);
+			if(possible!=null) {
+				for (Tile tile : possible) {
+					String possibleTile = tile.getX()+","+tile.getY();
+					String check = null;
+					String key = null;
+					for (String ks : tilesBoardMap.keySet()) {
+						check = tilesBoardMap.get(ks);
+						if(check!=null) {
+							if(check.equals(possibleTile)) {
+								key = ks;
+								break;
 							}
 						}
-						System.out.println("Possible Move:" + key);
-						//						Button myB = getButtonById(key);
-						//						Button myB2 = getButtonById("tile15");
-						//						myB.setGraphic(possibleMove);
-						//						myB2.setGraphic(possibleMove);
 					}
+					System.out.println("Possible Move:" + key);
 				}
+
+			}
+			System.out.println("Here are the possible moves: " + possible);
+			//System.out.println("TEST: "  + board[2][3]);
+		}else if(s.getColor().equals(Color.Black))
+			System.out.println("Black Soldier clicked!");
+		
+		
+	}
+	/*
+	public void SwitchTurntoBlack( Scene scene , int i , int j,Soldier s ,Button currentTile, ImageView blackSoldier , ImageView chosenBlackSoldier  ) {
+		// the colors switch
+		//the timer Restarts 
+		// allow the tiles of the turn to play 
+		// generate Colored Tiles 
+
+		if(s==null) {
+			if(possible==null)
+				System.out.println("Please click a black Soldier!");
+		         else if(clickedSoldier!=null){
+
+				for (Tile t : possible) {
+					int coordinateI = t.getX();
+					int coordinateJ = t.getY();
+					if(i==coordinateI && j == coordinateJ){
+						//	Button to = getButtonById(currentTile.getId());
+						//to.setGraphic(blackSoldier);
+						//Button from = getButtonById(clickedSoldier);
+						//	from.setGraphic(null);
+						String prev = tilesBoardMap.get(clickedSoldier);
+						//System.out.println("sdsds" + prev);
+						//Convert tile to i,j
+						String[] parts2= prev.split(",");
+						String part21 = parts2[0]; 
+						String part22 = parts2[1]; 
+						//Tile converted to i,j format to be used with the board 2d arary.
+						Integer desti = Integer.parseInt(part21);
+						Integer destj = Integer.parseInt(part22);
+						Tile prevT = new Tile(desti, destj);
+
+						//System.out.println("Prev Tile: " + prevT);
+						Soldier prevS = game.getTileContent(prevT);
+						//System.out.println(prevS);
+						game.moveBlackSoldier(prevS, t, possible);
+						game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+						ClearColoredTiles(scene);
+			 			GenerateYellowTiles(scene);
+                        GenerateRedTiles(scene, Color.White);
+                        GenerateGreenTiles(scene, Color.White);
+						System.out.println("Now It's White's turn");
+						clickedSoldier=null;
+						break;
+
+						//							System.out.println("Yes" + currentTile.getId());
+						//							System.out.println();
+						//							System.out.println();
+						//	board = game.getBoard();
+						//	System.out.println("Game id: " + game.getGameID());
+=======
 				System.out.println("Here are the possible moves: " + possible);
 
 
@@ -606,87 +670,78 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 						}
+>>>>>>> master
 
 					}
-					refreshBoard(game,scene, root);
-				}
+					//Else don't do anything.
+					//						else {
+					//							System.out.println("Nope");
+					//						}
 
-			}else if( s.getColor().equals(Color.White)) {
-				Button b = getButtonById(currentTile.getId());
-				//*change selection icon
-				refreshBoard(game, scene, root);
-				if(clickedSoldier==null) {
-					System.out.println(b);
-					b.setGraphic(chosenWhiteSoldier);
-					clickedSoldier = b.getId();
-				}else {
-					Button last = getButtonById(clickedSoldier);
-					last.setGraphic(whiteSoldier);
-					b.setGraphic(chosenWhiteSoldier);
-					clickedSoldier = b.getId();
 				}
-				//*get possible moves
-				possible = game.getPossibleMovesForWhiteSoldier(s);
-				if(possible!=null) {
-					for (Tile tile : possible) {
-						String possibleTile = tile.getX()+","+tile.getY();
-						String check = null;
-						String key = null;
-						for (String ks : tilesBoardMap.keySet()) {
-							check = tilesBoardMap.get(ks);
-							if(check!=null) {
-								if(check.equals(possibleTile)) {
-									key = ks;
-									break;
-								}
+				try {
+					refreshBoard(game,scene, root);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.getCause() ; 
+					e.printStackTrace();
+				}
+		
+			}
+		}else if( s.getColor().equals(Color.Black)) {
+			Button b = getButtonById(currentTile.getId());
+			//*change selection icon
+			try {
+				refreshBoard(game, scene, root);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(clickedSoldier==null) {
+				//			System.out.println("Here");
+				System.out.println(b);
+				//			System.out.println("End");
+				b.setGraphic(chosenBlackSoldier);
+				clickedSoldier = b.getId();
+			}else {
+				Button last = getButtonById(clickedSoldier);
+				last.setGraphic(blackSoldier);
+				b.setGraphic(chosenBlackSoldier);
+				clickedSoldier = b.getId();
+			}
+			//*get possible moves
+			possible = game.getPossibleMovesForBlackSoldier(s);
+			if(possible!=null) {
+				for (Tile tile : possible) {
+					String possibleTile = tile.getX()+","+tile.getY();
+					String check = null;
+					String key = null;
+					for (String ks : tilesBoardMap.keySet()) {
+						check = tilesBoardMap.get(ks);
+						if(check!=null) {
+							if(check.equals(possibleTile)) {
+								key = ks;
+								break;
 							}
 						}
-						System.out.println("Possible Move:" + key);
 					}
+					System.out.println("Possible Move:" + key);
+					//						Button myB = getButtonById(key);
+					//						Button myB2 = getButtonById("tile15");
+					//						myB.setGraphic(possibleMove);
+					//						myB2.setGraphic(possibleMove);
 				}
-				System.out.println("Here are the possible moves: " + possible);
-				System.out.println("TEST: "  + board[2][3]);
-			}else if(s.getColor().equals(Color.Black))
-				System.out.println("Black Soldier clicked!");
+			}
+			System.out.println("Here are the possible moves: " + possible);
 
 
-		}//White turn end
-
-
-		//((Button) scene.lookup("#"+currentTile.getId())).setGraphic(chosenBlackSoldier);
-
-
-
-		//		if(board.board[i][j]!=0 && board.board[i][j] !=-1)
-		//			System.out.println("Possible");
-		//		else
-		//			System.out.println("Nope");
-		//		Tile current = new Tile(i, j);
-		//		ArrayList
-		//		
-		//		Soldier s = game.getTileContent(current);
-		//		Color color = game.getTurn();
-		//		if(color==Color.Black)
-		//			game.getPossibleMovesForBlackSoldier(s);
-		//		else
-		//			System.out.println("Call white method");
-
-		//		String cord = i+","+j;
-		//		String check = null;
-		//		String key = null;
-		//		for (String ks : tilesBoardMap.keySet()) {
-		//			check = tilesBoardMap.get(ks);
-		//			if(check!=null) {
-		//				if(check.equals(dest)) {
-		//					key = ks;
-		//					break;
-		//				}
-		//			}
-		//		}
-
-	}
-
-
+		}else if(s.getColor().equals(Color.White))
+			System.out.println("White Soldier clicked!");
+		
+		}
+		
+	*/
+	
 	//public Tile getTileFromButton ()
 
 	public void refreshBoard(Game game, Scene scene, Parent root) throws IOException {
@@ -810,48 +865,122 @@ public class gameplayScreenController extends Application implements Initializab
 
 	}
 
+	
+	
+	
+	public void ClearColoredTiles(Scene s) {
+		//Clear all Empty Tiles 
+
+		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+			String possibleTile = tile.getX()+","+tile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						System.out.println(key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+						//break;
+					}
+				}
+			}
+		}
+		
+	}
 	//------------------------------colored tiles  ;
 	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
-	        //Clear all Empty Tiles 
+		//Clear all Empty Tiles 
+//
+//		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+//			String possibleTile = tile.getX()+","+tile.getY();
+//			String check = null;
+//			String key = null;
+//			for (String ks : tilesBoardMap.keySet()) {
+//				check = tilesBoardMap.get(ks);
+//				if(check!=null) {
+//					if(check.equals(possibleTile)) {
+//						key = ks;
+//						System.out.println(key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+//						//break;
+//					}
+//				}
+//			}
+//		}
 
-	        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-	            String possibleTile = tile.getX()+","+tile.getY();
-	            String check = null;
-	            String key = null;
-	            for (String ks : tilesBoardMap.keySet()) {
-	                check = tilesBoardMap.get(ks);
-	                if(check!=null) {
-	                    if(check.equals(possibleTile)) {
-	                        key = ks;
-	                        System.out.println(key);
-	                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-	                        //break;
-	                    }
-	                }
-	            }
-	        }
+
+		// color 3 random Empty tiles
+		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+		if(redTile != null ) { 
+			String possibleTile = redTile.getX()+","+redTile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						System.out.println("should be red  :: "+key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+						break;
+					}
+				}
+			}
+		}
+
+	}
+	
+	
+	//-----------------------green Tile
+	
+	
+	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
+        //Clear all Empty Tiles 
+//
+//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+//            String possibleTile = tile.getX()+","+tile.getY();
+//            String check = null;
+//            String key = null;
+//            for (String ks : tilesBoardMap.keySet()) {
+//                check = tilesBoardMap.get(ks);
+//                if(check!=null) {
+//                    if(check.equals(possibleTile)) {
+//                        key = ks;
+//                        System.out.println(key);
+//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+//                        //break;
+//                    }
+//                }
+//            }
+//        }
 
 
-	        // color 3 random Empty tiles
-	     Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
-	     if(redTile != null ) { 
-	            String possibleTile = redTile.getX()+","+redTile.getY();
-	            String check = null;
-	            String key = null;
-	            for (String ks : tilesBoardMap.keySet()) {
-	                check = tilesBoardMap.get(ks);
-	                if(check!=null) {
-	                    if(check.equals(possibleTile)) {
-	                        key = ks;
-	                        System.out.println("should be red  :: "+key);
-	                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
-	                        break;
-	                    }
-	                }
-	            }
-	     }
+        // color 1 random Empty tile
+     Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
+     if(greenTile != null ) { 
+            String possibleTile = greenTile.getX()+","+greenTile.getY();
+            String check = null;
+            String key = null;
+            for (String ks : tilesBoardMap.keySet()) {
+                check = tilesBoardMap.get(ks);
+                if(check!=null) {
+                    if(check.equals(possibleTile)) {
+                        key = ks;
+                        System.out.println("should be red  :: "+key);
+                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+                        break;
+                    }
+                }
+            }
+     }
 
-	    }
+    }
+
+	
+	
+	//-------------------------
 	
 	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
         //Clear all Empty Tiles 
@@ -897,24 +1026,24 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	public void GenerateYellowTiles( Scene s)  {
         //Clear all Empty Tiles 
-        System.out.println("empty Tiles : "+this.game.getBoard().getEmptyTiles());
-
-        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-            String possibleTile = tile.getX()+","+tile.getY();
-            String check = null;
-            String key = null;
-            for (String ks : tilesBoardMap.keySet()) {
-                check = tilesBoardMap.get(ks);
-                if(check!=null) {
-                    if(check.equals(possibleTile)) {
-                        key = ks;
-                        System.out.println(key);
-                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-                        //break;
-                    }
-                }
-            }
-        }
+//        System.out.println("empty Tiles : "+this.game.getBoard().getEmptyTiles());
+//
+//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+//            String possibleTile = tile.getX()+","+tile.getY();
+//            String check = null;
+//            String key = null;
+//            for (String ks : tilesBoardMap.keySet()) {
+//                check = tilesBoardMap.get(ks);
+//                if(check!=null) {
+//                    if(check.equals(possibleTile)) {
+//                        key = ks;
+//                        System.out.println(key);
+//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+//                        //break;
+//                    }
+//                }
+//            }
+//        }
 
 
         // color 3 random Empty tiles
@@ -977,6 +1106,39 @@ public class gameplayScreenController extends Application implements Initializab
 		return null;
 	}
 
+	
+	
+	public boolean isTileEmpty(Scene s , Button btn) {
+		ArrayList<Button> toCheck = new ArrayList<>() ; 
+	      for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+	            String possibleTile = tile.getX()+","+tile.getY();
+	            String check = null;
+	            String key = null;
+	            for (String ks : tilesBoardMap.keySet()) {
+	                check = tilesBoardMap.get(ks);
+	                if(check!=null) {
+	                    if(check.equals(possibleTile)) {
+	                        key = ks;
+	                        System.out.println(key);
+	                        toCheck.add(((Button) s.lookup("#"+key)));
+	                        //break;
+	                    }
+	                }
+	            }
+	        }
+		
+	      
+	      if(toCheck.contains(btn)) {
+	    	  System.out.println("the tile/Button  is Empty :  ");
+	    	  return true ; // is Empty 
+	      }
+		
+	      
+	      return false ; 
+	}
+	
+	
+	
 }
 
 

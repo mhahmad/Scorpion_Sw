@@ -1010,6 +1010,7 @@ public class Game {
 				 }
 			 }return toReturn;
 		 }
+		 System.out.println("- get kill moves Method - returning Null value ! ");
 		 return null;
 	 }
 	 
@@ -1104,11 +1105,12 @@ public class Game {
 	 * @return
 	 */
 	public Tile generateGreenTile(Color turn) {
-		TreeSet<Tile> allPossibleMoves = new TreeSet<Tile>();
+		HashSet<Tile> allPossibleMoves = new HashSet<Tile>();
 		ArrayList<Tile> possibleMovesArray = new ArrayList<Tile>();
 		if(turn == Color.Black) {
 			HashMap<Tile, Soldier> blackSoldiers = board.getSameColorSoldiers(2);
 			for(Soldier s : blackSoldiers.values()) {
+				if(getPossibleMovesForBlackSoldier(s) != null)
 				allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
 			}
 		}		
@@ -1116,6 +1118,7 @@ public class Game {
 			
 			HashMap<Tile, Soldier> whiteSoldiers = board.getSameColorSoldiers(1);
 			for(Soldier s : whiteSoldiers.values()) {
+				if( getPossibleMovesForWhiteSoldier(s) !=null)
 				allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
 			}			
 		}
