@@ -31,6 +31,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
+import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -141,6 +142,23 @@ public class gameplayScreenController extends Application implements Initializab
 	@FXML
 	private Button tile28;
 
+    @FXML
+    private Label p1;
+
+    @FXML
+    private Label p2;
+
+    @FXML
+    private Label pointsLabel;
+
+    @FXML
+    private Label p1Points;
+
+    @FXML
+    private Label pointsLabel1;
+
+    @FXML
+    private Label p2Points;
 
 
 	public static HashMap<String, String> tilesBoardMap;
@@ -163,7 +181,7 @@ public class gameplayScreenController extends Application implements Initializab
 	public static Scene scene;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	private Game game =  Game.getInstance("White", "Black", startBoard); //Singletone changes to be in every method.
+	private Game game =  Game.getInstance("Black", "White", startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
@@ -302,6 +320,12 @@ public class gameplayScreenController extends Application implements Initializab
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		buildTilesBoardMap();
+		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
+		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
+		p1.setText(game.getblackPlayer());
+		p2.setText(game.getwhitePlayer());
+		
+		
 
 	}
 
@@ -446,20 +470,22 @@ public class gameplayScreenController extends Application implements Initializab
 		Tile current = new Tile(i, j);
 		Soldier s = game.getTileContent(current);
 		Color color = game.getTurn();
+		
+//		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
+//		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
 		if(color==Color.Black) { //Black's turn
 			System.out.println("switching to Black  !!");
                
-			SwitchTurntoBlack(scene ,i , j , s , currentTile , blackSoldier, chosenBlackSoldier) ; 
+			//SwitchTurntoBlack(sscene ,i , j , s , currentTile , blackSoldier, chosenBlackSoldier) ; 
 		}
 		else if(color==Color.White) { //turn.color = Color.White
 			System.out.println("switching to Wwhite !!");
             SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier);
 
-		}//White turn end
-
 
 	
+	}
 	}
 	
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier) {
@@ -546,6 +572,7 @@ public class gameplayScreenController extends Application implements Initializab
 					}
 					System.out.println("Possible Move:" + key);
 				}
+
 			}
 			System.out.println("Here are the possible moves: " + possible);
 			//System.out.println("TEST: "  + board[2][3]);
@@ -554,7 +581,7 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		
 	}
-	
+	/*
 	public void SwitchTurntoBlack( Scene scene , int i , int j,Soldier s ,Button currentTile, ImageView blackSoldier , ImageView chosenBlackSoldier  ) {
 		// the colors switch
 		//the timer Restarts 
@@ -603,6 +630,47 @@ public class gameplayScreenController extends Application implements Initializab
 						//							System.out.println();
 						//	board = game.getBoard();
 						//	System.out.println("Game id: " + game.getGameID());
+=======
+				System.out.println("Here are the possible moves: " + possible);
+
+
+			}else if(s.getColor().equals(Color.White))
+				System.out.println("White Soldier clicked!");
+
+		}
+		else if(color==Color.White) { //turn.color = Color.White
+			if(s==null) {
+				if(possible==null)
+					System.out.println("Please click a white  Soldier!");
+				else if(clickedSoldier!=null){
+					for (Tile t : possible) {
+						int coordinateI = t.getX();
+						int coordinateJ = t.getY();
+						if(i==coordinateI && j == coordinateJ){
+
+							String prev = tilesBoardMap.get(clickedSoldier);
+
+							String[] parts2= prev.split(",");
+							String part21 = parts2[0]; 
+							String part22 = parts2[1]; 
+							//Tile converted to i,j format to be used with the board 2d arary.
+							Integer desti = Integer.parseInt(part21);
+							Integer destj = Integer.parseInt(part22);
+							Tile prevT = new Tile(desti, destj);
+
+							//System.out.println("Prev Tile: " + prevT);
+							Soldier prevS = game.getTileContent(prevT);
+							//System.out.println(prevS);
+							game.moveWhiteSoldier(prevS, t, possible);
+							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
+							game.handTurn(); //Switch  turn to black.
+							System.out.println("Now It's Black's  turn");
+							clickedSoldier=null;
+							break;
+
+
+						}
+>>>>>>> master
 
 					}
 					//Else don't do anything.
@@ -670,11 +738,9 @@ public class gameplayScreenController extends Application implements Initializab
 		}else if(s.getColor().equals(Color.White))
 			System.out.println("White Soldier clicked!");
 		
-		
-		
 		}
 		
-	
+	*/
 	
 	//public Tile getTileFromButton ()
 
@@ -740,12 +806,13 @@ public class gameplayScreenController extends Application implements Initializab
 				
 				else if(board[i][j]==0 && key!=null ) 
 					((Button) scene.lookup("#"+key)).setGraphic(null);
-				else if (board[i][j]==11) {
-					System.out.println("Over here");
+				
+				else if (board[i][j]==11) 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
-				}
+
 				else if (board[i][j]==22)
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
+				
 				
 
 

@@ -312,6 +312,26 @@
                   <Font size="16.0" />
                </font>
             </Label>
+            <Label fx:id="pointsLabel" layoutX="85.0" layoutY="118.0" text="Points:" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="p1Points" layoutX="153.0" layoutY="118.0" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="pointsLabel1" layoutX="875.0" layoutY="105.0" text="Points:" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="p2Points" layoutX="931.0" layoutY="105.0" prefHeight="25.0" prefWidth="32.0" textFill="WHITE">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>
