@@ -1,6 +1,7 @@
 package View;
 
 
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -10,14 +11,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.TimerTask;
 
 import javax.management.openmbean.OpenType;
+import javax.swing.Timer;
 
 import Model.Board;
 import Model.Color;
 import Model.Game;
 import Model.Soldier;
+import Model.StopWatch;
 import Model.Tile;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -27,16 +32,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class gameplayScreenController extends Application implements Initializable {
@@ -160,7 +170,17 @@ public class gameplayScreenController extends Application implements Initializab
     @FXML
     private Label p2Points;
 
+    @FXML
+    private VBox deadBlackv;
 
+    @FXML
+    private VBox deadwhitev;
+
+    @FXML
+    private Label displayTimer;
+    
+    private Timer turnTimer;
+    
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
 	public static ArrayList<Tile> possible = null;
@@ -406,6 +426,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
+		
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
 		//tile1.setStyle("-fx-background-color: yellow");
@@ -454,6 +475,7 @@ public class gameplayScreenController extends Application implements Initializab
 		possibleMove.setFitHeight(45);
 		possibleMove.setFitWidth(45);
 
+		
 	//	System.out.println();
 		//		System.out.println(currentTile);
 	//	System.out.println("i is:" + i + ", j  is: "+ j);
@@ -489,7 +511,8 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 	
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier) {
-		
+	
+	
 		if(s==null) {
 			if(possible==null)
 				System.out.println("Please click a white  Soldier!");
@@ -588,6 +611,9 @@ public class gameplayScreenController extends Application implements Initializab
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
 		// generate Colored Tiles 
+	
+		
+		//--------------------
 		if(s==null) {
 			if(possible==null)
 				System.out.println("Please click a black Soldier!");
@@ -780,6 +806,9 @@ public class gameplayScreenController extends Application implements Initializab
 
 	public void refreshBoard(Game game, Scene scene, Parent root) throws IOException {
 
+		int whiteAliveCout = 0 ; 
+		int blackAliveCount = 0 ;
+		
 		int [][]board = game.getBoard().getBoard();
 		System.out.println("In refresh");
 		//Parent  root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
@@ -832,19 +861,19 @@ public class gameplayScreenController extends Application implements Initializab
 				//System.out.println(key);
 
 
-				if(board[i][j]==1) 
+				if(board[i][j]==1) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteSoldier);
-				
-				else if(board[i][j]==2) 
+			             	whiteAliveCout++ ; 
+				}else if(board[i][j]==2) { 
 					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-				
-				else if(board[i][j]==0 && key!=null ) 
+				             blackAliveCount++; 
+				}else if(board[i][j]==0 && key!=null ) {
 					((Button) scene.lookup("#"+key)).setGraphic(null);
 				
-				else if (board[i][j]==11) 
+				}else if (board[i][j]==11) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
 
-				else if (board[i][j]==22)
+				}else if (board[i][j]==22)
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
 				
 				
@@ -882,6 +911,26 @@ public class gameplayScreenController extends Application implements Initializab
 				// btn.setGraphic(img);
 
 			}
+		}
+		if(this.deadBlackv !=null && this.deadwhitev !=null) {
+		this.deadwhitev.getChildren().clear();
+		this.deadBlackv.getChildren().clear();
+		
+		
+		for(int i=0 ; i<12-whiteAliveCout ; i++) {
+		
+			ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
+			whiteSoldier.setFitHeight(45);
+			whiteSoldier.setFitWidth(45);
+			this.deadwhitev.getChildren().add(whiteSoldier);
+		}
+		
+for(int i=0 ; i<12-blackAliveCount ; i++) {
+	ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
+	blackSoldier.setFitHeight(45);
+	blackSoldier.setFitWidth(45);
+			this.deadBlackv.getChildren().add(blackSoldier);
+		}
 		}
 
 	}
@@ -925,25 +974,6 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 	//------------------------------colored tiles  ;
 	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
-		//Clear all Empty Tiles 
-//
-//		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-//			String possibleTile = tile.getX()+","+tile.getY();
-//			String check = null;
-//			String key = null;
-//			for (String ks : tilesBoardMap.keySet()) {
-//				check = tilesBoardMap.get(ks);
-//				if(check!=null) {
-//					if(check.equals(possibleTile)) {
-//						key = ks;
-//						System.out.println(key);
-//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-//						//break;
-//					}
-//				}
-//			}
-//		}
-
 
 		// color 3 random Empty tiles
 		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
@@ -971,25 +1001,6 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	
 	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
-        //Clear all Empty Tiles 
-//
-//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-//            String possibleTile = tile.getX()+","+tile.getY();
-//            String check = null;
-//            String key = null;
-//            for (String ks : tilesBoardMap.keySet()) {
-//                check = tilesBoardMap.get(ks);
-//                if(check!=null) {
-//                    if(check.equals(possibleTile)) {
-//                        key = ks;
-//                        System.out.println(key);
-//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-//                        //break;
-//                    }
-//                }
-//            }
-//        }
-
 
         // color 1 random Empty tile
      Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
@@ -1017,27 +1028,8 @@ public class gameplayScreenController extends Application implements Initializab
 	//-------------------------
 	
 	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
-        //Clear all Empty Tiles 
-
-//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-//            String possibleTile = tile.getX()+","+tile.getY();
-//            String check = null;
-//            String key = null;
-//            for (String ks : tilesBoardMap.keySet()) {
-//                check = tilesBoardMap.get(ks);
-//                if(check!=null) {
-//                    if(check.equals(possibleTile)) {
-//                        key = ks;
-//                        System.out.println(key);
-//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-//                        //break;
-//                    }
-//                }
-//            }
-//        }
-
-
-        // color 3 random Empty tiles
+      
+     // color 3 random Empty tiles
         for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
             String possibleTile = tile.getX()+","+tile.getY();
             String check = null;
@@ -1058,27 +1050,12 @@ public class gameplayScreenController extends Application implements Initializab
     }
 	
 	
+	public void stackDeadsoldeirs() {
+		
+	}
+	
+	
 	public void GenerateYellowTiles( Scene s)  {
-        //Clear all Empty Tiles 
-//        System.out.println("empty Tiles : "+this.game.getBoard().getEmptyTiles());
-//
-//        for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-//            String possibleTile = tile.getX()+","+tile.getY();
-//            String check = null;
-//            String key = null;
-//            for (String ks : tilesBoardMap.keySet()) {
-//                check = tilesBoardMap.get(ks);
-//                if(check!=null) {
-//                    if(check.equals(possibleTile)) {
-//                        key = ks;
-//                        System.out.println(key);
-//                        ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-//                        //break;
-//                    }
-//                }
-//            }
-//        }
-
 
         // color 3 random Empty tiles
         for (Tile tile : this.game.generateYellowTiles()) {
@@ -1170,6 +1147,9 @@ public class gameplayScreenController extends Application implements Initializab
 	      
 	      return false ; 
 	}
+	
+	
+	
 	
 	
 	

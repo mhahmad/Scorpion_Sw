@@ -1,11 +1,13 @@
 package Model;
 
+import java.util.TimerTask;
+
 /*
  * This class will be used as a timer in our game
  * It's a never ending timer that will only stop and start when the stop() and start() are used respectively 
  * There is also 2 methods to get elapsed time in milliseconds (getElapsedTimeMill) and get elapsed time in seconds (getElapsedTimeSecs)
  */
-public class StopWatch {
+public class StopWatch extends TimerTask{
 
 	  public static long startTime = 0;
 	  public static long stopTime = 0;
@@ -51,5 +53,22 @@ public class StopWatch {
 	    }
 	    return elapsed;
 	  }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		  int seconds = 30;
+		    int i = 0;
+		  i++;
+
+		       if(i % seconds == 0)
+		           System.out.println("Timer action!");
+		       else
+		           System.out.println("Time left:" + (seconds - (i %seconds)) );
+	}
+	
+	
+	 
+	    
 	}
 
