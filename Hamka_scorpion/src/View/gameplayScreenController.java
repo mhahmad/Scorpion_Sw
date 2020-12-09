@@ -477,7 +477,7 @@ public class gameplayScreenController extends Application implements Initializab
 		if(color==Color.Black) { //Black's turn
 			System.out.println("switching to Black  !!");
                
-			//SwitchTurntoBlack(sscene ,i , j , s , currentTile , blackSoldier, chosenBlackSoldier) ; 
+			SwitchTurntoBlack(scene ,i , j , s , currentTile , blackSoldier, chosenBlackSoldier) ; 
 		}
 		else if(color==Color.White) { //turn.color = Color.White
 			System.out.println("switching to Wwhite !!");
@@ -581,13 +581,12 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		
 	}
-	/*
+	
 	public void SwitchTurntoBlack( Scene scene , int i , int j,Soldier s ,Button currentTile, ImageView blackSoldier , ImageView chosenBlackSoldier  ) {
 		// the colors switch
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
 		// generate Colored Tiles 
-
 		if(s==null) {
 			if(possible==null)
 				System.out.println("Please click a black Soldier!");
@@ -630,15 +629,19 @@ public class gameplayScreenController extends Application implements Initializab
 						//							System.out.println();
 						//	board = game.getBoard();
 						//	System.out.println("Game id: " + game.getGameID());
-=======
+					}
+					
 				System.out.println("Here are the possible moves: " + possible);
+					}
 
-
-			}else if(s.getColor().equals(Color.White))
+			
+		         }
+			/*       
+		}else if(s.getColor().equals(Color.White)) {
 				System.out.println("White Soldier clicked!");
 
-		}
-		else if(color==Color.White) { //turn.color = Color.White
+		
+		         }else if(color==Color.White) { //turn.color = Color.White
 			if(s==null) {
 				if(possible==null)
 					System.out.println("Please click a white  Soldier!");
@@ -670,7 +673,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 						}
->>>>>>> master
+//>>>>>>> master
 
 					}
 					//Else don't do anything.
@@ -679,6 +682,7 @@ public class gameplayScreenController extends Application implements Initializab
 					//						}
 
 				}
+			*/
 				try {
 					refreshBoard(game,scene, root);
 				} catch (IOException e) {
@@ -687,7 +691,10 @@ public class gameplayScreenController extends Application implements Initializab
 					e.printStackTrace();
 				}
 		
-			}
+			
+		
+	
+		
 		}else if( s.getColor().equals(Color.Black)) {
 			Button b = getButtonById(currentTile.getId());
 			//*change selection icon
@@ -725,23 +732,28 @@ public class gameplayScreenController extends Application implements Initializab
 							}
 						}
 					}
-					System.out.println("Possible Move:" + key);
-					//						Button myB = getButtonById(key);
-					//						Button myB2 = getButtonById("tile15");
-					//						myB.setGraphic(possibleMove);
-					//						myB2.setGraphic(possibleMove);
-				}
-			}
-			System.out.println("Here are the possible moves: " + possible);
+				
 
-
-		}else if(s.getColor().equals(Color.White))
+		}
+				
+			}else if(s.getColor().equals(Color.White))
 			System.out.println("White Soldier clicked!");
 		
 		}
 		
-	*/
 	
+		}
+		
+		
+		         
+		         
+		         
+		
+		
+	
+	
+
+		
 	//public Tile getTileFromButton ()
 
 	public void refreshBoard(Game game, Scene scene, Parent root) throws IOException {
