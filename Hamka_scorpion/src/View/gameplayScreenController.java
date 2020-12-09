@@ -514,6 +514,7 @@ public class gameplayScreenController extends Application implements Initializab
 						//System.out.println(prevS);
 						game.moveWhiteSoldier(prevS, t, possible);
 						game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+						occupiedTilesOriginalColor(scene) ; 
 						ClearColoredTiles(scene);
 			 			GenerateYellowTiles(scene);
 			 			  GenerateRedTiles(scene, Color.White);
@@ -616,6 +617,7 @@ public class gameplayScreenController extends Application implements Initializab
 						//System.out.println(prevS);
 						game.moveBlackSoldier(prevS, t, possible);
 						game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+						occupiedTilesOriginalColor(scene) ; 
 						ClearColoredTiles(scene);
 			 			GenerateYellowTiles(scene);
                         GenerateRedTiles(scene, Color.White);
@@ -746,6 +748,26 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		
 		         
+		         public void occupiedTilesOriginalColor(Scene s) {
+		        	 
+		           for (Tile tile :this.game.getBoard().getOccupiedTiles()) {
+		               String possibleTile = tile.getX()+","+tile.getY();
+		               String check = null;
+		               String key = null;
+		               for (String ks : tilesBoardMap.keySet()) {
+		                   check = tilesBoardMap.get(ks);
+		                   if(check!=null) {
+		                       if(check.equals(possibleTile)) {
+		                           key = ks;
+		                           System.out.println(key);
+		                           ((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+		                           //break;
+		                       }
+		                   }
+		               }
+		           }
+		         }
+		      
 		         
 		         
 		

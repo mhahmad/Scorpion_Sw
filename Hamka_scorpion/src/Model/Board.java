@@ -145,6 +145,18 @@ public class Board {
 		return toReturn;
 	}
 	
+	
+	public ArrayList<Tile> getOccupiedTiles(){
+		ArrayList<Tile> toReturn = new ArrayList<Tile>();
+		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
+			if(entry.getValue() != null ) {
+				toReturn.add(entry.getKey());
+			}
+			}
+		return toReturn;
+	}
+	
+	
 	public int countPiece(int type) {
 		int count =0;
 		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
