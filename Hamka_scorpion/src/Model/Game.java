@@ -1098,7 +1098,7 @@ public class Game {
     }
 	
 
-	/***GREEN TILE ***
+	/***GREEN TILE *** 
 	 * This method generates a green tile of all the possible tiles for the player.
 	 * @param turn
 	 * @return
