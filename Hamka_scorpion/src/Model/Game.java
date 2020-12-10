@@ -224,7 +224,7 @@ public class Game {
 	  */
 	 public ArrayList<Tile> getPossibleMovesForBlackSoldier(Soldier s) {
 		 ArrayList<Tile> possibleMoves = new ArrayList<Tile>();
-		 if(s.getColor() != Color.Black && s.getSoldierNumber()!=1 || board.getTileOfSoldier(s)==null)
+		 if(s.getColor() != Color.Black && s.getSoldierNumber()!=2 || board.getTileOfSoldier(s)==null)
 			 return null;
 		 else {
 			 Tile t = s.getPosition();
@@ -1236,7 +1236,7 @@ public class Game {
 	            }
 	        }
 	        toReturn.addAll(allPossibleMoves);
-	        System.out.println("orange tiles : "+toReturn);
+//	        System.out.println("orange tiles : "+toReturn);
 	        return toReturn;
 	    }
 	
@@ -1263,12 +1263,12 @@ public class Game {
        int max = candidates.size();
      //  System.out.println(candidates);
        int random = (int)(Math.random()*max);
-       System.out.println(" red Tile Feild random : "+ random);
-       System.out.println(candidates +" this is candidates ! ");
+//       System.out.println(" red Tile Feild random : "+ random);
+//       System.out.println(candidates +" this is candidates ! ");
        if(candidates.size() > random)
         return candidates.get(random);
 
-       System.out.println("Returning  NULLL ! ");
+//       System.out.println("Returning  NULLL ! ");
        return null ; 
     }
 	

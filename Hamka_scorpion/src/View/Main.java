@@ -115,6 +115,23 @@ public class Main  {
 		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
+		StopWatch turnTimer = new StopWatch();
+		turnTimer.start();
+		System.out.println();
+		
+		System.out.println("switching to Black  !!");
+
+		long last =0;
+		  while(turnTimer.running) {
+			if((System.currentTimeMillis() -turnTimer. startTime) / 1000 !=last)
+				System.out.println(last+1);
+			
+			 last = (System.currentTimeMillis() -turnTimer. startTime) / 1000 ;
+			
+			  if(((System.currentTimeMillis() - turnTimer.startTime) / 1000)==10)
+				  turnTimer.stop();
+		  }
+		  
 		int[][] board = {{-1,1,-1,0,-1,1,-1,0},
 			          	 {0,-1,0,-1,0,-1,22,-1},
 			        	 {-1,2,-1,0,-1,0,-1,0},
