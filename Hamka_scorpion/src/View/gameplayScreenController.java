@@ -1212,7 +1212,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 		int whiteAliveCout = 0 ; 
 		int blackAliveCount = 0 ;
-
+		
 		int [][]board = game.getBoard().getBoard();
 		System.out.println("In refresh");
 		//Parent  root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
@@ -1276,10 +1276,12 @@ public class gameplayScreenController extends Application implements Initializab
 
 				}else if (board[i][j]==11) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
+					whiteAliveCout++ ; 
 
-				}else if (board[i][j]==22)
+				}else if (board[i][j]==22) {
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
-
+					blackAliveCount++; 
+				}
 
 
 
@@ -1321,7 +1323,7 @@ public class gameplayScreenController extends Application implements Initializab
 			this.deadBlackv.getChildren().clear();
 
 
-			for(int i=0 ; i<12-whiteAliveCout ; i++) {
+			for(int i=0 ; i< 12 -whiteAliveCout ; i++) {
 
 				ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
 				whiteSoldier.setFitHeight(45);
@@ -1329,7 +1331,7 @@ public class gameplayScreenController extends Application implements Initializab
 				this.deadwhitev.getChildren().add(whiteSoldier);
 			}
 
-			for(int i=0 ; i<12-blackAliveCount ; i++) {
+			for(int i=0 ; i< 12 -blackAliveCount ; i++) {
 				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 				blackSoldier.setFitHeight(45);
 				blackSoldier.setFitWidth(45);

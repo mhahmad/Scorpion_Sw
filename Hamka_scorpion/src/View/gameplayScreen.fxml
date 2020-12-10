@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.gameplayScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.gameplayScreenController">
    <children>
       <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
@@ -333,6 +333,8 @@
                </font>
             </Label>
             <Label fx:id="timelbl" layoutX="551.0" layoutY="66.0" prefHeight="48.0" prefWidth="63.0" />
+            <VBox fx:id="deadBlackv" layoutX="82.0" layoutY="161.0" prefHeight="200.0" prefWidth="100.0" />
+            <VBox fx:id="deadwhitev" layoutX="881.0" layoutY="153.0" prefHeight="200.0" prefWidth="100.0" />
          </children>
       </Pane>
    </children>
