@@ -47,6 +47,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 public class gameplayScreenController extends Application implements Initializable {
@@ -215,7 +218,6 @@ public class gameplayScreenController extends Application implements Initializab
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
 		
-
 		//		try {
 		//			for(int i = 0; i<=7; i++) {
 		//				for(int j = 0; j<=7; j++) {
@@ -344,7 +346,8 @@ public class gameplayScreenController extends Application implements Initializab
 		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 		p1.setText(game.getblackPlayer());
 		p2.setText(game.getwhitePlayer());
-		
+		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 		
 
 	}
@@ -512,7 +515,7 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier) {
 	
-	
+		
 		if(s==null) {
 			if(possible==null)
 				System.out.println("Please click a white  Soldier!");
@@ -537,12 +540,15 @@ public class gameplayScreenController extends Application implements Initializab
 						//System.out.println(prevS);
 						game.moveWhiteSoldier(prevS, t, possible);
 						game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+						p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+	                	p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+	                	p2.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
+	                	p2.setTextFill(javafx.scene.paint.Color.WHITE);
 						occupiedTilesOriginalColor(scene) ; 
 						ClearColoredTiles(scene);
 			 			GenerateYellowTiles(scene);
 			 			  GenerateRedTiles(scene, Color.White);
 	                        GenerateGreenTiles(scene, Color.White);
-	                        
 						System.out.println("Now It's Black's  turn");
 						clickedSoldier=null;
 						break;
@@ -643,6 +649,10 @@ public class gameplayScreenController extends Application implements Initializab
 						//System.out.println(prevS);
 						game.moveBlackSoldier(prevS, t, possible);
 						game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+						p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+	                	p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+	                	p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
+	                	p1.setTextFill(javafx.scene.paint.Color.WHITE);
 						occupiedTilesOriginalColor(scene) ; 
 						ClearColoredTiles(scene);
 			 			GenerateYellowTiles(scene);
