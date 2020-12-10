@@ -169,8 +169,19 @@ public class SysData {
 		}
 	}
 	
-	
-	
+	/***
+	 * This method checks if the player's answer is correct or not.
+	 * @param q
+	 * @param playerAnswer
+	 * @return
+	 */
+	public boolean isQuestionAnsweredCorrectly(Question q , String playerAnswer) {
+		if(q == null)
+			return false;
+		if(q.getRightAnswer().equals(playerAnswer))
+			return true;
+		 return false;
+	}
 	/***
 	 * This method is responsible for reading questions from JSON FILES and add them to the question's data structure
 	 */
