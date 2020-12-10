@@ -23,9 +23,13 @@ import Model.Queen;
 import Model.Soldier;
 import Model.StopWatch;
 import Model.Tile;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -55,6 +59,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class gameplayScreenController extends Application implements Initializable {
 
@@ -198,17 +203,18 @@ public class gameplayScreenController extends Application implements Initializab
 	Button bl = new Button();
 
 
-
-	private Timer turnTimer;
-
+	//---------------------Timer RElated ! s
+		private static final Integer STARTTIME = 30; // We can make it Max turn Time ! 
+		private static Timeline timeline;
+    @FXML
+    private Label timelbl;
+    private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);    
+             // Method res setTimmer() ; 
+    //-----------------------------------
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
 	public static ArrayList<Tile> possible = null;
 	public static HashMap<Tile, Soldier> possibleQueen = null;
-
-
-
-
 
 
 	private int[][] startBoard = {
@@ -328,7 +334,7 @@ public class gameplayScreenController extends Application implements Initializab
 		//	((Button)root.getChildrenUnmodifiable().get(root.getChildrenUnmodifiable().indexOf( (Button) scene.lookup("#tile3")))).setGraphic(img); 
 		stage.show();
 		stage.setTitle("Hamka - Match");
-
+         setTimmer() ; // Black's Turn Starts when opening window ! 
 
 
 		//System.out.println("START   " + tile1);
@@ -374,7 +380,26 @@ public class gameplayScreenController extends Application implements Initializab
 		p2.setText(game.getwhitePlayer());
 		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
-
+//----------Timer related
+	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
+	        // code to execute here...
+	        // e.g.
+	        //System.out.println("Time left: "+newTimeValue);
+	    	
+		 //   System.out.println("Time left: "+timeSeconds.toString());
+	    	
+		    System.out.println("time left : "+newTimeValue);
+//		    System.err.println("oldEime Value : "+oldTimeValue);
+//		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
+//           if(this.game.getTurn().equals(Color.Black)) {
+//        	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()) ; 
+//        	System.out.println("B points : "+this.game.getblackPlayerPoints());
+//           }
+//        	   
+//		    }
+	    });
+	    
+	    //------------------------------
 
 		queenArrows.setVisible(false);
 		queenArrows.setVgap(2);
@@ -492,9 +517,49 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
+//------------------------Timer Related  
 
+	public static void setTimmer() {
+		
+	//	 Timeline timeline = new Timeline(); 
+		//sprivate Label timerLabel = new Label();
+		 
 
+	//	 IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+		
+		   if(timeline != null) {
+		    	System.out.println("timeLine stoping ");
+               timeline.stop();
+		    }
+		   
+		if(((Label) scene.lookup("#"+"timelbl")) != null) {
+			  ((Label) scene.lookup("#"+"timelbl")).textProperty().unbind();
+		    ((Label) scene.lookup("#"+"timelbl")).setText(timeSeconds.toString());
 
+		   // ((Label) scene.lookup("#"+"timelbl")).setTextFill(Color.valueOf("#00000"));
+		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
+
+		    // Bind the timerLabel text property to the timeSeconds property
+		    ((Label) scene.lookup("#"+"timelbl")).textProperty().bind(timeSeconds.asString());
+
+		}
+		 
+
+            timeSeconds.set(STARTTIME);
+            timeline = new Timeline();
+
+            KeyValue keyValue = new KeyValue(timeSeconds, 0);
+            KeyFrame keyFrame = new KeyFrame(Duration.seconds(STARTTIME + 1), keyValue);
+
+            timeline.getKeyFrames().add(keyFrame);
+            timeline.playFromStart();
+
+     System.out.println("get every seconds value and display to console window");
+		 
+	}
+
+//-------------------------------------
+	
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
 
@@ -671,6 +736,8 @@ public class gameplayScreenController extends Application implements Initializab
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 							game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+							//Timer Related - 
+							setTimmer();
 							p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 							p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 							p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
@@ -718,6 +785,8 @@ public class gameplayScreenController extends Application implements Initializab
 								p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 								p1.setTextFill(javafx.scene.paint.Color.WHITE);
+								//Timer Related - 
+								setTimmer();
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
@@ -957,6 +1026,8 @@ public class gameplayScreenController extends Application implements Initializab
 							p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 							p2.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 							p2.setTextFill(javafx.scene.paint.Color.WHITE);
+							//Timer Related - 
+							setTimmer();
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
 							GenerateYellowTiles(scene);
@@ -992,6 +1063,8 @@ public class gameplayScreenController extends Application implements Initializab
 								p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 								p1.setTextFill(javafx.scene.paint.Color.WHITE);
+								//Timer Related - 
+								setTimmer();
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
