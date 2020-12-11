@@ -218,12 +218,12 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	private int[][] startBoard = {
-			{-1,22,-1,2,-1,2,-1,2},
-			{2,-1,22,-1,2,-1,2,-1},
-			{-1,22,-1,22,-1,2,-1,2},
+			{-1,2,-1,2,-1,2,-1,2},
+			{2,-1,2,-1,2,-1,2,-1},
+			{-1,2,-1,2,-1,2,-1,2},
 			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,11},
-			{1,-1,11,-1,11,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
+			{1,-1,1,-1,1,-1,1,-1},
 			{-1,1,-1,1,-1,1,-1,1},
 			{1,-1,1,-1,1,-1,1,-1}
 	};
@@ -247,7 +247,7 @@ public class gameplayScreenController extends Application implements Initializab
 	String direction = null;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	private Game game =  Game.getInstance("Black", "White", startBoard); //Singletone changes to be in every method.
+	private Game game =  Game.getInstance("Mohamed", "White", startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
@@ -401,7 +401,7 @@ public class gameplayScreenController extends Application implements Initializab
 	    	
 		 //   System.out.println("Time left: "+timeSeconds.toString());
 	    	
-		    System.out.println("time left : "+newTimeValue);
+//		    System.out.println("time left : "+newTimeValue);
 		    if(newTimeValue.intValue() == 10) 		GenerateGreenTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 5) 	GenerateOrangeTiles(scene, this.game.getTurn());
 //		    System.err.println("oldEime Value : "+oldTimeValue);
@@ -714,7 +714,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 		//--------------------
 		if(s==null) { //IF current Tile doesnt have a soldier.
-			if(possible==null)   //If possible is null then no soldier was selected before.
+			if(possible==null && possibleQueen == null)   //If possible is null then no soldier was selected before.
 				System.out.println("Please click a black Soldier!");
 
 			else if(clickedSoldier!=null){
@@ -762,6 +762,10 @@ public class gameplayScreenController extends Application implements Initializab
 							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
+							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+							if(game.isGameOver()) {
+								System.out.println(game.winner());
+							}
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
 							break;
@@ -807,6 +811,10 @@ public class gameplayScreenController extends Application implements Initializab
 								GenerateYellowTiles(scene);
 								GenerateRedTiles(scene, Color.White);
 								//GenerateGreenTiles(scene, Color.White);
+								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+								if(game.isGameOver()) {
+									System.out.println(game.winner());
+								}
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -1011,7 +1019,7 @@ public class gameplayScreenController extends Application implements Initializab
 		} );
 
 		if(s==null) {
-			if(possible==null)
+			if(possible==null && possibleQueen == null)
 				System.out.println("Please click a white  Soldier!");
 			else if(clickedSoldier!=null){
 				String prev = tilesBoardMap.get(clickedSoldier);
@@ -1048,6 +1056,10 @@ public class gameplayScreenController extends Application implements Initializab
 							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
+							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+							if(game.isGameOver()) {
+								System.out.println(game.winner());
+							}
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
 							break;
@@ -1085,6 +1097,10 @@ public class gameplayScreenController extends Application implements Initializab
 								GenerateYellowTiles(scene);
 								GenerateRedTiles(scene, Color.White);
 								//GenerateGreenTiles(scene, Color.White);
+								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+								if(game.isGameOver()) {
+									System.out.println(game.winner());
+								}
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;

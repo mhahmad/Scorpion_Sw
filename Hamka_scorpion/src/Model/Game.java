@@ -453,9 +453,9 @@ public class Game {
 					board.removeSoldier(midEnemySol, midEnemyTile);
 					System.out.println("You killed an enemy " + killed );
 					if(killed.equals("soldier!")) {
-						this.whitePlayerSoldiers--;
+						this.blackPlayerSoldiers--;
 					}else {
-						this.whitePlayerQueens--;
+						this.blackPlayerQueens--;
 					}
 					this.whitePlayerPoints+=100;
 
@@ -479,7 +479,7 @@ public class Game {
 							board.setSoldier(new Queen(11), nextPos);
 							board.removeSoldier(deadSoldier, deadSoldierTile);
 
-							this.whitePlayerSoldiers--;
+							this.whitePlayerSoldiers-=2;
 							System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + "  and became a queen, you also missed a kill , your soldier " + deadSoldierTile + " is dead.");
 							this.whitePlayerQueens++;
 						}
@@ -490,13 +490,13 @@ public class Game {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(s, nextPos);
 						board.removeSoldier(queenToBurn, queenToBurn.getPosition());
-						this.blackPlayerQueens--;
+						this.whitePlayerQueens--;
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " , you also missed a kill , your queen " + queenToBurn.getPosition() + " is dead.");
 					}else {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(new Queen(11), nextPos);
 						board.removeSoldier(queenToBurn, queenToBurn.getPosition());
-						this.blackPlayerQueens--;
+						this.whitePlayerSoldiers--;
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen, you also missed a kill , your queen " + queenToBurn.getPosition() + " is dead.");
 					}
 				}
@@ -507,6 +507,7 @@ public class Game {
 						board.setSoldier(new Queen(11), nextPos);
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen !");
 						this.whitePlayerQueens++;
+						this.whitePlayerSoldiers--;
 
 					}else {
 						board.removeSoldier(s, currentPos);
@@ -601,7 +602,7 @@ public class Game {
 							board.removeSoldier(s, currentPos);
 							board.setSoldier(new Queen(22), nextPos);
 							board.removeSoldier(soldierHasToDie, soldierHasToDieTile);
-							this.blackPlayerSoldiers--;
+							this.blackPlayerSoldiers-=2;
 							System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + "  and became a queen, you also missed a kill , your soldier " + soldierHasToDieTile + " is dead.");
 							this.blackPlayerQueens++;
 						}
@@ -618,7 +619,7 @@ public class Game {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(new Queen(22), nextPos);
 						board.removeSoldier(queenToBurn, queenToBurn.getPosition());
-						this.blackPlayerQueens--;
+						this.blackPlayerSoldiers--;
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen, you also missed a kill , your queen " + queenToBurn.getPosition() + " is dead.");
 					}
 				}
@@ -629,6 +630,7 @@ public class Game {
 						board.setSoldier(new Queen(22), nextPos);
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen!");
 						this.blackPlayerQueens++;
+						this.blackPlayerSoldiers--;
 					}else {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(s, nextPos);
