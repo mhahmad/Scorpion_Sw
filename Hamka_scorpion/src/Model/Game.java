@@ -1190,6 +1190,7 @@ public class Game {
 			int y = (int)(Math.random()*8);
 			return new Tile(x,y);
 		}
+		System.out.println("Blue Til Gene- returninng Null ");
 		return null;
 	}
 

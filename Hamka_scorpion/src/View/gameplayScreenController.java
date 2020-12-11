@@ -227,6 +227,19 @@ public class gameplayScreenController extends Application implements Initializab
 			{-1,1,-1,1,-1,1,-1,1},
 			{1,-1,1,-1,1,-1,1,-1}
 	};
+	
+	// check Blue tile Gen 
+//	private int[][] startBoard = {
+//			{-1,22,-1,0,-1,2,-1,2},
+//			{0,-1,0,-1,0,-1,0,-1},
+//			{-1,0,-1,0,-1,0,-1,0},
+//			{0,-1,0,-1,0,-1,0,-1},
+//			{-1,0,-1,0,-1,0,-1,11},
+//			{1,-1,11,-1,11,-1,0,-1},
+//			{-1,1,-1,1,-1,1,-1,1},
+//			{1,-1,1,-1,1,-1,1,-1}
+//	};
+	
 	public static Parent  root;
 	public static Scene scene;
 	GridPane queenArrows = new GridPane();
@@ -335,7 +348,7 @@ public class gameplayScreenController extends Application implements Initializab
 		stage.show();
 		stage.setTitle("Hamka - Match");
          setTimmer() ; // Black's Turn Starts when opening window ! 
-
+         
 
 		//System.out.println("START   " + tile1);
 
@@ -389,6 +402,8 @@ public class gameplayScreenController extends Application implements Initializab
 		 //   System.out.println("Time left: "+timeSeconds.toString());
 	    	
 		    System.out.println("time left : "+newTimeValue);
+		    if(newTimeValue.intValue() == 10) 		GenerateGreenTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 5) 	GenerateOrangeTiles(scene, this.game.getTurn());
 //		    System.err.println("oldEime Value : "+oldTimeValue);
 //		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
 //           if(this.game.getTurn().equals(Color.Black)) {
@@ -746,7 +761,7 @@ public class gameplayScreenController extends Application implements Initializab
 							ClearColoredTiles(scene);
 							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
-							GenerateGreenTiles(scene, Color.White);
+							//GenerateGreenTiles(scene, Color.White);
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
 							break;
@@ -791,7 +806,7 @@ public class gameplayScreenController extends Application implements Initializab
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
 								GenerateRedTiles(scene, Color.White);
-								GenerateGreenTiles(scene, Color.White);
+								//GenerateGreenTiles(scene, Color.White);
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -1032,7 +1047,7 @@ public class gameplayScreenController extends Application implements Initializab
 							ClearColoredTiles(scene);
 							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
-							GenerateGreenTiles(scene, Color.White);
+							//GenerateGreenTiles(scene, Color.White);
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
 							break;
@@ -1069,7 +1084,7 @@ public class gameplayScreenController extends Application implements Initializab
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
 								GenerateRedTiles(scene, Color.White);
-								GenerateGreenTiles(scene, Color.White);
+								//GenerateGreenTiles(scene, Color.White);
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;
@@ -1318,6 +1333,11 @@ public class gameplayScreenController extends Application implements Initializab
 
 			}
 		}
+		
+		//Generate Blue Tile - Maybe ! 
+		GenerateBlueTile(scene) ; 
+
+		//-----------------------Count Your Loses ! 
 		if(this.deadBlackv !=null && this.deadwhitev !=null) {
 			this.deadwhitev.getChildren().clear();
 			this.deadBlackv.getChildren().clear();
@@ -1483,6 +1503,32 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	}
+	
+	public void GenerateBlueTile( Scene s)  {
+
+		// color 1 random Empty tile
+		System.out.println(this.game == null);
+		Tile BlueTile = this.game.generateBlueTile() ; 
+		if(BlueTile != null ) { 
+			String possibleTile = BlueTile.getX()+","+BlueTile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						//						System.out.println("should be red  :: "+key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #2EB9FF;");;
+						break;
+					}
+				}
+			}
+		}
+
+
+	}
+	
 
 	public Button getButtonById(String id) {
 		//Button toReturn =null;

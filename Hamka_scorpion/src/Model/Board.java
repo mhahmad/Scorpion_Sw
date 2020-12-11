@@ -160,9 +160,11 @@ public class Board {
 	public int countPiece(int type) {
 		int count =0;
 		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
+			if(entry.getValue() != null) {
 			if(entry.getValue().getSoldierNumber() == type ) {
 				count++;
 			}
+		}
 			}
 		return count;
 	}
