@@ -421,14 +421,25 @@ public class Game {
 			if(killMoves.size() == 2) {
 				Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
 				Soldier midEnemySol = board.getSoldier(midEnemyTile);
+				String killed;
+				if(midEnemySol.getSoldierNumber()==2 ) {
+					killed = "soldier!";
+				}else {
+					killed = "queen!";
+				}
 				board.removeSoldier(s, currentPos);
 				if(nextPos.getX() == 0)
 					board.setSoldier(new Queen(11), nextPos);
 				else
 					board.setSoldier(s, nextPos);
 				board.removeSoldier(midEnemySol, midEnemyTile);
-				System.out.println("You killed enemy soldier!");
-				this.blackPlayerSoldiers--;
+				if(killed.equals("queen")) {
+					System.out.println("You killed enemy queen!");
+					this.blackPlayerQueens--;
+				}else {
+					System.out.println("You killed enemy soldier!");
+					this.blackPlayerSoldiers--;
+				}
 				this.whitePlayerPoints+=100;
 			}else {
 				Tile priorityMove = killMoves.get(0);
@@ -571,6 +582,11 @@ public class Game {
 				}else {
 					Tile midEnemyTile = getMiddleEnemySoldier(s,nextPos);
 					Soldier midEnemySol = board.getSoldier(midEnemyTile);
+					String killed;
+					if(midEnemySol.getSoldierNumber() == 1)
+						killed = "soldier";
+					else
+						killed = "queen";
 					board.removeSoldier(s, currentPos);
 					board.removeSoldier(midEnemySol,midEnemyTile);
 					if(nextPos.getX() == 7)
@@ -578,8 +594,13 @@ public class Game {
 					else
 						board.setSoldier(s,nextPos);
 					board.removeSoldier(midEnemySol, midEnemyTile);
-					System.out.println("You killed enemy soldier");
-					this.whitePlayerSoldiers--;
+					if(killed.equals("queen")) {
+						System.out.println("You killed enemy Queen");
+						this.whitePlayerQueens--;
+					}else {
+						System.out.println("You killed enemy soldier");
+						this.whitePlayerSoldiers--;
+					}
 					this.blackPlayerPoints+=100;
 				}
 			}
