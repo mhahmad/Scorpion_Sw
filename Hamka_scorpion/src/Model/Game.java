@@ -44,12 +44,11 @@ public class Game {
 		this.whitePlayerPoints = 0;
 		this.blackPlayerPoints = 0;
 		//		matchTime = new Timer();
-		this.whitePlayerSoldiers = 12;
-		this.blackPlayerSoldiers = 12;
 		// Time is needed here
 		turn = Color.Black;
 
 		board = new Board(gameBoard);
+		setSoldiersAndQueenNumbers();
 
 	}
 
@@ -211,7 +210,26 @@ public class Game {
 		this.board = board;
 	}
 
-
+	public void setSoldiersAndQueenNumbers() {
+		int whiteSolCount = 0, blackSolCount = 0, whiteQueCount = 0 , blackQueCount = 0;
+		System.out.println(board);
+		for(int i = 0 ; i < 8 ;i++) {
+			for(int j = 0 ; j < 8 ; j++) {
+				if(board.getBoard()[i][j] == 1)
+					whiteSolCount++;
+				else if(board.getBoard()[i][j] == 11)
+					whiteQueCount++;
+				else if(board.getBoard()[i][j] == 2)
+					blackSolCount++;
+				else if(board.getBoard()[i][j] == 22)
+					blackQueCount++;
+			}
+		}
+		this.blackPlayerQueens = blackQueCount;
+		this.blackPlayerSoldiers = blackSolCount;
+		this.whitePlayerQueens = whiteQueCount;
+		this.whitePlayerSoldiers = whiteSolCount;
+	}
 	/*****************************  Code Regarding Moves ***************************\
 
 

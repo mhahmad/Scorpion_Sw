@@ -138,7 +138,7 @@ public class Main  {
 		          		 {0,-1,2,-1,1,-1,22,-1},
 				         {-1,0,-1,0,-1,1,-1,0},
 				         {1,-1,1,-1,0,-1,0,-1},
-				         {-1,0,-1,1,-1,0,-1,0},
+				         {-1,0,-1,11,-1,0,-1,0},
 				         {1,-1,0,-1,1,-1,1,-1}
 };
 	
@@ -150,7 +150,6 @@ public class Main  {
 //	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
 	g.queenMove((Queen)g.getTileContent(new Tile(0,2)),	new Tile(6,5), g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(0,2)), "TL"));
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
-
 	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
 	/*ArrayList<Tile> moves = g.getPossibleMovesForBlackSoldier(g.getTileContent(new Tile(2,5)));
 

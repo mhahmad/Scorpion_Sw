@@ -248,7 +248,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 	//private Game game  = new Game("White", "Black", startBoard);
 	private Game game =  Game.getInstance("Mohamed", "White", startBoard); //Singletone changes to be in every method.
-
+	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
@@ -766,6 +766,7 @@ public class gameplayScreenController extends Application implements Initializab
 							if(game.isGameOver()) {
 								System.out.println(game.winner());
 							}
+
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
 							break;
@@ -792,7 +793,6 @@ public class gameplayScreenController extends Application implements Initializab
 								//to.setGraphic(blackSoldier);
 								//Button from = getButtonById(clickedSoldier);
 								//	from.setGraphic(null);
-
 								//System.out.println("Prev Tile: " + prevT);
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
