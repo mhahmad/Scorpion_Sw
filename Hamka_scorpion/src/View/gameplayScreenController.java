@@ -194,7 +194,8 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@FXML
 	private Label displayTimer;
-
+    @FXML
+    private Label winnerLabel;
 
 	/* Buttons to display queen movements.*/
 	Button tl = new Button();
@@ -393,6 +394,7 @@ public class gameplayScreenController extends Application implements Initializab
 		p2.setText(game.getwhitePlayer());
 		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+		winnerLabel.setVisible(false);
 //----------Timer related
 	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
 	        // code to execute here...
@@ -764,7 +766,9 @@ public class gameplayScreenController extends Application implements Initializab
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
-								System.out.println(game.winner());
+								winnerLabel.setText(game.winner() + " Wins!");
+								winnerLabel.setVisible(true);
+								boardOFF();
 							}
 
 							System.out.println("Now It's White's turn");
@@ -813,8 +817,10 @@ public class gameplayScreenController extends Application implements Initializab
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
-									System.out.println(game.winner());
-								}
+									winnerLabel.setText(game.winner() + " Wins!");
+									winnerLabel.setVisible(true);
+									boardOFF();
+									}
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -1058,7 +1064,9 @@ public class gameplayScreenController extends Application implements Initializab
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
-								System.out.println(game.winner());
+								winnerLabel.setText(game.winner() + " Wins!");
+								winnerLabel.setVisible(true);	
+								boardOFF();
 							}
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
@@ -1099,7 +1107,9 @@ public class gameplayScreenController extends Application implements Initializab
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
-									System.out.println(game.winner());
+									winnerLabel.setText(game.winner() + " Wins!");
+									winnerLabel.setVisible(true);	
+									boardOFF();
 								}
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
@@ -1255,7 +1265,7 @@ public class gameplayScreenController extends Application implements Initializab
 			for(int j = 0; j<=7; j++) {
 
 				//for(int j = 2; j<8; j+=2) {
-
+				
 				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 				blackSoldier.setFitHeight(45);
 				blackSoldier.setFitWidth(45);
@@ -1352,7 +1362,7 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		//Generate Blue Tile - Maybe ! 
 		GenerateBlueTile(scene) ; 
-
+		
 		//-----------------------Count Your Loses ! 
 		if(this.deadBlackv !=null && this.deadwhitev !=null) {
 			this.deadwhitev.getChildren().clear();
@@ -1377,7 +1387,42 @@ public class gameplayScreenController extends Application implements Initializab
 
 	}
 
+	
+	public void boardOFF() {
+		tile1.setOnMouseClicked(null);
+		tile2.setOnMouseClicked(null);
+		tile3.setOnMouseClicked(null);
+		tile4.setOnMouseClicked(null);
+		tile5.setOnMouseClicked(null);
+		tile6.setOnMouseClicked(null);
+		tile7.setOnMouseClicked(null);
+		tile8.setOnMouseClicked(null);
+		tile9.setOnMouseClicked(null);
+		tile10.setOnMouseClicked(null);
+		tile11.setOnMouseClicked(null);
+		tile12.setOnMouseClicked(null);
+		tile13.setOnMouseClicked(null);
+		tile14.setOnMouseClicked(null);
+		tile15.setOnMouseClicked(null);
+		tile16.setOnMouseClicked(null);
+		tile17.setOnMouseClicked(null);
+		tile18.setOnMouseClicked(null);
+		tile19.setOnMouseClicked(null);
+		tile20.setOnMouseClicked(null);
+		tile21.setOnMouseClicked(null);
+		tile22.setOnMouseClicked(null);
+		tile23.setOnMouseClicked(null);
+		tile24.setOnMouseClicked(null);
+		tile25.setOnMouseClicked(null);
+		tile26.setOnMouseClicked(null);
+		tile27.setOnMouseClicked(null);
+		tile28.setOnMouseClicked(null);
+		tile29.setOnMouseClicked(null);
+		tile30.setOnMouseClicked(null);
+		tile31.setOnMouseClicked(null);
+		tile32.setOnMouseClicked(null);
 
+	}
 	public void clearBoard(Game game, Scene scene, Parent root) throws IOException {
 
 		for(int i = 0; i<=7; i++) {

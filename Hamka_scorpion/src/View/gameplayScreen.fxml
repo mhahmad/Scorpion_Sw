@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.gameplayScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.gameplayScreenController">
    <children>
       <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
@@ -335,6 +335,11 @@
             <Label fx:id="timelbl" layoutX="563.0" layoutY="60.0" prefHeight="48.0" prefWidth="63.0" />
             <VBox fx:id="deadBlackv" layoutX="82.0" layoutY="161.0" prefHeight="200.0" prefWidth="100.0" />
             <VBox fx:id="deadwhitev" layoutX="881.0" layoutY="153.0" prefHeight="200.0" prefWidth="100.0" />
+            <Label fx:id="winnerLabel" alignment="CENTER" layoutX="295.0" layoutY="703.0" prefHeight="110.0" prefWidth="475.0" text="Player Wins !" textAlignment="CENTER" textFill="#fcdc3d">
+               <font>
+                  <Font name="Gill Sans Nova" size="72.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>
