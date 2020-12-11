@@ -115,39 +115,40 @@ public class Main  {
 		System.out.println("The Game took: " + (System.currentTimeMillis() - sw2.startTime) / 1000 + " Seconds");
 		sw2.stop();
 		System.out.println("The winner is : " + game.winner());*/
-		StopWatch turnTimer = new StopWatch();
-		turnTimer.start();
-		System.out.println();
-		
-		System.out.println("switching to Black  !!");
-
-		long last =0;
-		  while(turnTimer.running) {
-			if((System.currentTimeMillis() -turnTimer. startTime) / 1000 !=last)
-				System.out.println(last+1);
-			
-			 last = (System.currentTimeMillis() -turnTimer. startTime) / 1000 ;
-			
-			  if(((System.currentTimeMillis() - turnTimer.startTime) / 1000)==10)
-				  turnTimer.stop();
-		  }
-		  
-		int[][] board = {{-1,1,-1,0,-1,1,-1,0},
+//		StopWatch turnTimer = new StopWatch();
+//		turnTimer.start();
+//		System.out.println();
+//		
+//		System.out.println("switching to Black  !!");
+//
+//		long last =0;
+//		  while(turnTimer.running) {
+//			if((System.currentTimeMillis() -turnTimer. startTime) / 1000 !=last)
+//				System.out.println(last+1);
+//			
+//			 last = (System.currentTimeMillis() -turnTimer. startTime) / 1000 ;
+//			
+//			  if(((System.currentTimeMillis() - turnTimer.startTime) / 1000)==10)
+//				  turnTimer.stop();
+//		  }
+//		  
+		int[][] board = {{-1,22,-1,0,-1,1,-1,0},
 			          	 {0,-1,0,-1,0,-1,22,-1},
 			        	 {-1,2,-1,0,-1,0,-1,0},
 		          		 {0,-1,2,-1,1,-1,22,-1},
-				         {-1,1,-1,0,-1,0,-1,0},
-				         {1,-1,1,-1,1,-1,0,-1},
-				         {-1,0,-1,1,-1,22,-1,0},
+				         {-1,0,-1,0,-1,1,-1,0},
+				         {1,-1,1,-1,0,-1,0,-1},
+				         {-1,0,-1,1,-1,0,-1,0},
 				         {1,-1,0,-1,1,-1,1,-1}
 };
 	
 //	Game g = new Game("M","A",board);
 	Game g = Game.getInstance("White", "Black", board);
-
-	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(1,6)) ));
-	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
-	
+	System.out.println(g.getQueenWithKill(Color.Black));
+	System.out.println(g.getAllQueensKills(Color.Black) + " SDS D");
+//	System.out.println(g.priorityKill((Queen)g.getTileContent(new Tile(1,6)) ));
+//	System.out.println(g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(1,6)), "TR"));
+	g.queenMove((Queen)g.getTileContent(new Tile(0,2)),	new Tile(6,5), g.getQueenBiasMoves((Queen)g.getTileContent(new Tile(0,2)), "TL"));
 //	System.out.println(g.board.getPlayerPositions(Color.Black));
 
 	//System.out.println(g.ifKillExist(new Tile(5,0), g.getPossibleMovesForWhiteSoldier(g.getTileContent(new Tile(5,0)))));
