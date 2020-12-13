@@ -16,6 +16,7 @@ import java.util.TimerTask;
 import javax.management.openmbean.OpenType;
 import javax.swing.Timer;
 
+import Controller.SysData;
 import Model.Board;
 import Model.Color;
 import Model.Game;
@@ -23,6 +24,7 @@ import Model.Queen;
 import Model.Soldier;
 import Model.StopWatch;
 import Model.Tile;
+import Model.Winner;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -197,6 +199,11 @@ public class gameplayScreenController extends Application implements Initializab
     @FXML
     private Label winnerLabel;
 
+    @FXML
+    private Button exitBtn;
+
+    public static String p1Name = "p1";
+    public static String p2Name ="p2";
 	/* Buttons to display queen movements.*/
 	Button tl = new Button();
 	Button br = new Button();
@@ -205,7 +212,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	//---------------------Timer RElated ! s
-		private static final Integer STARTTIME = 30; // We can make it Max turn Time ! 
+		private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
 		private static Timeline timeline;
     @FXML
     private Label timelbl;
@@ -248,7 +255,7 @@ public class gameplayScreenController extends Application implements Initializab
 	String direction = null;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	private Game game =  Game.getInstance("Mohamed", "White", startBoard); //Singletone changes to be in every method.
+	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
@@ -404,8 +411,9 @@ public class gameplayScreenController extends Application implements Initializab
 		 //   System.out.println("Time left: "+timeSeconds.toString());
 	    	
 //		    System.out.println("time left : "+newTimeValue);
-		    if(newTimeValue.intValue() == 10) 		GenerateGreenTiles(scene, this.game.getTurn());
-		    if(newTimeValue.intValue() == 5) 	GenerateOrangeTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 90) 		GenerateGreenTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 0) game.handTurn();
 //		    System.err.println("oldEime Value : "+oldTimeValue);
 //		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
 //           if(this.game.getTurn().equals(Color.Black)) {
@@ -554,7 +562,7 @@ public class gameplayScreenController extends Application implements Initializab
 		    ((Label) scene.lookup("#"+"timelbl")).setText(timeSeconds.toString());
 
 		   // ((Label) scene.lookup("#"+"timelbl")).setTextFill(Color.valueOf("#00000"));
-		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
+//		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
 
 		    // Bind the timerLabel text property to the timeSeconds property
 		    ((Label) scene.lookup("#"+"timelbl")).textProperty().bind(timeSeconds.asString());
@@ -1387,8 +1395,16 @@ public class gameplayScreenController extends Application implements Initializab
 
 	}
 
-	
+	public int getWinnerPoints() {
+		if(game.winner().equals(game.getblackPlayer()))
+			return game.getblackPlayerPoints();
+		else
+			return game.getwhitePlayerPoints();
+	}
 	public void boardOFF() {
+		SysData.getInstance().addWinnerToLeaderboard(new Winner(game.winner(),getWinnerPoints()," "));
+		SysData.getInstance().writeWinnersIntoFile();
+		timeline.stop();
 		tile1.setOnMouseClicked(null);
 		tile2.setOnMouseClicked(null);
 		tile3.setOnMouseClicked(null);
@@ -1663,7 +1679,14 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 
-
+	@FXML
+	void exitBtnClicked(ActionEvent event) throws Exception{
+		Stage stage = (Stage)this.exitBtn.getScene().getWindow();
+		Parent toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+		Scene scene = new Scene(toLoad);
+		stage.setScene(scene);
+		stage.centerOnScreen();
+	}
 
 
 }

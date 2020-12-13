@@ -70,6 +70,8 @@ public class SysData {
 	}
 	
 	public TreeSet<Winner> getLeaderboard(){
+		leaderboard.clear();
+		readLeaderboardFile();
 		return leaderboard;
 	}
 	

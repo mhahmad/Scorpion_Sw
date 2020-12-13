@@ -39,6 +39,7 @@ public class mainMenuController extends Application {
 		stage.setScene(scene);
 		stage.show();
 		stage.setTitle("Hamka - main menu");
+		stage.setResizable(false);
 	}
 	
 	
@@ -92,6 +93,6 @@ public class mainMenuController extends Application {
     
     @FXML
     void startBtnClicked(ActionEvent event) throws IOException {
-		enterNameController.display();
+		enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
     }
 }

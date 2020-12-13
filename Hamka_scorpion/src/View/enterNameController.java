@@ -1,8 +1,10 @@
 package View;
 
 
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -20,9 +22,9 @@ import javafx.stage.Stage;
 public class enterNameController{
 
 	
-	public static void display() {
+	public static void display(Stage st) {
 		Stage window = new Stage();
-		
+		window.setResizable(false);
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle("Enter player names");
 		window.setMinWidth(500);
@@ -69,6 +71,25 @@ public class enterNameController{
 				 }
 			 }else {
 				 // GO TO BOARD SCREEN
+				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("gameplayScreen.fxml"));
+                 Parent root;
+               try {
+                   root = loader.load();
+
+                 Scene scene = new Scene(root);
+                 window.setTitle("Hamka");
+                 window.setScene(scene);
+                 gameplayScreenController con = loader.getController();
+                 con.p1Name= player1.getText() ;
+                 con.p2Name = player2.getText() ; 
+                 con.start(window);
+                 window.show();
+                 window.centerOnScreen();
+                 st.close();
+               } catch ( Exception e1) {
+                   // TODO Auto-generated catch block
+                   e1.printStackTrace();
+               }
 			 }
 		 });
 		 errorLabel.setVisible(false);

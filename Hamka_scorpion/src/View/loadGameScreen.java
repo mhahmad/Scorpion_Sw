@@ -28,6 +28,7 @@ public class loadGameScreen extends Application{
 		stage.setScene(scene);
 		stage.show();
 		stage.setTitle("Hamka - Load game");
+		stage.setResizable(false);
 	}
 	
 	

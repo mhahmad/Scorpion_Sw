@@ -37,6 +37,7 @@ public class tutorialScreen extends Application{
 			stage.setScene(scene);
 			stage.show();
 			stage.setTitle("Hamka - tutorials");
+			stage.setResizable(false);
 		}
 		
 		

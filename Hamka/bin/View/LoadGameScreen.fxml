@@ -14,7 +14,7 @@
    <children>
       <ImageView fitHeight="960.0" fitWidth="1200.0">
          <image>
-            <Image url="@../../Backgrounds/mainMenuBackground.png" />
+            <Image url="@../Resources/mainMenuBackground.png" />
          </image>
       </ImageView>
       <Pane layoutX="1.0" prefHeight="65.0" prefWidth="1200.0" style="-fx-background-color: #630000;">

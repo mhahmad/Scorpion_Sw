@@ -35,7 +35,8 @@ public class optionScreenController extends Application {
 		Scene scene = new Scene(root,1200,960);
 		stage.setScene(scene);
 		stage.show();
-		stage.setTitle("Hamka - options");		
+		stage.setTitle("Hamka - options");	
+		stage.setResizable(false);
 	}
 	
 	public static void main(String[] arg) {

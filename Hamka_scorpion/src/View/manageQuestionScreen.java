@@ -133,6 +133,7 @@ public class manageQuestionScreen extends Application implements Initializable {
 		stage.setScene(scene);
 		stage.show();
 		stage.setTitle("Hamka - Question Management");
+		stage.setResizable(false);
 	}
 	
 	

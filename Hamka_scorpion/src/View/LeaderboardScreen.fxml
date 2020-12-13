@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="960.0" fitWidth="1200.0">
          <image>
-            <Image url="@../../Backgrounds/mainMenuBackground.png" />
+            <Image url="@../Resources/mainMenuBackground.png" />
          </image>
       </ImageView>
       <Pane layoutX="1.0" prefHeight="65.0" prefWidth="1200.0" style="-fx-background-color: #630000;;">
@@ -44,9 +44,9 @@
             </Label>
             <TableView fx:id="leaderboardTable" layoutX="70.0" layoutY="106.0" prefHeight="530.0" prefWidth="745.0" style="-fx-background-color: #404040;" styleClass="-column-header-background { -fx-background-color:  #404040}">
               <columns>
-                <TableColumn prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Player" />
-                <TableColumn minWidth="0.0" prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Date" />
-                  <TableColumn prefWidth="250.0" style="-fx-background-color: #FF8C00;" text="Result" />
+                <TableColumn fx:id="playerColumn" prefWidth="250.0" text="Player" />
+                <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="250.0" text="Date" />
+                  <TableColumn fx:id="resultColumn" prefWidth="250.0" text="Result" />
               </columns>
             </TableView>
          </children>

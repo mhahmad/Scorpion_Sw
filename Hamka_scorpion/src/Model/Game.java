@@ -26,25 +26,14 @@ public class Game {
 	public int seconds = 0;
 	private Tile[] yellowPanels;
 	private Board board;
-	//	private int[][] gameBoard = board.getBoard();
-	/*private int[][] board = {{-1,2,-1,2,-1,2,-1,2},
-							{2,-1,2,-1,2,-1,2,-1},
-							{-1,2,-1,2,-1,2,-1,2},
-							{0,-1,0,-1,0,-1,0,-1},
-							{-1,0,-1,0,-1,0,-1,0},
-							{1,-1,1,-1,1,-1,1,-1},
-							{-1,1,-1,1,-1,1,-1,1},
-							{1,-1,1,-1,1,-1,1,-1}
-};*/
+
 	Color turn;
 
-	private Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
+	public Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.whitePlayerPoints = 0;
 		this.blackPlayerPoints = 0;
-		//		matchTime = new Timer();
-		// Time is needed here
 		turn = Color.Black;
 
 		board = new Board(gameBoard);
@@ -307,60 +296,6 @@ public class Game {
 		return true;
 	}
 
-	/***
-	 * This method gets the possible moves for the white soldier and return them in an array
-	 * @param obj
-	 * @param Tile
-	 * @return
-
-	 public ArrayList<Tile> getPossibleMovesForBlackSoldier( int obj , Tile Tile) {
-		 ArrayList<Tile> TileMoves = new ArrayList<Tile>();
-		 if(obj != 2)
-			 return null;
-		 else {
-			 if(Tile.y == 0 && Tile.x < 7 ) { // column =0 and row 1-6
-				if( getTileContent(new Tile(Tile.x+1,Tile.y+1)) == 0) {
-					 TileMoves.add(new Tile(Tile.x+1,Tile.y+1));
-					 //System.out.println(TileMoves);
-					 return TileMoves;
-				}
-				else if ((getTileContent(new Tile(Tile.x+1,Tile.y+1)) == 1 || getTileContent(new Tile(Tile.x+1,Tile.y+1)) == 11) && getTileContent(new Tile(Tile.x  + 2 , Tile.y + 2)) == 0 && Tile.x <6 ) { //if eat is possible and row 1-5
-						TileMoves.add(new Tile(Tile.x + 2, Tile.y + 2));
-						// System.out.println(TileMoves);
-						return TileMoves;
-				}
-			 }else if(Tile.y == 7 && Tile.x < 7 ) { // if column =7 and row 0-6
-				 if(getTileContent(new Tile(Tile.x + 1,Tile.y - 1)) == 0) { // move possible
-					 TileMoves.add(new Tile(Tile.x+1,Tile.y-1));
-					// System.out.println(TileMoves);
-
-					 return TileMoves;
-				 }else if ((getTileContent(new Tile(Tile.x+1,Tile.y-1)) == 1 || getTileContent(new Tile(Tile.x+1,Tile.y-1)) ==11)  && Tile.x <6 && getTileContent(new Tile(Tile.x + 2,Tile.y - 2)) == 0) {//if eat possible and row 1-5
-					 TileMoves.add(new Tile(Tile.x + 2, Tile.y - 2));
-					// System.out.println(TileMoves);
-					 return TileMoves;
-				 }
-			 }else if (Tile.x <7 && Tile.y>0 && Tile.y<7 ) {  
-				 if(getTileContent(new Tile(Tile.x + 1, Tile.y - 1)) == 0 || getTileContent(new Tile(Tile.x + 1,Tile.y + 1)) == 0) {// row 1-6 and column 1-6 and move possible
-					 if(getTileContent(new Tile(Tile.x + 1, Tile.y - 1)) == 0 )
-						 TileMoves.add(new Tile(Tile.x + 1, Tile.y -1 ));
-					 if(getTileContent(new Tile(Tile.x + 1,Tile.y + 1)) == 0)
-						 TileMoves.add(new Tile(Tile.x + 1, Tile.y + 1 ));
-				 }
-				 if (Tile.x < 6 ) { // row 0-5 and column 2-5 
-					 if(Tile.y<6 &&(getTileContent(new Tile(Tile.x+1,Tile.y+1)) == 1 || getTileContent(new Tile(Tile.x+1,Tile.y+1)) ==11) && getTileContent(new Tile(Tile.x + 2,Tile.y + 2)) == 0) //if eat to the right possible
-						 TileMoves.add(new Tile(Tile.x + 2,Tile.y + 2));
-					 if(Tile.y>1 && (getTileContent(new Tile(Tile.x+1,Tile.y-1)) == 1 || getTileContent(new Tile(Tile.x+1,Tile.y-1)) ==11) && getTileContent(new Tile(Tile.x + 2 , Tile.y - 2)) == 0) // if eat to the left possible
-						TileMoves.add(new Tile(Tile.x + 2,Tile.y - 2));
-
-			 }
-				 //System.out.println(TileMoves);
-
-				 return TileMoves;
-		 }}
-		 return null;
-
-	 }*/
 
 
 	/***
@@ -869,59 +804,7 @@ public class Game {
 		}
 		return null;
 	}
-	//		public void moveQueen(Queen queen , Tile next , HashMap<Tile,Soldier> possibleMoves) {
-	//			if(possibleMoves == null || !possibleMoves.containsKey(next)) {
-	//				System.out.println("Wrong Input");
-	//				return;
-	//			}
-	//			else if(board.getSoldier(next).getSoldierNumber() != 0) {
-	//				System.out.println("Wrong Destination");
-	//				return;
-	//			}
-	//			else {
-	//				Tile cur = board.getTileOfSoldier(queen);
-	//				if(queen.getSoldierNumber() == 22) {
-	//					board.removeSoldier(queen, cur);
-	//					board.setSoldier(queen, next);
-	//					if(possibleMoves.get(next) == null) {
-	//						System.out.println("You have moved your queen from " + cur + " to " + next);
-	//					}else {
-	//						Tile midKill = possibleMoves.get(next);
-	//						Soldier midKillSol = board.getSoldier(midKill);
-	//						board.removeSoldier(midKillSol,midKill);
-	//						if(getTileContent(midKill).getSoldierNumber() == 1)
-	//							this.whitePlayerSoldiers--;
-	//						else
-	//							this.whitePlayerQueens--;
-	//						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
-	//						this.blackPlayerPoints+=100;
-	//					}
-	//				}else if ( queen.getSoldierNumber() == 11) {
-	//					board.removeSoldier(queen, cur);
-	//					board.setSoldier(queen, next);
-	//					if(possibleMoves.get(next) == null) {
-	//						System.out.println("You have moved your queen from " + cur + " to " + next);
-	//					}else {
-	//						Tile midKill = possibleMoves.get(next);
-	//						Soldier midKillSol = board.getSoldier(midKill);
-	//						board.removeSoldier(midKillSol, midKill);
-	//						if(getTileContent(midKill).getSoldierNumber() == 2)
-	//							this.blackPlayerSoldiers--;
-	//						else
-	//							this.blackPlayerQueens--;
-	//						System.out.println("You have moved your queen from " + cur + " to " + next + ", and killed an enemy");
-	//						this.whitePlayerPoints+=100;
-	//					}
-	//				}
-	//			}
-	//			
-	//			for(int i = 0 ; i < 8; i++) {
-	//				for(int j = 0; j < 8; j++) 
-	//					System.out.print(gameBoard[i][j] + ",");
-	//				 System.out.println();
-
-	//	}
-	//}
+	
 
 	public void moveStreak(Soldier solWithKillStreak,Soldier currentSol , Tile nextMove) {
 		if(solWithKillStreak == null || currentSol == null || !isTileInFrame(nextMove)) {
@@ -1011,40 +894,7 @@ public class Game {
 		}
 		return whiteKillsMoves;
 	}
-	//		public ArrayList<Tile> getKills(Color turn){
-	//			if(turn == null) return null;
-	//			ArrayList<Tile> blackKillsMoves = new ArrayList<Tile>();
-	//			ArrayList<Tile> whiteKillsMoves = new ArrayList<Tile>();
-	//			HashMap<Tile,Soldier> queenKills = new HashMap<>();
-	//			ArrayList<Tile> tiles = board.getPlayerPositions(turn);
-	//			System.out.println(tiles);
-	//			for(Tile t : tiles) {
-	//				System.out.println(t);
-	//				if( getTileContent(t).getSoldierNumber()==2 &&  turn.equals(Color.Black)) {
-	//					ArrayList<Tile> possibleMoves = getPossibleMovesForBlackSoldier(board.getSoldier(t));
-	//					if(ifKillExist(t, possibleMoves)) {
-	//						blackKillsMoves.addAll(getKillMove(possibleMoves, t));
-	//					}
-	//				}else if(getTileContent(t).getSoldierNumber()==22 &&  turn.equals(Color.Black)){
-	//					queenKills = priorityKill((Queen)getTileContent(t));
-	//					if(queenKills != null)
-	//						blackKillsMoves.addAll(queenKills.keySet());
-	//				}else if(getTileContent(t).getSoldierNumber()==1 && turn.equals(Color.White)) {
-	//					ArrayList<Tile> possibleMoves = getPossibleMovesForWhiteSoldier(board.getSoldier(t));
-	//					if(ifKillExist(t, possibleMoves)) {
-	//						whiteKillsMoves.addAll(getKillMove(possibleMoves, t));
-	//					}
-	//				}else if(getTileContent(t).getSoldierNumber()==11 && turn.equals(Color.White)) {
-	//					queenKills = priorityKill((Queen)getTileContent(t));
-	//					if(queenKills != null)
-	//						whiteKillsMoves.addAll(queenKills.keySet());
-	//				}
-	//			}
-	//				if(turn.equals(Color.Black)) {
-	//					return blackKillsMoves;
-	//				}
-	//					return whiteKillsMoves;
-	//		}
+
 	/***
 	 * This method returns the coordinate of the enemy soldier that sits between current position and next position
 	 * @param color
@@ -1801,262 +1651,9 @@ public class Game {
 	}
 
 
-	/***
-	 * This method takes the position of the queen as parameter and returns all the possible moves in all of the 4 biases.
-	 * @param obj
-	 * @param pos
-	 * @return
-	 *//*
-	public HashMap<Tile,Tile> getQueenBiasMoves(int obj , Tile pos,String dir,HashMap<Tile,Tile> mapMoves){
-		int i = 1 ,j = 1;
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		int opSol,opQue;
-		if(obj == 11) { 
-			opSol= 2;
-			opQue = 22;
-		}
-		else { opSol =1;
-				opQue = 11;
-		}
-		// get the possible moves in the right-top bias
-		if(dir.equals("TOP-RIGHT")) {
-			while(getContentWithXandY(pos.x - i , pos.y + j) == 0 || ((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue)
-					&& getContentWithXandY(pos.x - (i+1), pos.y + (j+1))== 0)) {
-				if((getContentWithXandY(pos.x - i, pos.y + j) == opSol || getContentWithXandY(pos.x - i,pos.y + j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y + (j+1) )== 0) {
-					if(mapMoves.containsKey(new Tile(pos.x - (i+1),pos.y + (j+1)))) {
-						if(mapMoves.get(new Tile(pos.x - (i+1),pos.y + (j+1))) == null) {
-							mapMoves.put(new Tile(pos.x - (i+1),pos.y + (j+1)), new Tile(pos.x - i, pos.y + j));
-						}
-					}else {
-						mapMoves.put(new Tile(pos.x - (i+1),pos.y + (j+1)), new Tile(pos.x - i, pos.y + j));
-					}
-//					toReturn.add(getTile(pos.x - (i+1), pos.y + (j+1)));
-					break;
-				}
-//				toReturn.add(getTile(pos.x - i , pos.y + j));
-				if(getContentWithXandY(pos.x - i , pos.y + j) == 0 && !mapMoves.containsKey(new Tile(pos.x - i , pos.y + j)))
-					mapMoves.put(new Tile(pos.x - i , pos.y + j),null);
-				i++;
-				j++;
-			}}
-//			i =1 ;
-//			j = 1;
-			// get the possible moves in the left-top bias
-			else if(dir.equals("TOP-LEFT")) {
-			while(getContentWithXandY(pos.x - i, pos.y - j) == 0 || ((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue)
-					&& getContentWithXandY(pos.x - (i+1), pos.y - (j+1))== 0)) {
-				if((getContentWithXandY(pos.x - i, pos.y - j) == opSol || getContentWithXandY(pos.x - i,pos.y - j) == opQue) && getContentWithXandY(pos.x - (i+1), pos.y - (j+1) )== 0) {
-					if(mapMoves.containsKey(new Tile(pos.x - (i+1), pos.y - (j+1)))) {
-						if(mapMoves.get(new Tile(pos.x - (i+1) , pos.y - (j+1))) == null) {
-							mapMoves.put(new Tile(pos.x - (i+1) , pos.y - (j+1)), new Tile(pos.x - i,pos.y - j));
-						}
-					}else {
-						mapMoves.put(new Tile(pos.x - (i+1) , pos.y - (j+1)), new Tile(pos.x - i,pos.y - j));
-					}
-//					toReturn.add(getTile(pos.x - (i+1), pos.y - (j+1)));
-					break;
-				}
-				if(getContentWithXandY(pos.x - i, pos.y - j) == 0 && !mapMoves.containsKey(new Tile(pos.x - i, pos.y - j)))
-					mapMoves.put(new Tile(pos.x - i,pos.y - j), null);
-//				toReturn.add(getTile(pos.x - i, pos.y - j));
-				i++;
-				j++;
-			}}
-//				i=1;
-//				j=1;
-			else if(dir.equals("BOTTOM-RIGHT")) {
-			// get the possible moves in the right-bottom bias
-			while(getContentWithXandY(pos.x + i, pos.y + j) == 0 || ((getContentWithXandY(pos.x + i, pos.y + j) == opSol || getContentWithXandY(pos.x + i,pos.y + j) == opQue)
-					&& getContentWithXandY(pos.x + (i+1), pos.y + (j+1))== 0)) {
-				if((getContentWithXandY(pos.x + i, pos.y + j) == opSol || getContentWithXandY(pos.x + i,pos.y + j) == opQue) && getContentWithXandY(pos.x + (i+1), pos.y + (j+1))== 0) {
-					if(mapMoves.containsKey(new Tile(pos.x + (i+1), pos.y + (j+1)))) {
-						if(mapMoves.get(new Tile(pos.x + (i+1), pos.y + (j+1))) == null) {
-							mapMoves.put(new Tile(pos.x + (i+1), pos.y + (j+1)), new Tile(pos.x + i, pos.y + j));
-						}
-					}else {
-						mapMoves.put(new Tile(pos.x + (i+1), pos.y + (j+1)), new Tile(pos.x + i, pos.y + j));
-					}
-//					toReturn.add(getTile(pos.x + (i+1),pos.y + (j+1)));
-					break;
-					}
-				if(getContentWithXandY(pos.x + i, pos.y + j) == 0 && !mapMoves.containsKey(new Tile(pos.x + i, pos.y + j)))
-					mapMoves.put(new Tile(pos.x + i, pos.y + j), null);
-
-//				toReturn.add(getTile(pos.x + i,pos.y + j));
-				i++;
-				j++;
-				}}
-
-//				i=1;
-//				j=1;
-			else if(dir.equals("BOTTOM-LEFT")) {
-				// get the possible moves in the left-bottom bias
-			while(getContentWithXandY(pos.x + i, pos.y - j) == 0 || ((getContentWithXandY(pos.x + i, pos.y - j) == opSol || getContentWithXandY(pos.x + i,pos.y - j) == opQue)
-					&& getContentWithXandY(pos.x + (i+1), pos.y - (j+1))== 0)) {
-				if((getContentWithXandY(pos.x + i, pos.y - j) == opSol || getContentWithXandY(pos.x + i,pos.y - j) == opQue) && getContentWithXandY(pos.x + (i+1), pos.y - (j+1))== 0)
-				{
-					if(mapMoves.containsKey(new Tile(pos.x + (i+1), pos.y - (j+1)))) {
-						if(mapMoves.get(new Tile(pos.x + (i+1), pos.y - (j+1))) == null) {
-							mapMoves.put(new Tile(pos.x + (i+1), pos.y - (j+1)), new Tile(pos.x + i, pos.y - j));
-						}
-					}else {
-						mapMoves.put(new Tile(pos.x + (i+1), pos.y - (j+1)), new Tile(pos.x + i, pos.y - j));
-					}
-//					toReturn.add(getTile(pos.x + (i+1),pos.y - (j+1)));
-					break;
-				}
-				if(getContentWithXandY(pos.x + i, pos.y - j) == 0 && !mapMoves.containsKey(new Tile(pos.x + i, pos.y - j))){
-					mapMoves.put(new Tile(pos.x + i, pos.y - j), null);
-
-				}
-//				toReturn.add(getTile(pos.x + i,pos.y - j));
-				i++;
-				j++;
-			}}
-		return mapMoves;
-	}
-
-	public HashMap<Tile,Tile> getQueenMoves(int obj,Tile pos){
-		HashMap<Tile,Tile> myMoves = new HashMap<Tile,Tile>();
-		myMoves = getQueenBiasMoves(obj, pos, "TOP-LEFT", myMoves);
-		myMoves = getQueenBiasMoves(obj, pos, "TOP-RIGHT", myMoves);
-		myMoves = getQueenBiasMoves(obj, pos, "BOTTOM-LEFT", myMoves);
-		myMoves = getQueenBiasMoves(obj, pos, "BOTTOM-RIGHT", myMoves);
-		myMoves = getQueenCrossBoardMoves(obj, pos, myMoves);
-//		for(Map.Entry<Tile, Tile> temp : myMoves.entrySet()) {
-//			System.out.println(temp.getKey() + "  , " + temp.getValue());
-//		}
-		return myMoves;
-	}
-	  */
-	/***
-	 * This method gets the possible moves crossing the board (NOT FINISHED - may have bugs).
-	 * @param obj
-	 * @param pos
-	 * @param map
-	 * @return
-	 *//*
-	public HashMap<Tile,Tile> getQueenCrossBoardMoves(int obj , Tile pos,HashMap<Tile,Tile> map){
-		ArrayList<Tile> boardEdgesMoves = getLastPossibleMoveInBias(obj, pos,map);
-		HashSet<Tile> treeMoves = new HashSet<>();
-		String dir = "";
-		int opSol,opQue;
-		if(obj == 11) {
-			opSol = 2;
-			opQue = 22;
-		}else if(obj == 22) {
-			opSol = 1;
-			opQue = 11;
-		}
-		if(boardEdgesMoves != null && !boardEdgesMoves.isEmpty())
-			for(Tile Tile : boardEdgesMoves) {
-				if((pos.x < Tile.x && pos.y > Tile.y)) {
-					dir = "BOTTOM-LEFT";
-				} else if (pos.x > Tile.x && pos.y > Tile.y) {
-					dir = "TOP-LEFT";
-				}else if((pos.x > Tile.x && pos.y < Tile.y )) {
-					dir = "TOP-RIGHT";
-				}else if (pos.x < Tile.x && pos.y < Tile.y) {
-					dir = "BOTTOM-RIGHT";
-				}
-				if(Tile.y == 0 && Tile.x == 7 && dir.equals("BOTTOM-LEFT") ){
-					if(getContentWithXandY(Tile.x-7, Tile.y+7) == 0) {
-						treeMoves.add(new Tile(Tile.x - 7,Tile.y + 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x - 7,Tile.y + 7), "BOTTOM-LEFT", map);
-					}
-				}else if(Tile.y == 0 && dir.equals("BOTTOM-LEFT")) {
-					if(getContentWithXandY(Tile.x + 1, Tile.y + 7) == 0) {
-						treeMoves.add(new Tile(Tile.x + 1,Tile.y + 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x + 1,Tile.y + 7), "BOTTOM-LEFT", map);
-					}
-				}else if(Tile.y == 0 && dir.equals("TOP-LEFT")) {
-					if(getContentWithXandY(Tile.x - 1, Tile.y + 7) == 0) {
-						treeMoves.add(new Tile(Tile.x - 1,Tile.y + 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x - 1,Tile.y + 7), "TOP-LEFT", map);
-					}
-				}else if(Tile.y == 7 && Tile.x == 0 && dir.equals("TOP-RIGHT")) {
-					if(getContentWithXandY(Tile.x + 7, Tile.y - 7) == 0) {
-						treeMoves.add(new Tile(Tile.x + 7,Tile.y - 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x + 7,Tile.y - 7), "TOP-RIGHT", map);
-					}
-				}else if(Tile.y == 7 && dir.equals("TOP-RIGHT")) {
-					if(getContentWithXandY(Tile.x - 1, Tile.y - 7) == 0) {
-						treeMoves.add(new Tile(Tile.x - 1,Tile.y - 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x - 1,Tile.y - 7), "TOP-RIGHT", map);
-
-					}
-				}else if(Tile.y == 7 && dir.equals("BOTTOM-RIGHT")) {
-					if(getContentWithXandY(Tile.x + 1, Tile.y - 7) == 0) {
-						treeMoves.add(new Tile(Tile.x + 1,Tile.y - 7));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x + 1,Tile.y - 7), "BOTTOM-RIGHT", map);
-					}
-				}else if(Tile.x == 0 && dir.equals("TOP-RIGHT")) {
-					if(getContentWithXandY(Tile.x + 7, Tile.y + 1) == 0) {
-						treeMoves.add(new Tile(Tile.x + 7,Tile.y + 1));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x + 7,Tile.y + 1), "TOP-RIGHT", map);
-					}
-				}else if(Tile.x == 0 && dir.equals("TOP-LEFT")) {
-					if(getContentWithXandY(Tile.x + 7, Tile.y - 1) == 0) {
-						treeMoves.add(new Tile(Tile.x + 7,Tile.y - 1));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x + 7,Tile.y - 1), "TOP-LEFT", map);
-					}
-				}else if(Tile.x == 7 && dir.equals("BOTTOM-LEFT")) {
-					if(getContentWithXandY(Tile.x - 7, Tile.y -1 ) == 0) {
-						treeMoves.add(new Tile(Tile.x - 7,Tile.y - 1));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x - 7,Tile.y - 1), "BOTTOM-RIGHT", map);
-					}
-				}else if(Tile.x == 7 && dir.equals("BOTTOM-RIGHT")) {
-					if(getContentWithXandY(Tile.x - 7, Tile.y + 1) == 0) {
-						treeMoves.add(new Tile(Tile.x - 7,Tile.y + 1));
-						//FUNCTION CALL
-						map = getQueenBiasMoves(getTileContent(pos), new Tile(Tile.x - 7,Tile.y + 1), "TOP-RIGHT", map);
-					}
-				}
-			}
-
-		if(!treeMoves.isEmpty())
-			for(Tile temp : treeMoves) {
-				if(!map.containsKey(temp)) {
-					map.put(temp, null);
-				}
-			}
-
-		return map;
-	}
 
 
-	/***
-	  * This private method takes the queen possible moves and returns the ones on the edges of the board .
-	  * @param obj
-	  * @param pos
-	  * @param queenMoves
-	  * @return
-	  *//*
-	private ArrayList<Tile> getLastPossibleMoveInBias(int obj ,Tile pos,HashMap<Tile,Tile> queenMoves){
-		ArrayList<Tile> movesToReturn = new ArrayList<Tile>();
-
-		if(pos.x == 0 || pos.x == 7 || pos.y == 0 || pos.y == 7) 
-			movesToReturn.add(pos);
-		for(Map.Entry<Tile,Tile> Tile : queenMoves.entrySet()) {
-			if(Tile.getKey().x == 0 || Tile.getKey().x == 7 || Tile.getKey().y == 0 || Tile.getKey().y == 7) {
-				if(Tile.getValue() == null)
-					movesToReturn.add(Tile.getKey());
-			}
-		}
-		return movesToReturn;
-	}
-
-
-	   */
+	  
 	public HashMap<Tile,Soldier> getQueenAllDirectionsMoves(Queen queen){
 		HashMap<Tile,Soldier> allMoves = new HashMap<>();
 		allMoves.putAll(getQueenBiasMoves(queen, "TR"));
@@ -2112,7 +1709,7 @@ public class Game {
 	 * @return
 	 */
 	public boolean isGameOver() {
-		if((this.whitePlayerSoldiers == 0 && this.whitePlayerQueens == 0 ) || (this.blackPlayerQueens == 0 && this.blackPlayerSoldiers == 0))
+		if((this.whitePlayerSoldiers == 0 && this.whitePlayerQueens == 0 ) || (this.blackPlayerQueens == 0 && this.blackPlayerSoldiers == 0) || (noMoreMovesForPlayer(Color.Black) || noMoreMovesForPlayer(Color.White)))
 			return true;
 		else 
 			return false;

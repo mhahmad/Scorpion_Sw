@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="960.0" fitWidth="1200.0">
          <image>
-            <Image url="@../../Backgrounds/mainMenuBackground.png" />
+            <Image url="@../Resources/mainMenuBackground.png" />
          </image>
       </ImageView>
       <Pane prefHeight="65.0" prefWidth="1200.0" style="-fx-background-color: #630000;">
@@ -29,22 +29,22 @@
          <children>
             <ImageView fx:id="queenConvertBtn" fitHeight="262.0" fitWidth="252.0" layoutX="144.0" layoutY="106.0" onMouseClicked="#queenConvertBtnClicked" onMouseEntered="#queenConvertBtnMouseEntered" onMouseExited="#queenConvertBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Backgrounds/queenConvert.jpg" />
+                  <Image url="Resources/queenConvert.jpg" />
                </image>
             </ImageView>
             <ImageView fx:id="killStreakBtn" fitHeight="262.0" fitWidth="252.0" layoutX="521.0" layoutY="106.0" onMouseEntered="#killStreakBtnMouseEntered" onMouseExited="#killStreakBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Backgrounds/killStreak.jpg" />
+                  <Image url="Resources/killStreak.jpg" />
                </image>
             </ImageView>
             <ImageView fx:id="queenCrossBtn" fitHeight="262.0" fitWidth="252.0" layoutX="144.0" layoutY="421.0" onMouseEntered="#queenCrossBtnMouseEntered" onMouseExited="#queenCrossBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Backgrounds/queenCrossing.jpg" />
+                  <Image url="Resources/queenCrossing.jpg" />
                </image>
             </ImageView>
             <ImageView fx:id="coloredTilesBtn" fitHeight="262.0" fitWidth="252.0" layoutX="521.0" layoutY="421.0" onMouseEntered="#coloredTilesBtnMouseEntered" onMouseExited="#coloredTilesBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Backgrounds/tiles.jpg" />
+                  <Image url="Resources/tiles.jpg" />
                </image>
             </ImageView>
             <Button fx:id="backBtn" layoutX="401.0" layoutY="719.0" mnemonicParsing="false" onAction="#backBtnClicked" prefHeight="49.0" prefWidth="119.0" style="-fx-background-color: #b4f49c; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 15; -fx-background-insets: 0;" text="Back">
