@@ -242,9 +242,8 @@ public class Game {
 	 */
 	public ArrayList<Tile> getPossibleMovesForBlackSoldier(Soldier s) {
 		ArrayList<Tile> possibleMoves = new ArrayList<Tile>();
-		if(s.getColor() != Color.Black && s.getSoldierNumber()!=2 || board.getTileOfSoldier(s)==null) {
+		if(s.getColor() != Color.Black && s.getSoldierNumber()!=2 || board.getTileOfSoldier(s)==null)
 			return null;
-	}
 		else {
 			Tile t = s.getPosition();
 			/* if(s.getSoldierNumber()!=2) {

@@ -1,14 +1,8 @@
 package View;
 
 
-import java.io.IOException;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -54,7 +48,7 @@ public class enterNameController{
 		 startButton.setStyle("-fx-background-color : #00FA9A ; -fx-border-color : #000000; -fx-border-width: 1; -fx-background-insets : 0");
 		 closeButton.setFont(Font.font("Arial",FontWeight.BOLD,FontPosture.REGULAR,16));
 		 startButton.setFont(Font.font("Arial",FontWeight.BOLD,FontPosture.REGULAR,16));
-
+		 
 		 Label errorLabel = new Label("You must enter names for both players");
 		 startButton.setOnAction(e -> {
 			 String p1 = player1.getText();
@@ -75,23 +69,6 @@ public class enterNameController{
 				 }
 			 }else {
 				 // GO TO BOARD SCREEN
-			 	 Stage st = (Stage) startButton.getScene().getWindow();
-					Parent toLoad = null;
-					try {
-						toLoad = FXMLLoader.load(enterNameController.class.getResource("gameplayScreen.fxml"));
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					//Scene scene = new Scene(toLoad);
-					//st.setScene(scene);
-		//
-		            Scene scene = new Scene(toLoad,800,600);
-					st.setScene(scene);
-		           // st.setScene(scene);
-		            st.setTitle("Hamka");
-
-		            st.show();
 			 }
 		 });
 		 errorLabel.setVisible(false);

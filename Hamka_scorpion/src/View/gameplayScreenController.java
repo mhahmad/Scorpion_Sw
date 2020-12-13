@@ -1661,11 +1661,6 @@ public class gameplayScreenController extends Application implements Initializab
 		return false ; 
 	}
 
-	
-	
-	  public void transferData(String p1Name , String p2Name  ) {
-		  
-	  }
 
 
 
