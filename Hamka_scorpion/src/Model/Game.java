@@ -2127,7 +2127,7 @@ public class Game {
 		else  if(this.whitePlayerPoints > this.blackPlayerPoints)
 			return this.whitePlayer;
 		else {
-			if(this.whitePlayerSoldiers==0 && this.whitePlayerQueens==0 )
+			if((this.whitePlayerSoldiers==0 && this.whitePlayerQueens==0) || (this.blackPlayerQueens + this.blackPlayerSoldiers > this.whitePlayerSoldiers + this.whitePlayerQueens))
 				return this.blackPlayer;
 			else
 				return this.whitePlayer;
