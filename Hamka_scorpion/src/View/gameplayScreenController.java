@@ -253,7 +253,7 @@ public class gameplayScreenController extends Application implements Initializab
 	GridPane queenArrows = new GridPane();
 
 	String direction = null;
-
+	
 	//private Game game  = new Game("White", "Black", startBoard);
 	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 	
@@ -464,7 +464,8 @@ public class gameplayScreenController extends Application implements Initializab
 		br.setStyle("-fx-background-color: transparent;");
 		tr.setStyle("-fx-background-color: transparent;");
 		bl.setStyle("-fx-background-color: transparent;");
-
+		
+		
 
 
 
@@ -999,6 +1000,7 @@ public class gameplayScreenController extends Application implements Initializab
 	}// End of Blackturn method.
 
 
+	
 	/*Similar to SwitchTurntoBlack - For more comments see SwitchTurntoBlack*/
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier, ImageView whiteQueen, ImageView chosenWhiteQueen) {
 
@@ -1252,7 +1254,13 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 
-
+	ImageView yellowTile = new ImageView(new Image(getClass().getResourceAsStream("/Resources/yellowTile.png"))); 
+	ImageView greenTile = new ImageView(
+			new Image(getClass().getResourceAsStream("/Resources/greenTile.png"))); 
+	ImageView blueTile = new ImageView(
+			new Image(getClass().getResourceAsStream("/Resources/blueTile.png"))); 
+	ImageView redTile = new ImageView(
+			new Image(getClass().getResourceAsStream("/Resources/redTile.png"))); 
 
 
 	//public Tile getTileFromButton ()
@@ -1331,7 +1339,7 @@ public class gameplayScreenController extends Application implements Initializab
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
 					blackAliveCount++; 
 				}
-
+				
 
 
 				//					String value ; 
@@ -1452,11 +1460,10 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
-
+	
 
 	public void ClearColoredTiles(Scene s) {
 		//Clear all Empty Tiles 
-
 		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
 			String possibleTile = tile.getX()+","+tile.getY();
 			String check = null;
@@ -1571,7 +1578,9 @@ public class gameplayScreenController extends Application implements Initializab
 					if(check.equals(possibleTile)) {
 						key = ks;
 						//						System.out.println(key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #c8de59;");;
+						yellowTile.setFitWidth(63);
+						yellowTile.setFitHeight(63);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
 						break;
 					}
 				}
