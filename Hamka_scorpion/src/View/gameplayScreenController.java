@@ -411,7 +411,7 @@ public class gameplayScreenController extends Application implements Initializab
 			
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
 
-			Stage stage = (Stage)this.exitBtn.getScene().getWindow();
+			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
 				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
@@ -1709,14 +1709,6 @@ public class gameplayScreenController extends Application implements Initializab
 		return false ; 
 	}
 
-	@FXML
-	void exitBtnClicked(ActionEvent event) throws Exception{
-		Stage stage = (Stage)this.exitBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
-		Scene scene = new Scene(toLoad);
-		stage.setScene(scene);
-		stage.centerOnScreen();
-	}
 	
 	@FXML
 	void settingBtnClicked(ActionEvent event) throws Exception{
