@@ -1,7 +1,9 @@
 package View;
 
+import java.io.File;
 import java.io.IOException;
 
+import Controller.SysData;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,14 +11,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class loadGameScreen extends Application{
 
+	
+	
     @FXML
     private Button backBtn;
 
+    @FXML
+    private Button btnChoose;
     @FXML
     private TableView<?> loadgameTable;
 
@@ -46,4 +55,23 @@ public class loadGameScreen extends Application{
 		   Scene scene = new Scene(toLoad);
 		   stage.setScene(scene);
 	    }
+    
+    @FXML
+    public void btnChooseAction(ActionEvent event) {
+    	FileChooser fc = new FileChooser();
+    	fc.getExtensionFilters().addAll(new ExtensionFilter("Json Files", "*.txt")); // file chooser shows only text files.
+    	File selectedFile = fc.showOpenDialog(null);
+    	if(selectedFile!=null) {
+    		SysData.getInstance().chosenFilePath = selectedFile.getAbsolutePath();
+    		//System.out.println(chosenFilePath);
+    		System.out.println("File Chosen Succesfully"); 
+    	}else {
+    		System.out.println("Invalid File"); 
+
+    	}
+    	
+    }
+    
+    
+    
 }

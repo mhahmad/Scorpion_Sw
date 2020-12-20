@@ -29,6 +29,11 @@ public class SysData {
 
 	private static SysData instance = new SysData();
 	
+	
+	/* path to file chosen in LoadGameScreen   */
+	public String chosenFilePath =""; 
+	
+	
 	private SysData() {}
 	
 	public static SysData getInstance() {
@@ -328,9 +333,11 @@ public class SysData {
 	 * @return Array of strings
 	 */
 	
-	private static String[] loadBoardText() {
-		
-		String path = "gameLoaded.txt";
+	private static String[] loadBoardText(String path) {
+		if(path == "" || path == null) {
+			System.out.println("Invalid Path!");
+			return null;
+		}
 		File file = new File(path);
 		Scanner scanner = null;
 		String str = "";
@@ -355,7 +362,7 @@ public class SysData {
 	 * @return matrix of numbers
 	 */
 	public  Integer[][] getBoard(){
-		String arr[] = loadBoardText();
+		String arr[] = loadBoardText(chosenFilePath);
 		Integer[][] board = {{-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1},
@@ -383,7 +390,7 @@ public class SysData {
 	 * @return which player in turn in saved game.
 	 */
 	public Color getTurn() {
-		String arr[] = loadBoardText();
+		String arr[] = loadBoardText(chosenFilePath);
 		if(arr[arr.length-1].equals('B')) {
 			return Color.Black;
 		}
