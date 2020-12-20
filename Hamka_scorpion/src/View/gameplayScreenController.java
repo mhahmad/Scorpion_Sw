@@ -201,7 +201,9 @@ public class gameplayScreenController extends Application implements Initializab
 
     @FXML
     private Button exitBtn;
-
+    @FXML
+    private Button settingsButton;
+	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
     public static String p2Name ="p2";
 	/* Buttons to display queen movements.*/
@@ -209,8 +211,6 @@ public class gameplayScreenController extends Application implements Initializab
 	Button br = new Button();
 	Button tr = new Button();
 	Button bl = new Button();
-
-
 	//---------------------Timer RElated ! s
 		private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
 		private static Timeline timeline;
@@ -263,7 +263,7 @@ public class gameplayScreenController extends Application implements Initializab
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
-
+		
 		stage.setScene(scene);
 		stage.setResizable(false);
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
@@ -402,6 +402,28 @@ public class gameplayScreenController extends Application implements Initializab
 		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 		winnerLabel.setVisible(false);
+		
+		settings.continueBtn.setOnAction(e ->{
+			((Stage)settings.exitBtn.getScene().getWindow()).close();
+		});
+		
+		settings.exitBtn.setOnAction(e -> {
+			
+			((Stage)settings.exitBtn.getScene().getWindow()).close();
+
+			Stage stage = (Stage)this.exitBtn.getScene().getWindow();
+			Parent toLoad;
+			try {
+				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+				Scene scene = new Scene(toLoad);
+				stage.setScene(scene);
+				stage.centerOnScreen();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		});
 //----------Timer related
 	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
 	        // code to execute here...
@@ -751,7 +773,7 @@ public class gameplayScreenController extends Application implements Initializab
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
 
-
+							
 							System.out.println("SOLDIER");
 							//	Button to = getButtonById(currentTile.getId());
 							//to.setGraphic(blackSoldier);
@@ -901,6 +923,7 @@ public class gameplayScreenController extends Application implements Initializab
 			 */
 			try {
 				refreshBoard(game,scene, root);
+
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.getCause() ; 
@@ -1372,8 +1395,11 @@ public class gameplayScreenController extends Application implements Initializab
 				// Button btn = (Button) scene.lookup("#"+key);
 				//System.out.println(tile1);
 				// btn.setGraphic(img);
-
+				
 			}
+			
+
+
 		}
 		
 		//Generate Blue Tile - Maybe ! 
@@ -1577,9 +1603,7 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println(key);
-						yellowTile.setFitWidth(63);
-						yellowTile.setFitHeight(63);
+						//	System.out.println(key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
 						break;
 					}
@@ -1676,7 +1700,6 @@ public class gameplayScreenController extends Application implements Initializab
 			}
 		}
 
-
 		if(toCheck.contains(btn)) {
 			//			System.out.println("the tile/Button  is Empty :  ");
 			return true ; // is Empty 
@@ -1686,8 +1709,6 @@ public class gameplayScreenController extends Application implements Initializab
 		return false ; 
 	}
 
-
-
 	@FXML
 	void exitBtnClicked(ActionEvent event) throws Exception{
 		Stage stage = (Stage)this.exitBtn.getScene().getWindow();
@@ -1696,7 +1717,13 @@ public class gameplayScreenController extends Application implements Initializab
 		stage.setScene(scene);
 		stage.centerOnScreen();
 	}
-
+	
+	@FXML
+	void settingBtnClicked(ActionEvent event) throws Exception{
+		settings.display();
+		settings.showWin();
+	}
+	
 
 }
 
