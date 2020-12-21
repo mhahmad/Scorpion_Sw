@@ -407,6 +407,8 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	}
+	
+
 
 
 	public static void main(String[] arg) {
@@ -424,8 +426,8 @@ public class gameplayScreenController extends Application implements Initializab
 		     		    long displayMinutes=0;
 		     		    //long secondspassed=0 ; 
 		     		    long starttime=System.currentTimeMillis();
-		     		    System.out.println("Timer:");
-		     		    while(scene.getWindow().isShowing())
+		     		 //   System.out.println("Timer:");
+		     		    while( scene.getWindow().isShowing())
 		     		    {
 		     		    	
 		     		        try {
@@ -510,14 +512,22 @@ public class gameplayScreenController extends Application implements Initializab
 		    if(newTimeValue.intValue() == 90) 	 GenerateGreenTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 0) game.handTurn();
-//		    System.err.println("oldEime Value : "+oldTimeValue);
-//		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
-//           if(this.game.getTurn().equals(Color.Black)) {
-//        	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()) ; 
-//        	System.out.println("B points : "+this.game.getblackPlayerPoints());
-//           }
-//        	   
-//		    }
+		 //   System.err.println("oldEime Value : "+oldTimeValue);
+		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
+           if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
+	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
+        	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
+        System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
+        
+          }
+           if(this.game.getTurn().equals(Color.Black)) {	   
+ 	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
+         	//this.game.setwhitePlayerPoints( this.game.getwhitePlayerPoints() +oldTimeValue.intValue()-60) ; 
+         System.out.println("Adding points to white  "+(oldTimeValue.intValue()-60));
+         
+           }
+        	   
+		    }
 	    });
 	    
         
@@ -1833,10 +1843,10 @@ public class gameplayScreenController extends Application implements Initializab
 		
 	}
 		    
+		    
 		
 
 }
-
 
 	
 }
