@@ -28,7 +28,7 @@ import javafx.scene.media.MediaPlayer;
 public class SysData {
 
 	private static SysData instance = new SysData();
-	
+	public static int count = 0;
 	
 	/* path to file chosen in LoadGameScreen   */
 	public String chosenFilePath =""; 
@@ -157,18 +157,20 @@ public class SysData {
 	 * this method accepts a boolean , if it's true music will play , if false music will stop.
 	 * @param status
 	 */
+	String fileName = new File("Hamka_scorpion/Music/soundtrack.mp3").toURI().toString();
+	JFXPanel j = new JFXPanel();
+	Media media = new Media(fileName);
+	MediaPlayer mp = new MediaPlayer(media);
+	
 	public void soundtrackOn(boolean status) {
-		String fileName = new File("Music/soundtrack.mp3").toURI().toString();
 		try {
-			JFXPanel j = new JFXPanel();
-			Media media = new Media(fileName);
-			MediaPlayer mp = new MediaPlayer(media);
-			
 			if(status) {
+				count = 1;
 				mp.setVolume(0.1);
 				mp.play();
 			}else {
 				mp.stop();
+				count=0;
 			}
 		}catch(Exception e) {
 			e.printStackTrace();

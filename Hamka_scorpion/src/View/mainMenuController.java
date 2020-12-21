@@ -2,6 +2,7 @@ package View;
 
 import java.io.IOException;
 
+import Controller.SysData;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -59,9 +60,16 @@ public class mainMenuController extends Application {
     @FXML
     void optionBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.optionBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("optionScreen.fxml"));
+		 FXMLLoader loader = new FXMLLoader(optionScreenController.class.getResource("optionScreen.fxml"));
+		Parent toLoad = loader.load();
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
+		 if(SysData.count == 1) {
+			optionScreenController con = loader.getController();
+			con.toggleMusicBtn.setText("ON");
+			con.toggleMusicBtn.setStyle("-fx-text-fill: #19d300;");
+
+		 }
 
     }
     

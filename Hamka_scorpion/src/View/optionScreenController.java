@@ -2,6 +2,7 @@ package View;
 
 import java.io.IOException;
 
+import Controller.SysData;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +27,7 @@ public class optionScreenController extends Application {
     private Button backBtn;
     
     @FXML
-    private ToggleButton toggleMusicBtn;
+    public ToggleButton toggleMusicBtn;
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -57,10 +58,11 @@ public class optionScreenController extends Application {
 		   if(this.toggleMusicBtn.getText().equals("ON")) {
 			   this.toggleMusicBtn.setText("OFF");
 			   this.toggleMusicBtn.setStyle("-fx-text-fill: RED;");
-			   
+			   SysData.getInstance().soundtrackOn(false);
 		   }else {
 			   this.toggleMusicBtn.setText("ON");
 			   this.toggleMusicBtn.setStyle("-fx-text-fill: #19d300;");
+			   SysData.getInstance().soundtrackOn(true);
 		   }
 	    }
 
