@@ -368,6 +368,15 @@
                   <Font name="Roboto" size="18.0" />
                </font>
             </Label>
+            <Label fx:id="GameTime" layoutX="509.0" layoutY="57.0" prefHeight="27.0" prefWidth="47.0" text="00:00" textFill="#ebe3e3">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <Label layoutX="387.0" layoutY="57.0" text="OverAllTime :" textFill="#e1d0d0">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
          </children>
       </Pane>
    </children>

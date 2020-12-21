@@ -16,6 +16,7 @@ import java.util.TimerTask;
 
 import javax.management.openmbean.OpenType;
 import javax.swing.Timer;
+import javax.swing.event.ChangeListener;
 
 import Controller.SysData;
 import Model.Board;
@@ -30,9 +31,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -229,6 +234,11 @@ public class gameplayScreenController extends Application implements Initializab
     private Label timelbl;
     private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);    
              // Method res setTimmer() ; 
+    
+    @FXML
+    private Label GameTime;
+    
+    private final StringProperty time = new SimpleStringProperty() ; 
     //-----------------------------------
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
@@ -405,6 +415,54 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
+		 Timer t = new javax.swing.Timer(1000, new ActionListener(){
+		     
+				@Override
+				public void actionPerformed(java.awt.event.ActionEvent arg0) {
+					// TODO Auto-generated method stub
+					 boolean x=true;
+		     		    long displayMinutes=0;
+		     		    //long secondspassed=0 ; 
+		     		    long starttime=System.currentTimeMillis();
+		     		    System.out.println("Timer:");
+		     		    while(scene.getWindow().isShowing())
+		     		    {
+		     		    	
+		     		        try {
+		     					TimeUnit.SECONDS.sleep(1);
+		     				} catch (InterruptedException e) {
+		     					// TODO Auto-generated catch block
+		     					e.printStackTrace();
+		     				}
+		     		        long timepassed=System.currentTimeMillis()-starttime;
+		     		      long  secondspassed=timepassed/1000;
+		     		        if(secondspassed==60)
+		     		        {
+		     		            secondspassed=0;
+		     		            starttime=System.currentTimeMillis();
+		     		        }
+		     		        if((secondspassed%60)==0)
+		     		        displayMinutes++;
+
+		              	time.set( displayMinutes+" : "+secondspassed);
+		     		System.out.println(time.getValue());
+		     		Platform.runLater(new Runnable() {
+		     	        @Override
+		     	        public void run() {
+		     	          //javaFX operations should go here	
+		     	        	((Label) scene.lookup("#GameTime")).setText(time.getValue());
+
+		     	        }
+		     	   });
+
+		     		
+		     	}				
+					
+				}
+		    });
+		    t.start();
+		    
+	      //------------------------------
 		buildTilesBoardMap();
 		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
@@ -462,8 +520,10 @@ public class gameplayScreenController extends Application implements Initializab
 //		    }
 	    });
 	    
-	    
-	    
+        
+	   
+            
+        
 	  //  OverAllTimer();
 	    //------------------------------
 
@@ -1742,15 +1802,16 @@ public class gameplayScreenController extends Application implements Initializab
   
     
 	
-	String OverAllTimer() {
+	void OverAllTimer() {
 		
 		 boolean x=true;
 		    long displayMinutes=0;
-		    long secondspassed=0 ; 
+		    //long secondspassed=0 ; 
 		    long starttime=System.currentTimeMillis();
 		    System.out.println("Timer:");
 		    while(x)
 		    {
+		    	
 		        try {
 					TimeUnit.SECONDS.sleep(1);
 				} catch (InterruptedException e) {
@@ -1758,7 +1819,7 @@ public class gameplayScreenController extends Application implements Initializab
 					e.printStackTrace();
 				}
 		        long timepassed=System.currentTimeMillis()-starttime;
-		        secondspassed=timepassed/1000;
+		      long  secondspassed=timepassed/1000;
 		        if(secondspassed==60)
 		        {
 		            secondspassed=0;
@@ -1767,13 +1828,12 @@ public class gameplayScreenController extends Application implements Initializab
 		        if((secondspassed%60)==0)
 		        displayMinutes++;
 
-		return displayMinutes+" : "+secondspassed;
+		System.out.println( displayMinutes+" : "+secondspassed);
 		
 		
 	}
 		    
-			return displayMinutes+" : "+secondspassed;
-    
+		
 
 }
 
