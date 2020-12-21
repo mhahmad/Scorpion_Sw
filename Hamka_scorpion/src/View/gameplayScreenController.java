@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 
@@ -52,6 +53,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -196,13 +198,21 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@FXML
 	private Label displayTimer;
+	
     @FXML
     private Label winnerLabel;
 
     @FXML
     private Button exitBtn;
+    
     @FXML
     private Button settingsButton;
+    
+    @FXML
+    private Label live_pausedlbl;
+    
+   
+    
 	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
     public static String p2Name ="p2";
@@ -211,6 +221,7 @@ public class gameplayScreenController extends Application implements Initializab
 	Button br = new Button();
 	Button tr = new Button();
 	Button bl = new Button();
+	
 	//---------------------Timer RElated ! s
 		private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
 		private static Timeline timeline;
@@ -405,6 +416,8 @@ public class gameplayScreenController extends Application implements Initializab
 		
 		settings.continueBtn.setOnAction(e ->{
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
+			this.timeline.play();
+			this.live_pausedlbl.setText("Live");
 		});
 		
 		settings.exitBtn.setOnAction(e -> {
@@ -424,6 +437,9 @@ public class gameplayScreenController extends Application implements Initializab
 			}
 			
 		});
+		
+		
+		
 //----------Timer related
 	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
 	        // code to execute here...
@@ -433,7 +449,7 @@ public class gameplayScreenController extends Application implements Initializab
 		 //   System.out.println("Time left: "+timeSeconds.toString());
 	    	
 //		    System.out.println("time left : "+newTimeValue);
-		    if(newTimeValue.intValue() == 90) 		GenerateGreenTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 90) 	 GenerateGreenTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 0) game.handTurn();
 //		    System.err.println("oldEime Value : "+oldTimeValue);
@@ -446,6 +462,9 @@ public class gameplayScreenController extends Application implements Initializab
 //		    }
 	    });
 	    
+	    
+	    
+	  //  OverAllTimer();
 	    //------------------------------
 
 		queenArrows.setVisible(false);
@@ -1712,11 +1731,52 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	@FXML
 	void settingBtnClicked(ActionEvent event) throws Exception{
+		this.timeline.stop();
 		settings.display();
+		this.live_pausedlbl.setText("Paused");
+
 		settings.showWin();
 	}
 	
 
+  
+    
+	
+	String OverAllTimer() {
+		
+		 boolean x=true;
+		    long displayMinutes=0;
+		    long secondspassed=0 ; 
+		    long starttime=System.currentTimeMillis();
+		    System.out.println("Timer:");
+		    while(x)
+		    {
+		        try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        long timepassed=System.currentTimeMillis()-starttime;
+		        secondspassed=timepassed/1000;
+		        if(secondspassed==60)
+		        {
+		            secondspassed=0;
+		            starttime=System.currentTimeMillis();
+		        }
+		        if((secondspassed%60)==0)
+		        displayMinutes++;
+
+		return displayMinutes+" : "+secondspassed;
+		
+		
+	}
+		    
+			return displayMinutes+" : "+secondspassed;
+    
+
 }
 
 
+	
+}
