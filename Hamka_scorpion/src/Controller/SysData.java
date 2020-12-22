@@ -395,7 +395,7 @@ public class SysData {
 	 */
 	public Color getTurn() {
 		String arr[] = loadBoardText(chosenFilePath);
-		if(arr[arr.length-1].equals('B')) {
+		if(arr[arr.length-1].equals("B")) {
 			return Color.Black;
 		}
 		return Color.White;
