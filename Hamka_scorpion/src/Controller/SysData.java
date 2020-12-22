@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.Scanner;
 import java.util.TreeSet;
 import java.util.concurrent.ThreadLocalRandom;
+
+import Model.Board;
 import Model.Color;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -399,4 +401,29 @@ public class SysData {
 		return Color.White;
 	}
 	
+	/***
+	 * This method responsible for saving games , i.e writes the board and turn to an external file in order to load them when needed.
+	 * @param board
+	 * @param turn
+	 */
+	public void saveGame(Board board , Color turn , String fileName) {
+		int board2D[][] = board.getBoard();
+		try {
+			FileWriter myWriter = new FileWriter("savedGames/" +fileName +".txt");
+			for(int i = 0 ;i < 8; i++) {
+				for(int j = 0; j < 8 ; j++) {
+					if(board2D[i][j] != -1)
+						myWriter.write(board2D[i][j] + ",");
+				}
+				myWriter.write('\n');
+			}
+			if(turn.equals(Color.Black))
+				myWriter.write('B');
+			else
+				myWriter.write('W');
+			myWriter.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

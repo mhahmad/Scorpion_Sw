@@ -10,6 +10,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
@@ -54,6 +55,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
@@ -68,6 +70,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class gameplayScreenController extends Application implements Initializable {
@@ -499,7 +502,21 @@ public class gameplayScreenController extends Application implements Initializab
 		});
 		
 		
-		
+		settings.saveBtn.setOnAction(e -> {
+			TextInputDialog td = new TextInputDialog();
+			td.initStyle(StageStyle.UNDECORATED);
+			td.setGraphic(null);
+			td.setHeaderText("Save Game File :");
+			Optional<String> result = td.showAndWait();
+			if(result.isPresent()) {
+				Board board = game.getBoard();
+				Color turn = game.getTurn();
+				SysData.getInstance().saveGame(board, turn,result.get());
+				settings.window.close();
+			}
+			
+
+		});
 //----------Timer related
 	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
 	        // code to execute here...
