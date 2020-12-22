@@ -449,7 +449,7 @@ public class gameplayScreenController extends Application implements Initializab
 		     		        if((secondspassed%60)==0)
 		     		        displayMinutes++;
 
-		              	time.set( displayMinutes+" : "+secondspassed);
+		              	time.set( displayMinutes+" :: "+secondspassed);
 		     		System.out.println(time.getValue());
 		     		Platform.runLater(new Runnable() {
 		     	        @Override
@@ -535,13 +535,15 @@ public class gameplayScreenController extends Application implements Initializab
 	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
         	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
         System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
-        
+              ((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
+
           }
-           if(this.game.getTurn().equals(Color.Black)) {	   
+           if(this.game.getTurn().equals(Color.Black)) {	   // white's Turn 
  	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
-         	//this.game.setwhitePlayerPoints( this.game.getwhitePlayerPoints() +oldTimeValue.intValue()-60) ; 
+         	this.game.setWhitePlayerPoints( this.game.getwhitePlayerPoints() +oldTimeValue.intValue()-60) ; 
          System.out.println("Adding points to white  "+(oldTimeValue.intValue()-60));
-         
+         ((Label)scene.lookup("#p2Points")).setText(String.valueOf(this.game.getwhitePlayerPoints()));
+
            }
         	   
 		    }

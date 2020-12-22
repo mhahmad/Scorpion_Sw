@@ -62,6 +62,16 @@ public class Game {
 	}
 
 
+	public int getWhitePlayerPoints() {
+		return whitePlayerPoints;
+	}
+
+
+	public void setWhitePlayerPoints(int whitePlayerPoints) {
+		this.whitePlayerPoints = whitePlayerPoints;
+	}
+
+
 	public void setblackPlayerPoints(int blackPlayerPoints) {
 		this.blackPlayerPoints = blackPlayerPoints;
 	}
