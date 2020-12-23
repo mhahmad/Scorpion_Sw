@@ -1,4 +1,4 @@
-package View;
+package Controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,7 +25,7 @@ public  class inGameSettings {
  public	Button continueBtn = new Button("Continue");
  public Button saveBtn = new Button("Save");
  public  Button exitBtn = new Button("Exit");
- Stage window ;
+ public Stage window ;
 
 	public  void display() {
 		window = new Stage();

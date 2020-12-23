@@ -1,4 +1,4 @@
-package View;
+package Controller;
 
 
 import java.awt.event.ActionListener;
@@ -283,7 +283,7 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
+		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
@@ -430,7 +430,7 @@ public class gameplayScreenController extends Application implements Initializab
 		     		    //long secondspassed=0 ; 
 		     		    long starttime=System.currentTimeMillis();
 		     		 //   System.out.println("Timer:");
-		     		    while( scene.getWindow().isShowing())
+		     		    while(  scene.getWindow()!=null && scene.getWindow().isShowing())
 		     		    {
 		     		    	
 		     		        try {
@@ -490,7 +490,7 @@ public class gameplayScreenController extends Application implements Initializab
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
-				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
 				Scene scene = new Scene(toLoad);
 				stage.setScene(scene);
 				stage.centerOnScreen();

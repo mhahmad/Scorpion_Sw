@@ -1,4 +1,4 @@
-package View;
+package Controller;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class tutorialScreen extends Application{
 		@Override
 		public void start(Stage stage) throws Exception {
 			// TODO Auto-generated method stub
-			Parent root = FXMLLoader.load(getClass().getResource("TutorialScreen.fxml"));
+			Parent root = FXMLLoader.load(getClass().getResource("/View/TutorialScreen.fxml"));
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.show();
@@ -104,7 +104,7 @@ public class tutorialScreen extends Application{
 	    @FXML
 		   public void backBtnClicked(ActionEvent event) throws IOException {
 			   Stage stage = (Stage)this.backBtn.getScene().getWindow();
-			   Parent toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+			   Parent toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
 			   Scene scene = new Scene(toLoad);
 			   stage.setScene(scene);
 		    }

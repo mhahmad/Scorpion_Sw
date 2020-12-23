@@ -1,6 +1,6 @@
-package View;
+package Controller;
 
-
+import Controller.gameplayScreenController;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,6 +18,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 
 public class enterNameController{
 
@@ -71,11 +72,10 @@ public class enterNameController{
 				 }
 			 }else {
 				 // GO TO BOARD SCREEN
-				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("gameplayScreen.fxml"));
+				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
                  Parent root;
                try {
                    root = loader.load();
-
                  Scene scene = new Scene(root);
                  window.setTitle("Hamka");
                  window.setScene(scene);
@@ -108,3 +108,4 @@ public class enterNameController{
 		 window.showAndWait();
 	}
 }
+

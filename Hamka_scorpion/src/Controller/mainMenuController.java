@@ -1,4 +1,4 @@
-package View;
+package Controller;
 
 import java.io.IOException;
 
@@ -35,7 +35,7 @@ public class mainMenuController extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
@@ -60,7 +60,7 @@ public class mainMenuController extends Application {
     @FXML
     void optionBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.optionBtn.getScene().getWindow();
-		 FXMLLoader loader = new FXMLLoader(optionScreenController.class.getResource("optionScreen.fxml"));
+		 FXMLLoader loader = new FXMLLoader(optionScreenController.class.getResource("/View/optionScreen.fxml"));
 		Parent toLoad = loader.load();
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
@@ -76,7 +76,7 @@ public class mainMenuController extends Application {
     @FXML
     void tutorialsBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.tutorialBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("TutorialScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/TutorialScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
 
@@ -85,7 +85,7 @@ public class mainMenuController extends Application {
     @FXML
     void leaderboardBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.leaderboardBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("LeaderboardScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/LeaderboardScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
 
@@ -94,13 +94,13 @@ public class mainMenuController extends Application {
     @FXML
     void loadgameBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.loadGameBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("LoadGameScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/LoadGameScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
     }
     
     @FXML
     void startBtnClicked(ActionEvent event) throws IOException {
-		enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
+		Controller.enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
     }
 }
