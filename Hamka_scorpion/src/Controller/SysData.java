@@ -32,10 +32,7 @@ public class SysData {
 	private static SysData instance = new SysData();
 	public static int count = 0;
 	
-	/* path to file chosen in LoadGameScreen   */
-	public String chosenFilePath =""; 
-	
-	
+
 	private SysData() {}
 	
 	public static SysData getInstance() {
@@ -393,9 +390,9 @@ public class SysData {
 	 * method that gets a matrix of the board 
 	 * @return matrix of numbers
 	 */
-	public  Integer[][] getBoard(){
+	public  int[][] getBoard(String chosenFilePath){
 		String arr[] = loadBoardText(chosenFilePath);
-		Integer[][] board = {{-1,-1,-1,-1,-1,-1,-1,-1},
+		int[][] board = {{-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1},
                 {-1,-1,-1,-1,-1,-1,-1,-1},
@@ -421,7 +418,7 @@ public class SysData {
 	 * 
 	 * @return which player in turn in saved game.
 	 */
-	public Color getTurn() {
+	public Color getTurn(String chosenFilePath) {
 		String arr[] = loadBoardText(chosenFilePath);
 		if(arr[arr.length-1].equals("B")) {
 			return Color.Black;

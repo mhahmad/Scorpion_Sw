@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import Controller.SysData;
+import Model.Color;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -57,13 +58,39 @@ public class loadGameScreen extends Application{
 	    }
     
     @FXML
-    public void btnChooseAction(ActionEvent event) {
+    public void btnChooseAction(ActionEvent event) throws IOException {
+    	Stage window = new Stage();
     	FileChooser fc = new FileChooser();
-    	fc.getExtensionFilters().addAll(new ExtensionFilter("Json Files", "*.txt")); // file chooser shows only text files.
+    	fc.getExtensionFilters().addAll(new ExtensionFilter("Txt Files", "*.txt")); // file chooser shows only text files.
     	File selectedFile = fc.showOpenDialog(null);
     	if(selectedFile!=null) {
-    		SysData.getInstance().chosenFilePath = selectedFile.getAbsolutePath();
-    		//System.out.println(chosenFilePath);
+    		String chosenFilePath = selectedFile.getAbsolutePath();
+    		int[][] board = SysData.getInstance().getBoard(chosenFilePath);
+    		Color turn = SysData.getInstance().getTurn(chosenFilePath);
+    		 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+             Parent root;
+           try {
+               root = loader.load();
+             Scene scene = new Scene(root);
+             window.setTitle("Hamka");
+             window.setScene(scene);
+             gameplayScreenController con = loader.getController();
+             con.p1Name= "Player 1" ;
+             con.p2Name = "Player 2";
+             //con.setBoard(board);
+             con.start(window);
+             window.show();
+             window.centerOnScreen();
+             
+             //stage.close();
+           } catch ( Exception e1) {
+               // TODO Auto-generated catch block
+               e1.printStackTrace();
+           }
+    		
+			
+			
+			 
     		System.out.println("File Chosen Succesfully"); 
     	}else {
     		System.out.println("Invalid File"); 
