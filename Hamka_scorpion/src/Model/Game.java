@@ -845,6 +845,20 @@ public class Game {
 					board.removeSoldier(solWithKillStreak, solWithKillStreak.getPosition());
 					board.setSoldier(solWithKillStreak, nextMove);
 					System.out.println("Soldier in [" + middleEnemySoldierTile.getX()+","+middleEnemySoldierTile.getY()+"] was killed!");
+					if(solNum == 2 || solNum == 22) {
+						this.blackPlayerPoints+=100;
+						if(middleEnemySoldier.getSoldierNumber() == op)
+							this.whitePlayerSoldiers--;
+						else if(middleEnemySoldier.getSoldierNumber() == queenOp)
+							this.whitePlayerQueens--;
+					}
+					else {
+						this.whitePlayerPoints+=100;
+						if(middleEnemySoldier.getSoldierNumber() == op)
+							this.blackPlayerSoldiers--;
+						else if(middleEnemySoldier.getSoldierNumber() == queenOp)
+							this.blackPlayerQueens--;
+					}
 				}
 			}
 		}

@@ -52,6 +52,7 @@ public class SysData {
 	ArrayList<Game> gameHistory = new ArrayList<Game>();
 	ArrayList<Question> questionList = new ArrayList<Question>();
 	TreeSet<Winner> leaderboard = new TreeSet<>(comp);
+	ArrayList<Question> alreadyShownQuestions = new ArrayList<>();
 	//----------------------------------------------------------------//
 	
 	//METHODS
@@ -82,7 +83,32 @@ public class SysData {
 		return leaderboard;
 	}
 	
+	public ArrayList<Question> getQuestionList(){
+		return questionList;
+	}
 	
+	public ArrayList<Question> getAlreadyShownQuestion(){
+		return alreadyShownQuestions;
+	}
+	
+	/***
+	 * When a question is shown to the user , it should be removed from the main question list and added to the second data structure
+	 * @param question
+	 */
+	public void questionIsShown(Question question) {
+		questionList.remove(question);
+		alreadyShownQuestions.add(question);
+	}
+	
+	/***
+	 * This method will be called once all the questions have been shown to the players.
+	 */
+	public void refillQuestionList() {
+		if(questionList.isEmpty()) {
+			questionList.addAll(alreadyShownQuestions);
+			alreadyShownQuestions.clear();
+		}
+	}
 	/***
 	 * 
 	 * @param question
