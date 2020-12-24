@@ -23,6 +23,7 @@ import Controller.SysData;
 import Model.Board;
 import Model.Color;
 import Model.Game;
+import Model.Level;
 import Model.Queen;
 import Model.Soldier;
 import Model.StopWatch;
@@ -50,11 +51,13 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
@@ -220,8 +223,11 @@ public class gameplayScreenController extends Application implements Initializab
     private Label live_pausedlbl;
     
    
-    
+    ArrayList<Tile> yellowTiles = new ArrayList<>();
+    int flag = 0;
 	inGameSettings settings = new inGameSettings();;
+	popupQuestion quesPop = new popupQuestion();
+	Tile greenTile = null;
     public static String p1Name = "p1";
     public static String p2Name ="p2";
 	/* Buttons to display queen movements.*/
@@ -287,7 +293,8 @@ public class gameplayScreenController extends Application implements Initializab
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
-		
+		SysData.getInstance().getQuestions();
+
 		stage.setScene(scene);
 		stage.setResizable(false);
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
@@ -483,6 +490,74 @@ public class gameplayScreenController extends Application implements Initializab
 			this.live_pausedlbl.setText("Live");
 		});
 		
+		quesPop.nextBtn.setOnAction(e -> {
+			quesPop.points.setText("");
+			if(quesPop.nextBtn.getText().equals("Next")) {
+				RadioButton rb = (RadioButton) quesPop.group.getSelectedToggle();
+				
+				if(SysData.getInstance().isQuestionAnsweredCorrectly(quesPop.question, rb.getText())) {
+						rb.setStyle("-fx-background-color : #32CD32");
+						quesPop.points.setTextFill(javafx.scene.paint.Color.FORESTGREEN);
+						if(quesPop.question.getLevel().equals(Level.easy)) {
+							quesPop.points.setText("You have earned 100 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() + 100);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 100);
+						}else if(quesPop.question.getLevel().equals(Level.medium)) {
+							quesPop.points.setText("You have earned 200 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() + 200);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 200);
+						}else {
+							quesPop.points.setText("You have earned 500 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() + 500);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 500);
+						}
+
+				}
+				else {
+						rb.setStyle("-fx-background-color : #EB1717");
+						quesPop.points.setTextFill(javafx.scene.paint.Color.RED);
+						quesPop.group.getToggles().forEach(toggle -> {
+						    RadioButton rad =(RadioButton) toggle;
+						    if(rad.getText().equals(quesPop.question.getRightAnswer())) {
+								rad.setStyle("-fx-background-color : #32CD32");
+						    }
+						});
+						
+						if(quesPop.question.getLevel().equals(Level.easy)) {
+							quesPop.points.setText("You have lost 250 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() - 250);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 250);
+						}else if(quesPop.question.getLevel().equals(Level.medium)) {
+							quesPop.points.setText("You have lost 100 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() - 100);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 100);
+						}else {
+							quesPop.points.setText("You have lost 50 points");
+							if(game.getTurn().equals(Color.Black))
+								game.setblackPlayerPoints(game.getblackPlayerPoints() - 50);
+							else
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 50);
+						}
+
+					}
+				quesPop.nextBtn.setText("Close");
+			}else {
+				quesPop.window.close();
+				game.handTurn(); 
+				setTimmer();
+				quesPop.nextBtn.setText("Next");
+			}
+		});
 		settings.exitBtn.setOnAction(e -> {
 			
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
@@ -526,7 +601,7 @@ public class gameplayScreenController extends Application implements Initializab
 		 //   System.out.println("Time left: "+timeSeconds.toString());
 	    	
 //		    System.out.println("time left : "+newTimeValue);
-		    if(newTimeValue.intValue() == 90) 	 GenerateGreenTiles(scene, this.game.getTurn());
+		    if(newTimeValue.intValue() == 90) 	greenTile = GenerateGreenTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
 		    if(newTimeValue.intValue() == 0) game.handTurn();
 		 //   System.err.println("oldEime Value : "+oldTimeValue);
@@ -718,8 +793,7 @@ public class gameplayScreenController extends Application implements Initializab
 	
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
-
-
+//		ClearColoredTiles(scene);
 		queenArrows.setVisible(false);
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
@@ -826,6 +900,10 @@ public class gameplayScreenController extends Application implements Initializab
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
 		// generate Colored Tiles 
+		if(flag == 0) {
+			yellowTiles = GenerateYellowTiles(scene);
+			flag++;
+		}
 		tl.setOnAction(e -> {
 			direction = "TL";
 			queenArrows.setVisible(false);
@@ -881,7 +959,6 @@ public class gameplayScreenController extends Application implements Initializab
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
 
-							
 							System.out.println("SOLDIER");
 							//	Button to = getButtonById(currentTile.getId());
 							//to.setGraphic(blackSoldier);
@@ -889,18 +966,31 @@ public class gameplayScreenController extends Application implements Initializab
 							//	from.setGraphic(null);
 							//System.out.println(prevS);
 							game.moveBlackSoldier(prevS, t, possible);
+							if(greenTile != null && greenTile.equals(t)) {
+								game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
+								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+								setTimmer();
+								greenTile = null;
+							}
+							else if(yellowTiles.contains(t)) {
+								quesPop.question = SysData.getInstance().randomQuestion();
+								quesPop.display();
+								SysData.getInstance().questionIsShown(quesPop.question);
+							}else {
+								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+								setTimmer();
+
+							}
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+							flag=0;
 							//Timer Related - 
-							setTimmer();
 							p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 							p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 							p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 							p1.setTextFill(javafx.scene.paint.Color.WHITE);
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
-							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
@@ -940,15 +1030,28 @@ public class gameplayScreenController extends Application implements Initializab
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
+								if(greenTile != null && greenTile.equals(t2)) {
+									game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
+									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+									setTimmer();
+									greenTile = null;
+								}
+								else if(yellowTiles.contains(t2)) {
+									quesPop.question = SysData.getInstance().randomQuestion();
+									quesPop.display();
+									SysData.getInstance().questionIsShown(quesPop.question);
+								}else {
+									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+									setTimmer();
+								}
 								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+								flag=0;
 								p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 								p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 								p1.setTextFill(javafx.scene.paint.Color.WHITE);
 								//Timer Related - 
-								setTimmer();
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
@@ -1135,7 +1238,10 @@ public class gameplayScreenController extends Application implements Initializab
 	/*Similar to SwitchTurntoBlack - For more comments see SwitchTurntoBlack*/
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier, ImageView whiteQueen, ImageView chosenWhiteQueen) {
 
-
+		if(flag == 0 ) {
+			yellowTiles = GenerateYellowTiles(scene);
+			flag++;
+		}
 		// the colors switch
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
@@ -1189,18 +1295,30 @@ public class gameplayScreenController extends Application implements Initializab
 
 							//System.out.println(prevS);
 							game.moveWhiteSoldier(prevS, t, possible);
+							if(greenTile != null && greenTile.equals(t)) {
+								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 50);
+								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+								setTimmer();
+								greenTile = null;
+							}
+							else if(yellowTiles.contains(t)) {
+								quesPop.question = SysData.getInstance().randomQuestion();
+								quesPop.display();
+								SysData.getInstance().questionIsShown(quesPop.question);
+							}else {
+								game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+								setTimmer();
+							}
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+							flag=0;
 							p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 							p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 							p2.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 							p2.setTextFill(javafx.scene.paint.Color.WHITE);
 							//Timer Related - 
-							setTimmer();
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
-							GenerateYellowTiles(scene);
 							GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
@@ -1232,15 +1350,28 @@ public class gameplayScreenController extends Application implements Initializab
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
+								if(greenTile != null && greenTile.equals(t2)) {
+									game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 50);
+									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+									setTimmer();
+									greenTile = null;
+								}
+								else if(yellowTiles.contains(t2)) {
+									quesPop.question = SysData.getInstance().randomQuestion();
+									quesPop.display();
+									SysData.getInstance().questionIsShown(quesPop.question);
+								}else {
+									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+									setTimmer();
+								}
 								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+								flag=0;
 								p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 								p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
 								p1.setTextFill(javafx.scene.paint.Color.WHITE);
 								//Timer Related - 
-								setTimmer();
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
 								GenerateYellowTiles(scene);
@@ -1385,12 +1516,12 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 
-	ImageView yellowTile = new ImageView(new Image(getClass().getResourceAsStream("/Resources/yellowTile.png"))); 
-	ImageView greenTile = new ImageView(
+	ImageView yellowTileImage = new ImageView(new Image(getClass().getResourceAsStream("/Resources/yellowTile.png"))); 
+	ImageView greenTileImage = new ImageView(
 			new Image(getClass().getResourceAsStream("/Resources/greenTile.png"))); 
-	ImageView blueTile = new ImageView(
+	ImageView blueTileImage = new ImageView(
 			new Image(getClass().getResourceAsStream("/Resources/blueTile.png"))); 
-	ImageView redTile = new ImageView(
+	ImageView redTileImage = new ImageView(
 			new Image(getClass().getResourceAsStream("/Resources/redTile.png"))); 
 
 
@@ -1644,7 +1775,7 @@ public class gameplayScreenController extends Application implements Initializab
 	//-----------------------green Tile
 
 
-	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
+	public Tile GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
 
 		// color 1 random Empty tile
 		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
@@ -1659,12 +1790,12 @@ public class gameplayScreenController extends Application implements Initializab
 						key = ks;
 						//						System.out.println("should be red  :: "+key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
-						break;
+						return greenTile;
 					}
 				}
 			}
 		}
-
+		return null;
 	}
 
 
@@ -1699,8 +1830,8 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
-	public void GenerateYellowTiles( Scene s)  {
-
+	public ArrayList<Tile> GenerateYellowTiles( Scene s)  {
+		ArrayList<Tile> tilesToReturn = new ArrayList<Tile>();
 		// color 3 random Empty tiles
 		for (Tile tile : this.game.generateYellowTiles()) {
 			String possibleTile = tile.getX()+","+tile.getY();
@@ -1713,11 +1844,13 @@ public class gameplayScreenController extends Application implements Initializab
 						key = ks;
 						//	System.out.println(key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
+						tilesToReturn.add(tile);
 						break;
 					}
 				}
 			}
 		}
+		return tilesToReturn;
 
 
 	}

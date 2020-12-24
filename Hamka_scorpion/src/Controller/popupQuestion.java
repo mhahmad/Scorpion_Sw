@@ -2,6 +2,8 @@ package Controller;
 
 import Model.Question;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -9,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -24,7 +27,7 @@ public class popupQuestion extends Application {
 	public Button nextBtn = new Button("Next");
 	public Question question = null;
 	public 	ToggleGroup group = new ToggleGroup();
-
+	public Label points = new Label("");
 	Stage window;
 
 	public void display() {
@@ -56,17 +59,30 @@ public class popupQuestion extends Application {
 		answer3.setToggleGroup(group);
 		answer4.setToggleGroup(group);
 		layout.setPadding(new Insets(20,20,20,20));
-		answer1.setPadding(new Insets(30,20,0,20));
-		answer2.setPadding(new Insets(15,20,0,20));
-		answer3.setPadding(new Insets(15,20,0,20));
-		answer4.setPadding(new Insets(15,20,50,20));
+		answer1.setPadding(new Insets(30,20,10,20));
+		answer2.setPadding(new Insets(10,20,10,20));
+		answer3.setPadding(new Insets(10,20,10,20));
+		answer4.setPadding(new Insets(15,20,10,20));
 		layout.setStyle("-fx-background-color: #F1EDAE");
 		answer1.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		answer2.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		answer3.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		answer4.setFont(Font.font("Arial", FontWeight.NORMAL, FontPosture.REGULAR, 15));
 		nextBtn.setMinWidth(80);
-		VBox lay = new VBox(nextBtn);
+    	nextBtn.setDisable(true);
+		VBox lay = new VBox(points,nextBtn);
+		points.setFont(Font.font("Arial", FontWeight.BLACK, FontPosture.REGULAR, 14));
+		points.setPadding(new Insets(5,0,10,0));
+		lay.setPadding(new Insets(40,0,0,0));
+		group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+		      public void changed(ObservableValue<? extends Toggle> ov,
+		              Toggle old_toggle, Toggle new_toggle) {
+		            if (group.getSelectedToggle() != null) {
+		            	nextBtn.setDisable(false);
+		            }
+		          }
+		        });
+	
 		lay.setAlignment(Pos.CENTER);
 		layout.getChildren().addAll(question,answer1,answer2,answer3,answer4,lay);
 		Scene scene = new Scene(layout);
