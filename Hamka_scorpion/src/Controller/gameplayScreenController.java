@@ -209,84 +209,90 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@FXML
 	private Label displayTimer;
-	
-    @FXML
-    private Label winnerLabel;
 
-    @FXML
-    private Button exitBtn;
-    
-    @FXML
-    private Button settingsButton;
-    
-    @FXML
-    private Label live_pausedlbl;
-    
-   
-    ArrayList<Tile> yellowTiles = new ArrayList<>();
-    int flag = 0;
+	@FXML
+	private Label winnerLabel;
+
+	@FXML
+	private Button exitBtn;
+
+	@FXML
+	private Button settingsButton;
+
+	@FXML
+	private Label live_pausedlbl;
+
+	@FXML
+	private Label streakLabel;
+
+
+	ArrayList<Tile> yellowTiles = new ArrayList<>();
+	int flag = 0;
 	inGameSettings settings = new inGameSettings();;
 	popupQuestion quesPop = new popupQuestion();
 	Tile greenTile = null;
-    public static String p1Name = "p1";
-    public static String p2Name ="p2";
+	public static String p1Name = "p1";
+	public static String p2Name ="p2";
 	/* Buttons to display queen movements.*/
 	Button tl = new Button();
 	Button br = new Button();
 	Button tr = new Button();
 	Button bl = new Button();
-	
+
 	//---------------------Timer RElated ! s
-		private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
-		private static Timeline timeline;
-    @FXML
-    private Label timelbl;
-    private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);    
-             // Method res setTimmer() ; 
-    
-    @FXML
-    private Label GameTime;
-    
-    private final StringProperty time = new SimpleStringProperty() ; 
-    //-----------------------------------
+	private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
+	private static Timeline timeline;
+	@FXML
+	private Label timelbl;
+	private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);    
+	// Method res setTimmer() ; 
+
+	@FXML
+	private Label GameTime;
+
+	private final StringProperty time = new SimpleStringProperty() ; 
+	//-----------------------------------
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
 	public static ArrayList<Tile> possible = null;
 	public static HashMap<Tile, Soldier> possibleQueen = null;
+	public static boolean lockedForStreak = false;
+	public static String blackStreak = null;
+	public static String whiteStreak = null;
 
 
 	private int[][] startBoard = {
 			{-1,2,-1,2,-1,2,-1,2},
 			{2,-1,2,-1,2,-1,2,-1},
 			{-1,2,-1,2,-1,2,-1,2},
-			{0,-1,0,-1,0,-1,0,-1},
+			{0,-1,1,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
 			{1,-1,1,-1,1,-1,1,-1},
-			{-1,1,-1,1,-1,1,-1,1},
+			{-1,1,-1,0,-1,0,-1,1},
 			{1,-1,1,-1,1,-1,1,-1}
 	};
-	
+
 	// check Blue tile Gen 
-//	private int[][] startBoard = {
-//			{-1,22,-1,0,-1,2,-1,2},
-//			{0,-1,0,-1,0,-1,0,-1},
-//			{-1,0,-1,0,-1,0,-1,0},
-//			{0,-1,0,-1,0,-1,0,-1},
-//			{-1,0,-1,0,-1,0,-1,11},
-//			{1,-1,11,-1,11,-1,0,-1},
-//			{-1,1,-1,1,-1,1,-1,1},
-//			{1,-1,1,-1,1,-1,1,-1}
-//	};
-	
+	//	private int[][] startBoard = {
+	//			{-1,22,-1,0,-1,2,-1,2},
+	//			{0,-1,0,-1,0,-1,0,-1},
+	//			{-1,0,-1,0,-1,0,-1,0},
+	//			{0,-1,0,-1,0,-1,0,-1},
+	//			{-1,0,-1,0,-1,0,-1,11},
+	//			{1,-1,11,-1,11,-1,0,-1},
+	//			{-1,1,-1,1,-1,1,-1,1},
+	//			{1,-1,1,-1,1,-1,1,-1}
+	//	};
+
 	public static Parent  root;
 	public static Scene scene;
 	GridPane queenArrows = new GridPane();
 
 	String direction = null;
-	
+
 	//private Game game  = new Game("White", "Black", startBoard);
 	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
-	
+
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
@@ -386,8 +392,8 @@ public class gameplayScreenController extends Application implements Initializab
 		//	((Button)root.getChildrenUnmodifiable().get(root.getChildrenUnmodifiable().indexOf( (Button) scene.lookup("#tile3")))).setGraphic(img); 
 		stage.show();
 		stage.setTitle("Hamka - Match");
-         setTimmer() ; // Black's Turn Starts when opening window ! 
-         
+		setTimmer() ; // Black's Turn Starts when opening window ! 
+
 
 		//System.out.println("START   " + tile1);
 
@@ -417,7 +423,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	}
-	
+
 
 
 
@@ -427,54 +433,54 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
-		 Timer t = new javax.swing.Timer(1000, new ActionListener(){
-		     
-				@Override
-				public void actionPerformed(java.awt.event.ActionEvent arg0) {
-					// TODO Auto-generated method stub
-					 boolean x=true;
-		     		    long displayMinutes=0;
-		     		    //long secondspassed=0 ; 
-		     		    long starttime=System.currentTimeMillis();
-		     		 //   System.out.println("Timer:");
-		     		    while(  scene.getWindow()!=null && scene.getWindow().isShowing())
-		     		    {
-		     		    	
-		     		        try {
-		     					TimeUnit.SECONDS.sleep(1);
-		     				} catch (InterruptedException e) {
-		     					// TODO Auto-generated catch block
-		     					e.printStackTrace();
-		     				}
-		     		        long timepassed=System.currentTimeMillis()-starttime;
-		     		      long  secondspassed=timepassed/1000;
-		     		        if(secondspassed==60)
-		     		        {
-		     		            secondspassed=0;
-		     		            starttime=System.currentTimeMillis();
-		     		        }
-		     		        if((secondspassed%60)==0)
-		     		        displayMinutes++;
+		Timer t = new javax.swing.Timer(1000, new ActionListener(){
 
-		              	time.set( displayMinutes+" :: "+secondspassed);
-		     		System.out.println(time.getValue());
-		     		Platform.runLater(new Runnable() {
-		     	        @Override
-		     	        public void run() {
-		     	          //javaFX operations should go here	
-		     	        	((Label) scene.lookup("#GameTime")).setText(time.getValue());
+			@Override
+			public void actionPerformed(java.awt.event.ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				boolean x=true;
+				long displayMinutes=0;
+				//long secondspassed=0 ; 
+				long starttime=System.currentTimeMillis();
+				//   System.out.println("Timer:");
+				while(  scene.getWindow()!=null && scene.getWindow().isShowing())
+				{
 
-		     	        }
-		     	   });
+					try {
+						TimeUnit.SECONDS.sleep(1);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					long timepassed=System.currentTimeMillis()-starttime;
+					long  secondspassed=timepassed/1000;
+					if(secondspassed==60)
+					{
+						secondspassed=0;
+						starttime=System.currentTimeMillis();
+					}
+					if((secondspassed%60)==0)
+						displayMinutes++;
 
-		     		
-		     	}				
-					
-				}
-		    });
-		    t.start();
-		    
-	      //------------------------------
+					time.set( displayMinutes+" :: "+secondspassed);
+					System.out.println(time.getValue());
+					Platform.runLater(new Runnable() {
+						@Override
+						public void run() {
+							//javaFX operations should go here	
+							((Label) scene.lookup("#GameTime")).setText(time.getValue());
+
+						}
+					});
+
+
+				}				
+
+			}
+		});
+		t.start();
+
+		//------------------------------
 		buildTilesBoardMap();
 		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
@@ -483,73 +489,74 @@ public class gameplayScreenController extends Application implements Initializab
 		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 		winnerLabel.setVisible(false);
-		
+		streakLabel.setVisible(false);
+
 		settings.continueBtn.setOnAction(e ->{
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
 			this.timeline.play();
 			this.live_pausedlbl.setText("Live");
 		});
-		
+
 		quesPop.nextBtn.setOnAction(e -> {
 			quesPop.points.setText("");
 			if(quesPop.nextBtn.getText().equals("Next")) {
 				RadioButton rb = (RadioButton) quesPop.group.getSelectedToggle();
-				
+
 				if(SysData.getInstance().isQuestionAnsweredCorrectly(quesPop.question, rb.getText())) {
-						rb.setStyle("-fx-background-color : #32CD32");
-						quesPop.points.setTextFill(javafx.scene.paint.Color.FORESTGREEN);
-						if(quesPop.question.getLevel().equals(Level.easy)) {
-							quesPop.points.setText("You have earned 100 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() + 100);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 100);
-						}else if(quesPop.question.getLevel().equals(Level.medium)) {
-							quesPop.points.setText("You have earned 200 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() + 200);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 200);
-						}else {
-							quesPop.points.setText("You have earned 500 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() + 500);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 500);
-						}
+					rb.setStyle("-fx-background-color : #32CD32");
+					quesPop.points.setTextFill(javafx.scene.paint.Color.FORESTGREEN);
+					if(quesPop.question.getLevel().equals(Level.easy)) {
+						quesPop.points.setText("You have earned 100 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 100);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 100);
+					}else if(quesPop.question.getLevel().equals(Level.medium)) {
+						quesPop.points.setText("You have earned 200 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 200);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 200);
+					}else {
+						quesPop.points.setText("You have earned 500 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 500);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 500);
+					}
 
 				}
 				else {
-						rb.setStyle("-fx-background-color : #EB1717");
-						quesPop.points.setTextFill(javafx.scene.paint.Color.RED);
-						quesPop.group.getToggles().forEach(toggle -> {
-						    RadioButton rad =(RadioButton) toggle;
-						    if(rad.getText().equals(quesPop.question.getRightAnswer())) {
-								rad.setStyle("-fx-background-color : #32CD32");
-						    }
-						});
-						
-						if(quesPop.question.getLevel().equals(Level.easy)) {
-							quesPop.points.setText("You have lost 250 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() - 250);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 250);
-						}else if(quesPop.question.getLevel().equals(Level.medium)) {
-							quesPop.points.setText("You have lost 100 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() - 100);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 100);
-						}else {
-							quesPop.points.setText("You have lost 50 points");
-							if(game.getTurn().equals(Color.Black))
-								game.setblackPlayerPoints(game.getblackPlayerPoints() - 50);
-							else
-								game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 50);
+					rb.setStyle("-fx-background-color : #EB1717");
+					quesPop.points.setTextFill(javafx.scene.paint.Color.RED);
+					quesPop.group.getToggles().forEach(toggle -> {
+						RadioButton rad =(RadioButton) toggle;
+						if(rad.getText().equals(quesPop.question.getRightAnswer())) {
+							rad.setStyle("-fx-background-color : #32CD32");
 						}
+					});
 
+					if(quesPop.question.getLevel().equals(Level.easy)) {
+						quesPop.points.setText("You have lost 250 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 250);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 250);
+					}else if(quesPop.question.getLevel().equals(Level.medium)) {
+						quesPop.points.setText("You have lost 100 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 100);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 100);
+					}else {
+						quesPop.points.setText("You have lost 50 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 50);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 50);
 					}
+
+				}
 				quesPop.nextBtn.setText("Close");
 			}else {
 				quesPop.window.close();
@@ -559,7 +566,7 @@ public class gameplayScreenController extends Application implements Initializab
 			}
 		});
 		settings.exitBtn.setOnAction(e -> {
-			
+
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
 
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
@@ -573,10 +580,10 @@ public class gameplayScreenController extends Application implements Initializab
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
+
 		});
-		
-		
+
+
 		settings.saveBtn.setOnAction(e -> {
 			TextInputDialog td = new TextInputDialog();
 			td.initStyle(StageStyle.UNDECORATED);
@@ -589,47 +596,47 @@ public class gameplayScreenController extends Application implements Initializab
 				SysData.getInstance().saveGame(board, turn,result.get());
 				settings.window.close();
 			}
-			
+
 
 		});
-//----------Timer related
-	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
-	        // code to execute here...
-	        // e.g.
-	        //System.out.println("Time left: "+newTimeValue);
-	    	
-		 //   System.out.println("Time left: "+timeSeconds.toString());
-	    	
-//		    System.out.println("time left : "+newTimeValue);
-		    if(newTimeValue.intValue() == 90) 	greenTile = GenerateGreenTiles(scene, this.game.getTurn());
-		    if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
-		    if(newTimeValue.intValue() == 0) game.handTurn();
-		 //   System.err.println("oldEime Value : "+oldTimeValue);
-		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
-           if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
-	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
-        	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
-        System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
-              ((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
+		//----------Timer related
+		timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
+			// code to execute here...
+			// e.g.
+			//System.out.println("Time left: "+newTimeValue);
 
-          }
-           if(this.game.getTurn().equals(Color.Black)) {	   // white's Turn 
- 	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
-         	this.game.setWhitePlayerPoints( this.game.getwhitePlayerPoints() +oldTimeValue.intValue()-60) ; 
-         System.out.println("Adding points to white  "+(oldTimeValue.intValue()-60));
-         ((Label)scene.lookup("#p2Points")).setText(String.valueOf(this.game.getwhitePlayerPoints()));
+			//   System.out.println("Time left: "+timeSeconds.toString());
 
-           }
-        	   
-		    }
-	    });
-	    
-        
-	   
-            
-        
-	  //  OverAllTimer();
-	    //------------------------------
+			//		    System.out.println("time left : "+newTimeValue);
+			if(newTimeValue.intValue() == 90) 	greenTile = GenerateGreenTiles(scene, this.game.getTurn());
+			if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
+			if(newTimeValue.intValue() == 0) game.handTurn();
+			//   System.err.println("oldEime Value : "+oldTimeValue);
+			if(newTimeValue.intValue() > oldTimeValue.intValue()) {
+				if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
+					System.out.println("its :------------------------ "+this.game.getTurn());  	
+					this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
+					System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
+					((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
+
+				}
+				if(this.game.getTurn().equals(Color.Black)) {	   // white's Turn 
+					System.out.println("its :------------------------ "+this.game.getTurn());  	
+					this.game.setWhitePlayerPoints( this.game.getwhitePlayerPoints() +oldTimeValue.intValue()-60) ; 
+					System.out.println("Adding points to white  "+(oldTimeValue.intValue()-60));
+					((Label)scene.lookup("#p2Points")).setText(String.valueOf(this.game.getwhitePlayerPoints()));
+
+				}
+
+			}
+		});
+
+
+
+
+
+		//  OverAllTimer();
+		//------------------------------
 
 		queenArrows.setVisible(false);
 		queenArrows.setVgap(2);
@@ -669,40 +676,13 @@ public class gameplayScreenController extends Application implements Initializab
 		br.setStyle("-fx-background-color: transparent;");
 		tr.setStyle("-fx-background-color: transparent;");
 		bl.setStyle("-fx-background-color: transparent;");
-		
-		
+
+
 
 
 
 	}
 
-	//	@FXML
-	//	public Stage flip() {
-	//	 Stage s = (Stage)tile1.getScene().getWindow();
-	//	 return s ;
-	//	}
-	//	
-	//	public void FillBoard() {
-	//		
-	//		try {
-	//		for(int i = 0; i<=7; i++) {
-	//			for(int j = 0; j<=7; j++) {
-	//            ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
-	//            ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
-	//
-	//    		String value = i + ","+j;
-	//    		String key = tilesBoardMap.get(value);
-	//			Button btn = (Button) flip().getScene().lookup("#"+key);
-	//         //   System.out.println(tile1);
-	//            tile1.setGraphic(blackSoldier);
-	//    		
-	//			}
-	//		}
-	//		}catch (Exception e) {
-	//			e.getCause();
-	//			e.printStackTrace();
-	//		}
-	//	}
 
 	public void buildTilesBoardMap() {
 		tilesBoardMap = new HashMap<>();
@@ -748,64 +728,56 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
-//------------------------Timer Related  
+	//------------------------Timer Related  
 
 	public static void setTimmer() {
-		
-	//	 Timeline timeline = new Timeline(); 
+
+		//	 Timeline timeline = new Timeline(); 
 		//sprivate Label timerLabel = new Label();
-		 
 
-	//	 IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
-		
-		   if(timeline != null) {
-		    	System.out.println("timeLine stoping ");
-               timeline.stop();
-		    }
-		   
+
+		//	 IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
+
+		if(timeline != null) {
+			System.out.println("timeLine stoping ");
+			timeline.stop();
+		}
+
 		if(((Label) scene.lookup("#"+"timelbl")) != null) {
-			  ((Label) scene.lookup("#"+"timelbl")).textProperty().unbind();
-		    ((Label) scene.lookup("#"+"timelbl")).setText(timeSeconds.toString());
+			((Label) scene.lookup("#"+"timelbl")).textProperty().unbind();
+			((Label) scene.lookup("#"+"timelbl")).setText(timeSeconds.toString());
 
-		   // ((Label) scene.lookup("#"+"timelbl")).setTextFill(Color.valueOf("#00000"));
-//		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
+			// ((Label) scene.lookup("#"+"timelbl")).setTextFill(Color.valueOf("#00000"));
+			//		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
 
-		    // Bind the timerLabel text property to the timeSeconds property
-		    ((Label) scene.lookup("#"+"timelbl")).textProperty().bind(timeSeconds.asString());
+			// Bind the timerLabel text property to the timeSeconds property
+			((Label) scene.lookup("#"+"timelbl")).textProperty().bind(timeSeconds.asString());
 
 		}
-		 
 
-            timeSeconds.set(STARTTIME);
-            timeline = new Timeline();
 
-            KeyValue keyValue = new KeyValue(timeSeconds, 0);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(STARTTIME + 1), keyValue);
+		timeSeconds.set(STARTTIME);
+		timeline = new Timeline();
 
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.playFromStart();
+		KeyValue keyValue = new KeyValue(timeSeconds, 0);
+		KeyFrame keyFrame = new KeyFrame(Duration.seconds(STARTTIME + 1), keyValue);
 
-     System.out.println("get every seconds value and display to console window");
-		 
+		timeline.getKeyFrames().add(keyFrame);
+		timeline.playFromStart();
+
+		System.out.println("get every seconds value and display to console window");
+
 	}
 
-//-------------------------------------
-	
+	//-------------------------------------
+
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
-//		ClearColoredTiles(scene);
+		//		ClearColoredTiles(scene);
 		queenArrows.setVisible(false);
-		//Clicked Button (black tile)
-		//System.out.println(tilesBoardMap);
-		//tile1.setStyle("-fx-background-color: yellow");
-		//		if(!isTileEmpty(scene, (Button) scene.lookup("#"+(String)((Control)event.getSource()).getId()))) {
-		//		GenerateYellowTiles(scene);
-		//	}
+		updateTurnLabels();
+		streakLabel.setVisible(false);
 
-		//	if((!this.game.noMoreMovesForPlayer(Color.White))||(!this.game.noMoreMovesForPlayer(Color.Black) )) {
-
-		//	GenerateRedTiles(scene, this.game.getTurn());
-		//GenerateGreenTiles(scene, this.game.getTurn());
 		Button currentTile;
 		Board gBoard = game.getBoard();
 		int[][] board = gBoard.getBoard();
@@ -873,19 +845,33 @@ public class gameplayScreenController extends Application implements Initializab
 		Soldier s = game.getTileContent(current);
 		Color color = game.getTurn();
 
+		//Current player had a killstreak and missed it (by clicking on oposition piece) - > SwapTurns.
+		//s!=null means this click is on a peice in the first place
+		if(s!=null && color != s.getColor() && lockedForStreak) {
+			SwapTurn();
+			System.out.println(color.toString() + " - You Missed yourself a KillStreak Genius!");
+			streakLabel.setText(color.toString() + " - You Missed yourself a KillStreak Genius!");
+			color = game.getTurn();
+			clickedSoldier = null;
+			possible = null;
+			possibleQueen = null;
+			streakLabel.setVisible(true);
+		}
+
+
 		//		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 		//		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
-		if(color==Color.Black) { //Black's turn
-			StopWatch turnTimer = new StopWatch();
-			turnTimer.start();
-			System.out.println();
+		//*Kill streak, It's the killstreak owner turn unless they miss it an opposition soldier/queen is clicked, turn gets swapped automatically, in other words
+		//*Current turn can only select & move killstreak piece, and the opposition can select and move any of their pieces (current killstreak owner missed their killstreak).
 
+
+		if(color==Color.Black) { //Black's turn (not in the middle of a killstreak)
 			System.out.println("switching to Black  !!");
 			SwitchTurntoBlack(i , j , s , currentTile , blackSoldier, chosenBlackSoldier, blackQueen,  chosenBlackQueen) ; 
 
 		}
-		else if(color==Color.White) { //turn.color = Color.White
+		else if(color==Color.White) { //White's turn (not in the middle of a killstreak)
 			System.out.println("switching to White !!");
 			SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
 
@@ -953,42 +939,49 @@ public class gameplayScreenController extends Application implements Initializab
 				Soldier prevS = game.getTileContent(prevT);
 
 				if(prevS.getSoldierNumber()==2) {
-					System.out.println("99999999999999999999999999");
 					for (Tile t : possible) {  //a tile was selected before, and current tile is used to make the move.
 						int coordinateI = t.getX();
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
 
 							System.out.println("SOLDIER");
-							//	Button to = getButtonById(currentTile.getId());
-							//to.setGraphic(blackSoldier);
-							//Button from = getButtonById(clickedSoldier);
-							//	from.setGraphic(null);
-							//System.out.println(prevS);
+
+
 							game.moveBlackSoldier(prevS, t, possible);
+							//check if a killstreak is available.
+							boolean killed = false;
+							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
+							Soldier afterKill;
+							if(kills!=null && !kills.isEmpty()) { //if this move was a kill, then we need to check for a killstreak.
+								killed = true;
+								afterKill = game.getTileContent(t);
+								if(afterKill!=null)
+									possible = game.getKillStreak(afterKill);
+							}
+
+							if(possible!=null && !possible.isEmpty() && killed)  //There is a streak
+								lockedForStreak = true;
+							else 
+								lockedForStreak = false;
+
 							if(greenTile != null && greenTile.equals(t)) {
+								if(!lockedForStreak)
+									SwapTurn();
 								game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
-								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-								setTimmer();
 								greenTile = null;
 							}
 							else if(yellowTiles.contains(t)) {
 								quesPop.question = SysData.getInstance().randomQuestion();
 								quesPop.display();
 								SysData.getInstance().questionIsShown(quesPop.question);
-							}else {
-								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-								setTimmer();
+							}else
+								if(!lockedForStreak)
+									SwapTurn();
 
-							}
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 							flag=0;
 							//Timer Related - 
-							p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
-							p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
-							p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
-							p1.setTextFill(javafx.scene.paint.Color.WHITE);
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
 							GenerateRedTiles(scene, Color.White);
@@ -1003,54 +996,57 @@ public class gameplayScreenController extends Application implements Initializab
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
 							break;
-
-							//							System.out.println("Yes" + currentTile.getId());
-							//							System.out.println();
-							//							System.out.println();
-							//	board = game.getBoard();
-							//	System.out.println("Game id: " + game.getGameID());
 						}
 					}
 				}
 
 				else if(prevS.getSoldierNumber()==22) {
 					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas" + possibleQueen);
-					if(possibleQueen!=null) {
+					if(possibleQueen!=null) { //Move not in a Queen's  killstreak.
 						for (Tile t2 : possibleQueen.keySet()) {  //a tile was selected before, and current tile is used to make the move.
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
 							if(i==coordinateI2 && j == coordinateJ2){
 
 								System.out.println("QUEEN");
-								//	Button to = getButtonById(currentTile.getId());
-								//to.setGraphic(blackSoldier);
-								//Button from = getButtonById(clickedSoldier);
-								//	from.setGraphic(null);
-								//System.out.println("Prev Tile: " + prevT);
-								Queen prevSs =(Queen) prevS;
+								Queen prevQ =(Queen) prevS;
 								//System.out.println(prevS);
-								game.queenMove(prevSs, t2, possibleQueen);
+
+
+								HashMap<Tile, Soldier> kills = game.priorityKill(prevQ);
+								boolean killed = false;
+								game.queenMove(prevQ, t2, possibleQueen);
+
+								Soldier afterKill;
+								if(kills!=null && !kills.isEmpty()) { //if this move was a kill, then we need to check for a killstreak.
+									killed = true;
+									afterKill = game.getTileContent(t2);
+									if(afterKill!=null)
+										possible = game.getKillStreak(afterKill);
+								}
+
+								if(possible!=null && !possible.isEmpty() && killed)  //There is a streak
+									lockedForStreak = true;
+								else 
+									lockedForStreak = false;
+
+
 								if(greenTile != null && greenTile.equals(t2)) {
+									if(!lockedForStreak)
+										SwapTurn();
 									game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
-									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-									setTimmer();
 									greenTile = null;
 								}
 								else if(yellowTiles.contains(t2)) {
 									quesPop.question = SysData.getInstance().randomQuestion();
 									quesPop.display();
 									SysData.getInstance().questionIsShown(quesPop.question);
-								}else {
-									game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-									setTimmer();
-								}
+								}else
+									if(!lockedForStreak)
+										SwapTurn();
 								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 								flag=0;
-								p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
-								p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
-								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
-								p1.setTextFill(javafx.scene.paint.Color.WHITE);
 								//Timer Related - 
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
@@ -1062,16 +1058,69 @@ public class gameplayScreenController extends Application implements Initializab
 									winnerLabel.setText(game.winner() + " Wins!");
 									winnerLabel.setVisible(true);
 									boardOFF();
-									}
+								}
+								System.out.println("Now It's White's turn");
+								clickedSoldier=null;
+								possibleQueen = null;
+								break;
+							}
+						}
+					}else if(possible!=null && lockedForStreak) { //Move is in Queen's  Killstreak
+						for (Tile t : possible) {  //a tile was selected before, and current tile is used to make the move.
+							int coordinateI = t.getX();
+							int coordinateJ = t.getY();
+							if(i==coordinateI && j == coordinateJ){
+
+								System.out.println("Queen");
+
+								Queen prevQ =(Queen) prevS;
+
+								game.moveBlackSoldier(prevS, t, possible);
+								game.moveStreak(prevQ, prevQ, t);
+								//check if a killstreak is available.
+								Soldier afterKill;
+								afterKill = game.getTileContent(t);
+								if(afterKill!=null)
+									possible = game.getKillStreak(afterKill);
+								boolean killed = false;
+
+								if(possible!=null && !possible.isEmpty() && killed)  //There is a streak
+									lockedForStreak = true;
+								else 
+									lockedForStreak = false;
+
+								if(greenTile != null && greenTile.equals(t)) {
+									if(!lockedForStreak)
+										SwapTurn();
+									game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
+									greenTile = null;
+								}
+								else if(yellowTiles.contains(t)) {
+									quesPop.question = SysData.getInstance().randomQuestion();
+									quesPop.display();
+									SysData.getInstance().questionIsShown(quesPop.question);
+								}else
+									if(!lockedForStreak)
+										SwapTurn();
+
+								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
+								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
+								flag=0;
+								//Timer Related - 
+								occupiedTilesOriginalColor(scene) ; 
+								ClearColoredTiles(scene);
+								GenerateRedTiles(scene, Color.White);
+								//GenerateGreenTiles(scene, Color.White);
+								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+								if(game.isGameOver()) {
+									winnerLabel.setText(game.winner() + " Wins!");
+									winnerLabel.setVisible(true);
+									boardOFF();
+								}
+
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
-
-								//							System.out.println("Yes" + currentTile.getId());
-								//							System.out.println();
-								//							System.out.println();
-								//	board = game.getBoard();
-								//	System.out.println("Game id: " + game.getGameID());
 							}
 						}
 					}
@@ -1081,59 +1130,15 @@ public class gameplayScreenController extends Application implements Initializab
 				System.out.println("Here are the possible moves: " + possible);
 			}
 
-
-
-
-
-			/*       
-		}else if(s.getColor().equals(Color.White)) {
-				System.out.println("White Soldier clicked!");
-
-
-		         }else if(color==Color.White) { //turn.color = Color.White
-			if(s==null) {
-				if(possible==null)
-					System.out.println("Please click a white  Soldier!");
-				else if(clickedSoldier!=null){
-					for (Tile t : possible) {
-						int coordinateI = t.getX();
-						int coordinateJ = t.getY();
-						if(i==coordinateI && j == coordinateJ){
-
-							String prev = tilesBoardMap.get(clickedSoldier);
-
-							String[] parts2= prev.split(",");
-							String part21 = parts2[0]; 
-							String part22 = parts2[1]; 
-							//Tile converted to i,j format to be used with the board 2d arary.
-							Integer desti = Integer.parseInt(part21);
-							Integer destj = Integer.parseInt(part22);
-							Tile prevT = new Tile(desti, destj);
-
-							//System.out.println("Prev Tile: " + prevT);
-							Soldier prevS = game.getTileContent(prevT);
-							//System.out.println(prevS);
-							game.moveWhiteSoldier(prevS, t, possible);
-							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to black.
-							System.out.println("Now It's Black's  turn");
-							clickedSoldier=null;
-							break;
-
-
-						}
-//>>>>>>> master
-
-					}
-					//Else don't do anything.
-					//						else {
-					//							System.out.println("Nope");
-					//						}
-
-				}
-			 */
 			try {
 				refreshBoard(game,scene, root);
+				Button b = getButtonById(currentTile.getId());
+				//				b.setGraphic(chosenBlackSoldier);
+				clickedSoldier = b.getId();
+				if(!lockedForStreak)  //Only if there is no killStreak do we want clickedSoldier  to be null ,otherwise we want it to refer to the killStreak Piece, (see next part of the method)
+					clickedSoldier = null;
+
+
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -1151,77 +1156,91 @@ public class gameplayScreenController extends Application implements Initializab
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			if(clickedSoldier==null) { //This is the first click (Selection)
-				//			System.out.println("Here");
-				System.out.println(b);
-				if(game.getBoard().getBoard()[i][j]==2) {
-					b.setGraphic(chosenBlackSoldier);
-					queenArrows.setVisible(false);
-				}
-
-				if(game.getBoard().getBoard()[i][j]==22) {
-					queenArrows.setVisible(true);
-					b.setGraphic(chosenBlackQueen);
-					Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
-					queenArrows.setTranslateX(boundsInScene.getMinX()-25);
-					queenArrows.setTranslateY(boundsInScene.getMinY()-43);
-				}
-				clickedSoldier = b.getId();
-			}else { //Change selection (Previously clicked on a piece)
+			if(clickedSoldier!=null && lockedForStreak) { //Click streak.
 				Button last = getButtonById(clickedSoldier);
 				String prev = tilesBoardMap.get(clickedSoldier);
-				//System.out.println("sdsds" + prev);
-				//Convert tile to i,j
-				String[] parts2= prev.split(",");
-				String part21 = parts2[0]; 
-				String part22 = parts2[1]; 
-				//Tile converted to i,j format to be used with the board 2d arary.
-				Integer desti = Integer.parseInt(part21);
-				Integer destj = Integer.parseInt(part22);
-				if(game.getBoard().getBoard()[desti][destj]==2) {
-					last.setGraphic(blackSoldier);
-					queenArrows.setVisible(false);
-				}
-				if(game.getBoard().getBoard()[desti][destj]==22) 
-					last.setGraphic(blackQueen);
+				String curr = tilesBoardMap.get(b.getId());
+				if(prev==curr) {
+					if(game.getBoard().getBoard()[i][j]==2) {
+						b.setGraphic(chosenBlackSoldier);
+					}
+					if(game.getBoard().getBoard()[i][j]==22) {
+						b.setGraphic(chosenBlackQueen);
+					}
+				}else
+					System.out.println("Select the killStreak Piece!");
+			}else {
+				if(clickedSoldier==null) { //This is the first click (Selection)
+					//			System.out.println("Here");
+					System.out.println(b);
+					if(game.getBoard().getBoard()[i][j]==2) {
+						b.setGraphic(chosenBlackSoldier);
+						queenArrows.setVisible(false);
+					}
+					if(game.getBoard().getBoard()[i][j]==22) {
+						queenArrows.setVisible(true);
+						b.setGraphic(chosenBlackQueen);
+						Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
+						queenArrows.setTranslateX(boundsInScene.getMinX()-25);
+						queenArrows.setTranslateY(boundsInScene.getMinY()-43);
+					}
+					clickedSoldier = b.getId();
+				}else { //Change selection (Previously clicked on a piece)
+					Button last = getButtonById(clickedSoldier);
+					String prev = tilesBoardMap.get(clickedSoldier);
+					//System.out.println("sdsds" + prev);
+					//Convert tile to i,j
+					String[] parts2= prev.split(",");
+					String part21 = parts2[0]; 
+					String part22 = parts2[1]; 
+					//Tile converted to i,j format to be used with the board 2d arary.
+					Integer desti = Integer.parseInt(part21);
+					Integer destj = Integer.parseInt(part22);
+					if(game.getBoard().getBoard()[desti][destj]==2) {
+						last.setGraphic(blackSoldier);
+						queenArrows.setVisible(false);
+					}
+					if(game.getBoard().getBoard()[desti][destj]==22) 
+						last.setGraphic(blackQueen);
 
-				if(game.getBoard().getBoard()[i][j]==2) { //Change to Soldier piece
-					queenArrows.setVisible(false);
-					b.setGraphic(chosenBlackSoldier);
-				}
-				if(game.getBoard().getBoard()[i][j]==22) { //Change to Queen piece
+					if(game.getBoard().getBoard()[i][j]==2) { //Change to Soldier piece
+						queenArrows.setVisible(false);
+						b.setGraphic(chosenBlackSoldier);
+					}
+					if(game.getBoard().getBoard()[i][j]==22) { //Change to Queen piece
 
-					queenArrows.setTranslateX(b.getLayoutX());
-					queenArrows.setTranslateY(b.getLayoutY());
-					b.setGraphic(chosenBlackQueen);
-					queenArrows.setVisible(true);
-					Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
-					queenArrows.setTranslateX(boundsInScene.getMinX()-25);
-					queenArrows.setTranslateY(boundsInScene.getMinY()-43);
-				}
-				clickedSoldier = b.getId();
+						queenArrows.setTranslateX(b.getLayoutX());
+						queenArrows.setTranslateY(b.getLayoutY());
+						b.setGraphic(chosenBlackQueen);
+						queenArrows.setVisible(true);
+						Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
+						queenArrows.setTranslateX(boundsInScene.getMinX()-25);
+						queenArrows.setTranslateY(boundsInScene.getMinY()-43);
+					}
+					clickedSoldier = b.getId();
 
-			}
-			////*get Soldier's possible moves
-			possible = game.getPossibleMovesForBlackSoldier(s);
-			System.out.println("????????????????????");
-			if(possible!=null) {
-				for (Tile tile : possible) {
-					String possibleTile = tile.getX()+","+tile.getY();
-					String check = null;
-					String key = null;
-					for (String ks : tilesBoardMap.keySet()) {
-						check = tilesBoardMap.get(ks);
-						if(check!=null) {
-							if(check.equals(possibleTile)) {
-								key = ks;
-								break;
+				}
+				////*get Soldier's possible moves
+				possible = game.getPossibleMovesForBlackSoldier(s);
+				System.out.println("????????????????????");
+				if(possible!=null) {
+					for (Tile tile : possible) {
+						String possibleTile = tile.getX()+","+tile.getY();
+						String check = null;
+						String key = null;
+						for (String ks : tilesBoardMap.keySet()) {
+							check = tilesBoardMap.get(ks);
+							if(check!=null) {
+								if(check.equals(possibleTile)) {
+									key = ks;
+									break;
+								}
 							}
 						}
-					}
 
+					}
 				}
-			}
+			} //No killstreak.
 
 
 		}else if(s.getColor().equals(Color.White))
@@ -1229,12 +1248,10 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 
-
-
 	}// End of Blackturn method.
 
 
-	
+
 	/*Similar to SwitchTurntoBlack - For more comments see SwitchTurntoBlack*/
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier, ImageView whiteQueen, ImageView chosenWhiteQueen) {
 
@@ -1341,12 +1358,7 @@ public class gameplayScreenController extends Application implements Initializab
 							if(i==coordinateI2 && j == coordinateJ2){
 
 								System.out.println("QUEEN");
-								//	Button to = getButtonById(currentTile.getId());
-								//to.setGraphic(blackSoldier);
-								//Button from = getButtonById(clickedSoldier);
-								//	from.setGraphic(null);
 
-								//System.out.println("Prev Tile: " + prevT);
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
@@ -1386,12 +1398,6 @@ public class gameplayScreenController extends Application implements Initializab
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;
-
-								//							System.out.println("Yes" + currentTile.getId());
-								//							System.out.println();
-								//							System.out.println();
-								//	board = game.getBoard();
-								//	System.out.println("Game id: " + game.getGameID());
 							}
 						}
 					}
@@ -1531,7 +1537,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 		int whiteAliveCout = 0 ; 
 		int blackAliveCount = 0 ;
-		
+
 		int [][]board = game.getBoard().getBoard();
 		System.out.println("In refresh");
 		//Parent  root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
@@ -1543,7 +1549,7 @@ public class gameplayScreenController extends Application implements Initializab
 			for(int j = 0; j<=7; j++) {
 
 				//for(int j = 2; j<8; j+=2) {
-				
+
 				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 				blackSoldier.setFitHeight(45);
 				blackSoldier.setFitWidth(45);
@@ -1601,49 +1607,15 @@ public class gameplayScreenController extends Application implements Initializab
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
 					blackAliveCount++; 
 				}
-				
 
 
-				//					String value ; 
-				//
-				//					//value = i*4 + j ; 
-				//					value=String.valueOf((i*4+j)) ; 
-
-				//	String key = tilesBoardMap.get(value);
-				//	    		System.out.println(value+"//");
-				//	    		if(board[i][j]== 1) {
-				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img2);
-				//
-				//	    		}
-				//	    		
-				//	    		if(board[i][j]== 2) {
-				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img);
-				//
-				//	    		}
-
-				//					if(Integer.parseInt(value) <13) {
-				//						System.out.println("#tile"+value);
-				//						((Button) scene.lookup("#tile"+value)).setGraphic(blackSoldier);
-				//					}
-				//					if(Integer.parseInt(value) >20) {
-				//						((Button) scene.lookup("#tile"+value)).setGraphic(whiteSoldier);
-				//					}
-
-
-
-				// Button btn = (Button) scene.lookup("#"+key);
-				//System.out.println(tile1);
-				// btn.setGraphic(img);
-				
 			}
-			
-
 
 		}
-		
+
 		//Generate Blue Tile - Maybe ! 
 		GenerateBlueTile(scene) ; 
-		
+
 		//-----------------------Count Your Loses ! 
 		if(this.deadBlackv !=null && this.deadwhitev !=null) {
 			this.deadwhitev.getChildren().clear();
@@ -1725,7 +1697,7 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
-	
+
 
 	public void ClearColoredTiles(Scene s) {
 		//Clear all Empty Tiles 
@@ -1854,7 +1826,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	}
-	
+
 	public void GenerateBlueTile( Scene s)  {
 
 		// color 1 random Empty tile
@@ -1879,7 +1851,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	}
-	
+
 
 	public Button getButtonById(String id) {
 		//Button toReturn =null;
@@ -1950,7 +1922,7 @@ public class gameplayScreenController extends Application implements Initializab
 		return false ; 
 	}
 
-	
+
 	@FXML
 	void settingBtnClicked(ActionEvent event) throws Exception{
 		this.timeline.stop();
@@ -1959,46 +1931,73 @@ public class gameplayScreenController extends Application implements Initializab
 
 		settings.showWin();
 	}
-	
 
-  
-    
-	
+
+
+
+
 	void OverAllTimer() {
-		
-		 boolean x=true;
-		    long displayMinutes=0;
-		    //long secondspassed=0 ; 
-		    long starttime=System.currentTimeMillis();
-		    System.out.println("Timer:");
-		    while(x)
-		    {
-		    	
-		        try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        long timepassed=System.currentTimeMillis()-starttime;
-		      long  secondspassed=timepassed/1000;
-		        if(secondspassed==60)
-		        {
-		            secondspassed=0;
-		            starttime=System.currentTimeMillis();
-		        }
-		        if((secondspassed%60)==0)
-		        displayMinutes++;
 
-		System.out.println( displayMinutes+" : "+secondspassed);
-		
-		
+		boolean x=true;
+		long displayMinutes=0;
+		//long secondspassed=0 ; 
+		long starttime=System.currentTimeMillis();
+		System.out.println("Timer:");
+		while(x)
+		{
+
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			long timepassed=System.currentTimeMillis()-starttime;
+			long  secondspassed=timepassed/1000;
+			if(secondspassed==60)
+			{
+				secondspassed=0;
+				starttime=System.currentTimeMillis();
+			}
+			if((secondspassed%60)==0)
+				displayMinutes++;
+
+			System.out.println( displayMinutes+" : "+secondspassed);
+
+
+		}
 	}
-		    
-		    
-		
 
-}
 
+	public void SwapTurn() {
+		game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+		updateTurnLabels();
+		setTimmer();
+	}
+
+	public void updateTurnLabels() {
+		if(game.getTurn().equals(Color.White)) {
+			p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+			p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+			p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
+			p1.setTextFill(javafx.scene.paint.Color.WHITE);
+		}else {
+			p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+			p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+			p2.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
+			p2.setTextFill(javafx.scene.paint.Color.WHITE);
+		}
+	}
 	
+	
+	public void setBoard(int[][] board) {
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j <8; j++) {
+                this.startBoard[i][j] =board[i][j];
+
+            }
+        }
+    }
+
+
 }
