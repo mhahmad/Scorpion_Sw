@@ -793,7 +793,33 @@ public class Game {
 		}
 	}
 
+	public Tile getQueenKill(Queen queen) {
+	        HashMap<Tile,Soldier> allMoves  = new HashMap<>();
+	        allMoves.putAll(getQueenBiasMoves(queen, "TR"));
+	        allMoves.putAll(getQueenBiasMoves(queen, "TL"));
+	        allMoves.putAll(getQueenBiasMoves(queen, "BR"));
+	        allMoves.putAll(getQueenBiasMoves(queen, "BL"));
 
+	        for(Map.Entry<Tile, Soldier> temp : allMoves.entrySet()) {
+	            if(temp.getValue() != null)
+	                return temp.getKey();
+	        }
+	        return null;
+	    }
+	    public ArrayList<Tile> getBiasQueenKills(Color turn){
+	        ArrayList<Tile> queenKills = new ArrayList<>();
+
+	        for(Tile t : board.getPlayerPositions(turn)) {
+	            if(getTileContent(t).getSoldierNumber() == 22 || getTileContent(t).getSoldierNumber() == 11) {
+	                Queen queen = (Queen)getTileContent(t);
+	                if(getQueenKill(queen) != null)
+	                    queenKills.add(getQueenKill(queen));
+	            }
+	        }
+	        return queenKills;
+	    }
+	    
+	    
 	public ArrayList<Tile> getAllQueensKills(Color turn){
 		ArrayList<Tile> allKills = new ArrayList<>();
 		for(Tile t: board.getPlayerPositions(turn)) {
@@ -1215,9 +1241,9 @@ public class Game {
 		if(getKills(turn)== null || getKills(turn).size()< 1) {
 			for(Tile tile : board.getPlayerPositions(turn)) {
 
-				if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null) {
+				if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.Black).isEmpty()) {
 					candidates.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
-				}else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null){
+				}else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.White).isEmpty()){
 					candidates.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
 				}
 			}
