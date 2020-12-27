@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import Model.Tile;
 
-public class Soldier {
+public class Soldier implements Observer {
 	
 	private static int globalid=0;
 	private int id;
@@ -105,6 +105,11 @@ public class Soldier {
 	}
 	public void setPossibleMoves(ArrayList<Tile> possibleMoves) {
 		this.possibleMoves = possibleMoves;
+	}
+	
+	@Override
+	public void updatePosition(Tile position) {
+		this.position = position;
 	}
 	
 

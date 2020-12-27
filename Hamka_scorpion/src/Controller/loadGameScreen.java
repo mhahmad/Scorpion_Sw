@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import Controller.SysData;
+import Model.Board;
 import Model.Color;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -65,7 +66,7 @@ public class loadGameScreen extends Application{
     	File selectedFile = fc.showOpenDialog(null);
     	if(selectedFile!=null) {
     		String chosenFilePath = selectedFile.getAbsolutePath();
-    		int[][] board = SysData.getInstance().getBoard(chosenFilePath);
+    		Board board = new Board(SysData.getInstance().getBoard(chosenFilePath));
     		Color turn = SysData.getInstance().getTurn(chosenFilePath);
     		 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
              Parent root;
@@ -77,7 +78,7 @@ public class loadGameScreen extends Application{
              gameplayScreenController con = loader.getController();
              con.p1Name= "Player 1" ;
              con.p2Name = "Player 2";
-             //con.setBoard(board);
+             con.game.setBoard(board);
              con.start(window);
              window.show();
              window.centerOnScreen();

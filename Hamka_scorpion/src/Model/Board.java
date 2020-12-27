@@ -4,53 +4,42 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Board {
+public class Board implements Subject {
 	public int[][] board;
 
           //////Soldiers By Tiles \\\\\\
 	private HashMap<Tile, Soldier> soldiersByTiles;
 	private HashMap<Soldier,Tile> tilesBySoldiers;
 
+	private EmptyTileCriteria emptyTilesCriteria= new EmptyTileCriteria();
+    private OccupiedTileCriteria occupiedTilesCriteria = new OccupiedTileCriteria();
+    private WhiteSoldierTilesCriteria whiteSoldierCriteria = new WhiteSoldierTilesCriteria();
+    private BlackSoldierTileCriteria blackSoldierCriteria = new BlackSoldierTileCriteria();
 	
-	
-	
-	public Board(int [][] board) {	
-		soldiersByTiles = new HashMap<Tile,Soldier>();
-		tilesBySoldiers = new HashMap<Soldier,Tile>();
-		this.board = board;
-		for(int i =0; i<8; i++) {
-			for(int j=0; j<8 ;j++) {
-				
-				if((i%2 ==0 && j%2 == 1)  || (i%2 ==1 && j%2 == 0) ) {
-					Tile t = new Tile(i,j);
-					if(board[i][j]==1) {
-						Soldier s = new Soldier(1);
-						s.position = t;
-						soldiersByTiles.put(t, s);
-						
-						tilesBySoldiers.put(s,t);
-					}else if(board[i][j]==11) {
-						Queen q = new Queen(11);
-						q.position = t;
-						soldiersByTiles.put(t, q);
-						tilesBySoldiers.put(q,t);
-					}else if(board[i][j]==2) {
-						Soldier s = new Soldier(2);
-						s.position = t;
-						soldiersByTiles.put(t, s);
-						tilesBySoldiers.put(s,t);
-					}else if(board[i][j]==22) {
-						Queen q = new Queen(22);
-						q.position = t;
-						soldiersByTiles.put(t, q);
-						tilesBySoldiers.put(q,t);
-					}else {
-						soldiersByTiles.put(t, null);
-					}
-				}
-			}
-		}
-	}
+    
+    SoldierFactory SF = new SoldierFactory();
+
+    public Board(int[][] board) {
+        soldiersByTiles = new HashMap<Tile, Soldier>();
+        tilesBySoldiers = new HashMap<Soldier, Tile>();
+        this.board = board;
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+
+                if ((i % 2 == 0 && j % 2 == 1) || (i % 2 == 1 && j % 2 == 0)) {
+                    Tile t = new Tile(i, j);
+                    if (board[i][j] != 0) {
+                        Soldier s = SF.getInstance(t, board[i][j]);
+                        tilesBySoldiers.put(s, t);
+                        soldiersByTiles.put(t, s);
+
+                    } else {
+                        soldiersByTiles.put(t, null);
+                    }
+                }
+            }
+        }
+    }
 	
 	public int[][] getBoard() {
 		return board;
@@ -90,13 +79,15 @@ public class Board {
 		return tilesBySoldiers.get(s);
 	}
 	
+	@Override
 	public void setSoldier(Soldier s,Tile t) {
 		soldiersByTiles.put(t, s);
-		s.setPosition(t);
+		s.updatePosition(t);
 		tilesBySoldiers.put(s, t);
 		board[t.getX()][t.getY()] = s.getSoldierNumber();
 	}
 	
+	@Override
 	public void removeSoldier(Soldier s,Tile t) {
 		soldiersByTiles.put(t, null);
 		tilesBySoldiers.remove(s);
@@ -105,21 +96,19 @@ public class Board {
 	}
 
 	public HashMap<Tile,Soldier> getSameColorSoldiers(int num){
-		if(num != 1 && num!=2 ) return null;
-		HashMap<Tile,Soldier> toReturn = new HashMap<Tile, Soldier>();
-		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
-			Tile t = entry.getKey();
-			Soldier s = entry.getValue();
-			if(s != null) {
-				if(s.getSoldierNumber() == num ) {
-					toReturn.put(t,s);
-				}
-			}
-			
-		}
-		return toReturn;
-	}
-	
+        if(num != 1 && num!=2 ) return null;
+        HashMap<Tile,Soldier> toReturn = new HashMap<Tile, Soldier>();
+        ArrayList<Tile> temp = new ArrayList<Tile>();
+        if(num==1) {
+            temp = whiteSoldierCriteria.meetCriteria(soldiersByTiles); 
+        }else {
+            temp = blackSoldierCriteria.meetCriteria(soldiersByTiles);
+        }
+        for(Tile t : temp) {
+            toReturn.put(t, soldiersByTiles.get(t));
+        }
+        return toReturn;
+    }
 	
 	public ArrayList<Tile> getPlayerPositions(Color color){
 		ArrayList<Tile> tiles = new ArrayList<Tile>();
@@ -136,25 +125,13 @@ public class Board {
 	
 	
 	public ArrayList<Tile> getEmptyTiles(){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
-			if(entry.getValue() == null ) {
-				toReturn.add(entry.getKey());
-			}
-			}
-		return toReturn;
-	}
-	
-	
-	public ArrayList<Tile> getOccupiedTiles(){
-		ArrayList<Tile> toReturn = new ArrayList<Tile>();
-		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
-			if(entry.getValue() != null ) {
-				toReturn.add(entry.getKey());
-			}
-			}
-		return toReturn;
-	}
+        return emptyTilesCriteria.meetCriteria(soldiersByTiles);
+    }
+
+
+    public ArrayList<Tile> getOccupiedTiles(){
+        return occupiedTilesCriteria.meetCriteria(soldiersByTiles);
+    }
 	
 	
 	public int countPiece(int type) {
