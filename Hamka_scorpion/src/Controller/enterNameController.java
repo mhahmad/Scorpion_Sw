@@ -81,7 +81,7 @@ public class enterNameController{
                  window.setScene(scene);
                  gameplayScreenController con = loader.getController();
                  con.p1Name= player1.getText() ;
-                 con.p2Name = player2.getText() ; 
+                 con.p2Name = player2.getText(); 
                  con.start(window);
                  window.show();
                  window.centerOnScreen();

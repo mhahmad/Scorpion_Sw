@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.gameplayScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.gameplayScreenController">
    <children>
       <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
@@ -375,6 +375,11 @@
             <Label layoutX="439.0" layoutY="61.0" text="Game Time :" textFill="#e1d0d0">
                <font>
                   <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="streakLabel" alignment="CENTER" layoutX="219.0" layoutY="711.0" prefHeight="40.0" prefWidth="638.0" text="Color - You Missed yourself a KillStreak Genius!" textFill="#635bff">
+               <font>
+                  <Font size="28.0" />
                </font>
             </Label>
          </children>

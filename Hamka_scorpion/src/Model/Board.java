@@ -115,6 +115,7 @@ public class Board implements Subject {
 		for(Map.Entry<Tile, Soldier> entry : soldiersByTiles.entrySet()) {
 			Soldier s =entry.getValue();
 			if(s!=null) {
+				System.out.println(s.getColor());
 				if(s.color.equals(color)) 
 					tiles.add(entry.getKey());
 			}

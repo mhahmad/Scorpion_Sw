@@ -265,15 +265,15 @@ public class gameplayScreenController extends Application implements Initializab
 	public static String whiteStreak = null;
 
 
-	private static int[][] startBoard = {
-			{-1,0,-1,0,-1,0,-1,2},
-			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,22,-1,2,-1,0},
+	private  int[][] startBoard = {
+			{-1,2,-1,2,-1,2,-1,2},
+			{2,-1,2,-1,2,-1,2,-1},
+			{-1,2,-1,2,-1,2,-1,2},
 			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,11,-1,0,-1,0},
-			{1,-1,0,-1,0,-1,1,-1}
+			{1,-1,1,-1,1,-1,1,-1},
+			{-1,1,-1,1,-1,1,-1,1},
+			{1,-1,1,-1,1,-1,1,-1}
 	};
 
 	// check Blue tile Gen 
@@ -295,10 +295,11 @@ public class gameplayScreenController extends Application implements Initializab
 	String direction = null;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	public  static  Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+	public   Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
+		timeSeconds = new SimpleIntegerProperty(STARTTIME);
 		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
@@ -392,7 +393,7 @@ public class gameplayScreenController extends Application implements Initializab
 		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
 		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
 		winnerLabel.setVisible(false);
-	//	streakLabel.setVisible(false);
+		streakLabel.setVisible(false);
 
 		settings.continueBtn.setOnAction(e ->{
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
@@ -469,9 +470,9 @@ public class gameplayScreenController extends Application implements Initializab
 			}
 		});
 		settings.exitBtn.setOnAction(e -> {
-
+			
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
-
+			
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
@@ -679,7 +680,7 @@ public class gameplayScreenController extends Application implements Initializab
 		//		ClearColoredTiles(scene);
 		queenArrows.setVisible(false);
 		updateTurnLabels();
-		//streakLabel.setVisible(false);
+		streakLabel.setVisible(false);
 
 		Button currentTile;
 		Board gBoard = game.getBoard();
@@ -755,12 +756,12 @@ public class gameplayScreenController extends Application implements Initializab
 		if(s!=null && color != s.getColor() && lockedForStreak && !lockedForRedTile && !lockedForBlue) {
 			SwapTurn();
 			System.out.println(color.toString() + " - You Missed yourself a KillStreak Genius!");
-			//streakLabel.setText(color.toString() + " - You Missed yourself a KillStreak Genius!");
+			streakLabel.setText(color.toString() + " - You Missed yourself a KillStreak Genius!");
 			color = game.getTurn();
 			clickedSoldier = null;
 			possible = null;
 			possibleQueen = null;
-		//	streakLabel.setVisible(true);
+			streakLabel.setVisible(true);
 			lockedForStreak = false;
 		}
 
