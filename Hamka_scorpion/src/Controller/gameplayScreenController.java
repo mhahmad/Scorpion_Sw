@@ -227,6 +227,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	ArrayList<Tile> yellowTiles = new ArrayList<>();
+	Tile blueTile = null;
 	int flag = 0;
 	inGameSettings settings = new inGameSettings();;
 	popupQuestion quesPop = new popupQuestion();
@@ -259,19 +260,20 @@ public class gameplayScreenController extends Application implements Initializab
 	public static HashMap<Tile, Soldier> possibleQueen = null;
 	public static boolean lockedForStreak = false;
 	public static boolean lockedForRedTile = false;
+	public static boolean lockedForBlue = false;
 	public static String blackStreak = null;
 	public static String whiteStreak = null;
 
 
-	private int[][] startBoard = {
-			{-1,2,-1,2,-1,2,-1,2},
-			{2,-1,2,-1,2,-1,2,-1},
-			{-1,2,-1,2,-1,2,-1,2},
+	private static int[][] startBoard = {
+			{-1,0,-1,0,-1,0,-1,2},
+			{0,-1,0,-1,0,-1,0,-1},
+			{-1,0,-1,22,-1,2,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
-			{1,-1,1,-1,1,-1,0,-1},
-			{-1,1,-1,1,-1,1,-1,1},
-			{1,-1,1,-1,0,-1,1,-1}
+			{0,-1,0,-1,0,-1,0,-1},
+			{-1,0,-1,11,-1,0,-1,0},
+			{1,-1,0,-1,0,-1,1,-1}
 	};
 
 	// check Blue tile Gen 
@@ -293,7 +295,7 @@ public class gameplayScreenController extends Application implements Initializab
 	String direction = null;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+	public  static  Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
@@ -461,7 +463,7 @@ public class gameplayScreenController extends Application implements Initializab
 				quesPop.nextBtn.setText("Close");
 			}else {
 				quesPop.window.close();
-				if(!lockedForStreak)
+				if(!lockedForStreak && !lockedForRedTile && !lockedForBlue)
 					SwapTurn();
 				quesPop.nextBtn.setText("Next");
 			}
@@ -685,6 +687,7 @@ public class gameplayScreenController extends Application implements Initializab
 		//System.out.println(board);
 
 
+
 		String dest = tilesBoardMap.get((String)((Control)event.getSource()).getId());
 		//		 root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
 		//		 scene = new Scene(root);
@@ -746,9 +749,10 @@ public class gameplayScreenController extends Application implements Initializab
 		Soldier s = game.getTileContent(current);
 		Color color = game.getTurn();
 
+
 		//Current player had a killstreak and missed it (by clicking on oposition piece) - > SwapTurns.
 		//s!=null means this click is on a peice in the first place, AND if the turn is locked by a red tile dont switch turn (Red Tile overrides kill streak)
-		if(s!=null && color != s.getColor() && lockedForStreak && !lockedForRedTile) {
+		if(s!=null && color != s.getColor() && lockedForStreak && !lockedForRedTile && !lockedForBlue) {
 			SwapTurn();
 			System.out.println(color.toString() + " - You Missed yourself a KillStreak Genius!");
 			streakLabel.setText(color.toString() + " - You Missed yourself a KillStreak Genius!");
@@ -780,17 +784,31 @@ public class gameplayScreenController extends Application implements Initializab
 		}
 	}
 
+	//	int blackSoldiers = game.getblackPlayerSoldiers();
+	//	int whiteSoldiers = game.getwhitePlayerSoldiers();
+	//	int blackQueens = game.getblackPlayerQueens();
+	//	int whiteQueens = game.getwhitePlayerQueens();
+	//	
+	//	if(color == Color.Black) {
+	//		if(blackSoldiers == 2 && blackQueens == 1)
+	//			GenerateBlueTile(scene);
+	//	}else if(color == Color.White) {
+	//		if(whiteSoldiers == 2 && whiteQueens == 1)
+	//			GenerateBlueTile(scene);
+	//	}
+
 
 	public void SwitchTurntoBlack( int i , int j,Soldier s ,Button currentTile, ImageView blackSoldier , ImageView chosenBlackSoldier , ImageView blackQueen, ImageView chosenBlackQueen ) {
 		// the colors switch
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
-		// generate Colored Tiles 
-		if(flag == 0) {
-			yellowTiles = GenerateYellowTiles(scene);
-			flag++;
-			redTile = GenerateRedTiles(scene, Color.Black);
-		}
+		// generate Colored Tiles
+
+		int blackSoldiers = game.getblackPlayerSoldiers();
+		int blackQueens = game.getblackPlayerQueens();
+		//blueTile = null;
+
+
 		tl.setOnAction(e -> {
 			direction = "TL";
 			queenArrows.setVisible(false);
@@ -817,9 +835,32 @@ public class gameplayScreenController extends Application implements Initializab
 		} );
 
 
+		//Tile current = new Tile(i, j);
+		boolean InvalidMove = true;
+		Tile current = new Tile(i, j);
+
+		if(lockedForBlue && s==null) {
+			if(game.ressurectSoldier(2, current)) {
+				System.out.println("Revived");
+				SwapTurn();
+				blueTile = null;
+				lockedForBlue = false;
+				InvalidMove = false;
+			}else
+				System.out.println("Invalid Position");
+
+		}
+		
+		if(flag == 0 ) {
+			yellowTiles = GenerateYellowTiles(scene);
+			flag++;
+			redTile = GenerateRedTiles(scene, Color.White);
+			if(blackSoldiers ==2 && blackQueens == 1 && !lockedForBlue)
+				blueTile = GenerateBlueTile(scene);
+		}
 
 		//--------------------
-		if(s==null) { //IF current Tile doesnt have a soldier.
+		if( !lockedForBlue && s==null) { //IF current Tile doesn't have a soldier and not it isnt a blue tile revive click.
 			if(possible==null && possibleQueen == null)   //If possible is null then no soldier was selected before.
 				System.out.println("Please click a black Soldier!");
 
@@ -839,24 +880,33 @@ public class gameplayScreenController extends Application implements Initializab
 				//System.out.println("Prev Tile: " + prevT);
 				Soldier prevS = game.getTileContent(prevT);
 
+
 				if(prevS.getSoldierNumber()==2) {
 					for (Tile t : possible) {  //a tile was selected before, and current tile is used to make the move.
 						int coordinateI = t.getX();
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
+							InvalidMove = false;
 
 							System.out.println("SOLDIER");
 
 
 							game.moveBlackSoldier(prevS, t, possible);
+							Soldier afterKill;
+
 							//check if a killstreak is available.
 							boolean killed = false;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
-							Soldier afterKill;
-							if(kills!=null && !kills.isEmpty()) { //if this move was a kill, then we need to check for a killstreak.
+							if(kills!=null && !kills.isEmpty() &&  !lockedForRedTile) { //if this move was a kill, then we need to check for a killstreak.
 								killed = true;
 								afterKill = game.getTileContent(t);
-								possible = game.getKillStreak(afterKill);
+								if(afterKill != null)
+									possible = game.getKillStreak(afterKill);
+								else {
+									possible.clear();
+									possible = null;
+								}
+
 							}
 
 							if(possible!=null && !possible.isEmpty() && killed)  //There is a streak
@@ -874,17 +924,30 @@ public class gameplayScreenController extends Application implements Initializab
 								lockedForRedTile = true;
 								lockedForStreak = false;
 								afterKill = game.getTileContent(t);
-								possible = game.getPossibleMovesForBlackSoldier(afterKill);
-							}else if(redTile==null || !redTile.equals(t))
-								lockedForRedTile = false;
+								if(afterKill!=null)
+									possible = game.getPossibleMovesForBlackSoldier(afterKill);
+
+								if(possible!=null && !possible.isEmpty()) { //if there are no possible moves dont lock.
+									lockedForRedTile = true;
+								}
+								else {
+									lockedForRedTile = false;
+								}
+							}else if(blueTile != null && blueTile.equals(t)) {
+								lockedForBlue = true;
+							}
 							else if(yellowTiles.contains(t)) {
 								quesPop.question = SysData.getInstance().randomQuestion();
 								quesPop.display();
 								SysData.getInstance().questionIsShown(quesPop.question);
 							}
-							if(!lockedForStreak && !lockedForRedTile)
-									SwapTurn();
-							
+							if(redTile==null || !redTile.equals(t))
+								lockedForRedTile = false;
+
+							if(!lockedForStreak && !lockedForRedTile && !yellowTiles.contains(t) && !lockedForBlue) 
+								SwapTurn();
+
+
 
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
@@ -914,6 +977,7 @@ public class gameplayScreenController extends Application implements Initializab
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
 							if(i==coordinateI2 && j == coordinateJ2){
+								InvalidMove = false;
 
 								System.out.println("QUEEN");
 								Queen prevQ =(Queen) prevS;
@@ -927,7 +991,12 @@ public class gameplayScreenController extends Application implements Initializab
 								if(k!=null) { //if this move was a kill, then we need to check for a killstreak.
 									killed = true;
 									afterKill = (Queen) game.getTileContent(t2);
-									possibleQueen = game.priorityKill(afterKill);
+									if(afterKill!=null)
+										possibleQueen = game.priorityKill(afterKill);
+									else {
+										possibleQueen.clear();
+										possibleQueen = null;
+									}
 								}
 								if(possibleQueen!=null && !possibleQueen.isEmpty() && killed) //Kill streak.
 									lockedForStreak = true;
@@ -944,16 +1013,22 @@ public class gameplayScreenController extends Application implements Initializab
 								else if(redTile!=null && redTile.equals(t2)) {
 									lockedForRedTile = true;
 									lockedForStreak = false;
-								}else if(redTile==null || !redTile.equals(t2))
-									lockedForRedTile = false;
+								}else if(blueTile != null && blueTile.equals(t2)) {
+									lockedForBlue = true;
+								}
 								else if(yellowTiles.contains(t2)) {
 									quesPop.question = SysData.getInstance().randomQuestion();
 									quesPop.display();
 									SysData.getInstance().questionIsShown(quesPop.question);
 								}
-								if(!lockedForStreak && !lockedForRedTile)
+
+								if(redTile==null || !redTile.equals(t2))
+									lockedForRedTile = false;
+
+								if(!lockedForStreak && !lockedForRedTile && !yellowTiles.contains(t2) && !lockedForBlue) 
 									SwapTurn();
-								
+
+
 								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 								flag=0;
@@ -977,28 +1052,35 @@ public class gameplayScreenController extends Application implements Initializab
 				}
 			}
 
-			try {
-				refreshBoard(game,scene, root);
-				Button b = getButtonById(currentTile.getId());
-				//				b.setGraphic(chosenBlackSoldier);
-				clickedSoldier = b.getId();
-				if(!lockedForStreak && !lockedForRedTile)  //Only if there is no killStreak and no redTile  do we want clickedSoldier  to be null (Switch turn) ,otherwise we want it to refer to the killStreak Piece, (see next part of the method)
-					clickedSoldier = null;
-				if(lockedForRedTile) 
-					if(game.getBoard().getBoard()[i][j]==2) {
-						b.setGraphic(chosenBlackSoldier);
-					} //If it's a queen, no need to mark it as chosen.
-				
-					
+			if(!InvalidMove) {
+				try {
+					refreshBoard(game,scene, root);
+					Button b = getButtonById(currentTile.getId());
+					//				b.setGraphic(chosenBlackSoldier);
+					clickedSoldier = b.getId();
+					if(!lockedForStreak && !lockedForRedTile)  //Only if there is no killStreak and no redTile  do we want clickedSoldier  to be null (Switch turn) ,otherwise we want it to refer to the killStreak Piece, (see next part of the method)
+						clickedSoldier = null;
+					if(lockedForRedTile) {
+						if(game.getBoard().getBoard()[i][j]==2) {
+							b.setGraphic(chosenBlackSoldier);
+							yellowTiles = GenerateYellowTiles(scene);
+							flag++;
+							redTile = GenerateRedTiles(scene, Color.Black);
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.getCause() ; 
-				e.printStackTrace();
+						} //If it's a queen, no need to mark it as chosen.
+					}
+
+
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.getCause() ; 
+					e.printStackTrace();
+				}
 			}
 
 
-		}else if( s.getColor().equals(Color.Black)) { //Tile does have a Soldier/Queen
+		}else if(  !lockedForBlue && s.getColor().equals(Color.Black)) { //Tile does have a Soldier/Queen
 			Button b = getButtonById(currentTile.getId());
 			//*change selection icon
 			try {
@@ -1074,7 +1156,7 @@ public class gameplayScreenController extends Application implements Initializab
 					}
 					clickedSoldier = b.getId();
 				}
-				
+
 				////*get Soldier's possible moves
 				possible = game.getPossibleMovesForBlackSoldier(s);
 				System.out.println("????????????????????");
@@ -1098,7 +1180,7 @@ public class gameplayScreenController extends Application implements Initializab
 			} 
 
 
-		}else if(s.getColor().equals(Color.White))
+		}else if( !lockedForBlue && s.getColor().equals(Color.White))
 			System.out.println("White Soldier clicked!");
 
 
@@ -1110,11 +1192,9 @@ public class gameplayScreenController extends Application implements Initializab
 	/*Similar to SwitchTurntoBlack - For more comments see SwitchTurntoBlack*/
 	public void SwitchTurntoWhite(Soldier s , int i , int j , Button currentTile,ImageView whiteSoldier , ImageView chosenWhiteSoldier, ImageView whiteQueen, ImageView chosenWhiteQueen) {
 
-		if(flag == 0 ) {
-			yellowTiles = GenerateYellowTiles(scene);
-			flag++;
-			redTile = GenerateRedTiles(scene, Color.White);
-		}
+		int whiteSoldiers = game.getwhitePlayerSoldiers();
+		int whiteQueens = game.getwhitePlayerQueens();
+
 		// the colors switch
 		//the timer Restarts 
 		// allow the tiles of the turn to play 
@@ -1144,7 +1224,30 @@ public class gameplayScreenController extends Application implements Initializab
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
 		} );
 
-		if(s==null) {
+		//Tile current = new Tile(i, j);
+		boolean InvalidMove = true;
+		Tile current = new Tile(i, j);
+
+		if(lockedForBlue && s==null) {
+			if(game.ressurectSoldier(1, current)) {
+				System.out.println("Revived");
+				SwapTurn();
+				blueTile = null;
+				lockedForBlue = false;
+				InvalidMove = false;
+			}else
+				System.out.println("Invalid Position");
+
+		}
+		if(flag == 0 ) {
+			yellowTiles = GenerateYellowTiles(scene);
+			flag++;
+			redTile = GenerateRedTiles(scene, Color.White);
+			if(whiteSoldiers ==2 && whiteQueens == 1 && !lockedForBlue)
+				blueTile = GenerateBlueTile(scene);
+		}
+
+		if( !lockedForBlue && s==null) {
 			if(possible==null && possibleQueen == null)
 				System.out.println("Please click a white  Soldier!");
 			else if(clickedSoldier!=null){
@@ -1166,15 +1269,22 @@ public class gameplayScreenController extends Application implements Initializab
 						int coordinateJ = t.getY();
 						if(i==coordinateI && j == coordinateJ){
 
+							InvalidMove=false;
+
 							game.moveWhiteSoldier(prevS, t, possible);
 							//check if a killstreak is available.
 							boolean killed = false;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
 							Soldier afterKill;
-							if(kills!=null && !kills.isEmpty()) { //if this move was a kill, then we need to check for a killstreak.
+							if(kills!=null && !kills.isEmpty() && !lockedForRedTile) { //if this move was a kill, then we need to check for a killstreak.
 								killed = true;
 								afterKill = game.getTileContent(t);
-								possible = game.getKillStreak(afterKill);
+								if(afterKill != null)
+									possible = game.getKillStreak(afterKill);
+								else {
+									possible.clear();
+									possible = null;
+								}
 							}
 
 							if(possible!=null && !possible.isEmpty() && killed)  //There is a streak
@@ -1192,17 +1302,29 @@ public class gameplayScreenController extends Application implements Initializab
 								lockedForRedTile = true;
 								lockedForStreak = false;
 								afterKill = game.getTileContent(t);
-								possible = game.getPossibleMovesForWhiteSoldier(afterKill);
-							}else if(redTile==null || !redTile.equals(t))
-								lockedForRedTile = false;
+								if(afterKill!=null)
+									possible = game.getPossibleMovesForWhiteSoldier(afterKill);
+								if(possible!=null && !possible.isEmpty()) { //if there are no possible moves dont lock.
+									lockedForRedTile = true;
+								}
+								else {
+									lockedForRedTile = false;
+								}
+							}// End red Tile
+							else if(blueTile != null && blueTile.equals(t)) {
+								lockedForBlue = true;
+							}
 							else if(yellowTiles.contains(t)) {
 								//Swapping turn occures after question is answered.
 								quesPop.question = SysData.getInstance().randomQuestion();
 								quesPop.display();
 								SysData.getInstance().questionIsShown(quesPop.question);
 							}
-								if(!lockedForStreak && !lockedForRedTile)
-									SwapTurn();
+							if(redTile==null || !redTile.equals(t))
+								lockedForRedTile = false;
+
+							if(!lockedForStreak && !lockedForRedTile && !yellowTiles.contains(t) && !lockedForBlue) 
+								SwapTurn();
 
 							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
@@ -1230,6 +1352,7 @@ public class gameplayScreenController extends Application implements Initializab
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
 							if(i==coordinateI2 && j == coordinateJ2){
+								InvalidMove=false;
 
 								System.out.println("QUEEN");
 								Queen prevQ =(Queen) prevS;
@@ -1243,7 +1366,12 @@ public class gameplayScreenController extends Application implements Initializab
 								if(k!=null) { //if this move was a kill, then we need to check for a killstreak.
 									killed = true;
 									afterKill = (Queen) game.getTileContent(t2);
-									possibleQueen = game.priorityKill(afterKill);
+									if(afterKill!=null)
+										possibleQueen = game.priorityKill(afterKill);
+									else {
+										possibleQueen.clear();
+										possibleQueen = null;
+									}
 								}
 								if(possibleQueen!=null && !possibleQueen.isEmpty()  && killed) //Kill streak.
 									lockedForStreak = true;
@@ -1260,16 +1388,21 @@ public class gameplayScreenController extends Application implements Initializab
 								else if(redTile!=null && redTile.equals(t2)) {
 									lockedForRedTile = true;
 									lockedForStreak = false;
-								}else if(redTile==null || !redTile.equals(t2))
-									lockedForRedTile = false;
+								}else if(blueTile != null && blueTile.equals(t2)) {
+									lockedForBlue = true;
+								}
 								else if(yellowTiles.contains(t2)) {
 									quesPop.question = SysData.getInstance().randomQuestion();
 									quesPop.display();
 									SysData.getInstance().questionIsShown(quesPop.question);
 								}
-								if(!lockedForStreak && !lockedForRedTile)
+
+								if(redTile==null || !redTile.equals(t2))
+									lockedForRedTile = false;
+
+								if(!lockedForStreak && !lockedForRedTile && !yellowTiles.contains(t2) && !lockedForBlue) 
 									SwapTurn();
-								
+
 								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 								p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 								flag=0;
@@ -1293,23 +1426,29 @@ public class gameplayScreenController extends Application implements Initializab
 					}
 				}
 			}
-			try {
-				refreshBoard(game,scene, root);
-				Button b = getButtonById(currentTile.getId());
-				//				b.setGraphic(chosenBlackSoldier);
-				clickedSoldier = b.getId();
-				if(!lockedForStreak && !lockedForRedTile)  //Only if there is no killStreak and no redTile  do we want clickedSoldier  to be null (Switch turn) ,otherwise we want it to refer to the killStreak Piece, (see next part of the method)
-					clickedSoldier = null;
-				if(lockedForRedTile) 
-					if(game.getBoard().getBoard()[i][j]==1) {
-						b.setGraphic(chosenWhiteSoldier);
-					} //If it's a queen, no need to mark it as chosen.
+			if(!InvalidMove) {
+				try {
+					refreshBoard(game,scene, root);
+					Button b = getButtonById(currentTile.getId());
+					//				b.setGraphic(chosenBlackSoldier);
+					clickedSoldier = b.getId();
+					if(!lockedForStreak && !lockedForRedTile)  //Only if there is no killStreak and no redTile  do we want clickedSoldier  to be null (Switch turn) ,otherwise we want it to refer to the killStreak Piece, (see next part of the method)
+						clickedSoldier = null;
+					if(lockedForRedTile) {
+						if(game.getBoard().getBoard()[i][j]==1) {
+							b.setGraphic(chosenWhiteSoldier);
+							yellowTiles = GenerateYellowTiles(scene);
+							flag++;
+							redTile = GenerateRedTiles(scene, Color.Black);
+						} //If it's a queen, no need to mark it as chosen.
+					}
 
 
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.getCause() ; 
-				e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.getCause() ; 
+					e.printStackTrace();
+				}
 			}
 
 		}else if( s.getColor().equals(Color.White)) {
@@ -1338,78 +1477,78 @@ public class gameplayScreenController extends Application implements Initializab
 			boolean locked =false;
 			if(lockedForStreak || lockedForRedTile)
 				locked =true;
-			
+
 			if(!locked || (locked && queenStreak)) {
-			if(clickedSoldier==null  || queenStreak) {
-				System.out.println(b);
-				if(game.getBoard().getBoard()[i][j]==1) {
-					b.setGraphic(chosenWhiteSoldier);
-					queenArrows.setVisible(false);
-				}
-				if(game.getBoard().getBoard()[i][j]==11) {
-					Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
-					queenArrows.setTranslateX(boundsInScene.getMinX()-25);
-					queenArrows.setTranslateY(boundsInScene.getMinY()-43);
-					queenArrows.setVisible(true);
-					b.setGraphic(chosenWhiteQueen);
-				}
-				clickedSoldier = b.getId();
-			}else {
-				Button last = getButtonById(clickedSoldier);
-				String prev = tilesBoardMap.get(clickedSoldier);
-				//System.out.println("sdsds" + prev);
-				//Convert tile to i,j
-				String[] parts2= prev.split(",");
-				String part21 = parts2[0]; 
-				String part22 = parts2[1]; 
-				//Tile converted to i,j format to be used with the board 2d arary.
-				Integer desti = Integer.parseInt(part21);
-				Integer destj = Integer.parseInt(part22);
-				if(game.getBoard().getBoard()[desti][destj]==1) {
-					last.setGraphic(whiteSoldier);
-					queenArrows.setVisible(false);
-				}
+				if(clickedSoldier==null  || queenStreak) {
+					System.out.println(b);
+					if(game.getBoard().getBoard()[i][j]==1) {
+						b.setGraphic(chosenWhiteSoldier);
+						queenArrows.setVisible(false);
+					}
+					if(game.getBoard().getBoard()[i][j]==11) {
+						Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
+						queenArrows.setTranslateX(boundsInScene.getMinX()-25);
+						queenArrows.setTranslateY(boundsInScene.getMinY()-43);
+						queenArrows.setVisible(true);
+						b.setGraphic(chosenWhiteQueen);
+					}
+					clickedSoldier = b.getId();
+				}else {
+					Button last = getButtonById(clickedSoldier);
+					String prev = tilesBoardMap.get(clickedSoldier);
+					//System.out.println("sdsds" + prev);
+					//Convert tile to i,j
+					String[] parts2= prev.split(",");
+					String part21 = parts2[0]; 
+					String part22 = parts2[1]; 
+					//Tile converted to i,j format to be used with the board 2d arary.
+					Integer desti = Integer.parseInt(part21);
+					Integer destj = Integer.parseInt(part22);
+					if(game.getBoard().getBoard()[desti][destj]==1) {
+						last.setGraphic(whiteSoldier);
+						queenArrows.setVisible(false);
+					}
 
-				if(game.getBoard().getBoard()[desti][destj]==11)
-					last.setGraphic(whiteQueen);
-				if(game.getBoard().getBoard()[i][j]==1) {
-					queenArrows.setVisible(false);
-					b.setGraphic(chosenWhiteSoldier);
-				}
-				if(game.getBoard().getBoard()[i][j]==11) {
-					queenArrows.setVisible(true);
-					queenArrows.setTranslateX(b.getLayoutX());
-					queenArrows.setTranslateY(b.getLayoutY());
+					if(game.getBoard().getBoard()[desti][destj]==11)
+						last.setGraphic(whiteQueen);
+					if(game.getBoard().getBoard()[i][j]==1) {
+						queenArrows.setVisible(false);
+						b.setGraphic(chosenWhiteSoldier);
+					}
+					if(game.getBoard().getBoard()[i][j]==11) {
+						queenArrows.setVisible(true);
+						queenArrows.setTranslateX(b.getLayoutX());
+						queenArrows.setTranslateY(b.getLayoutY());
 
-					Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
-					queenArrows.setTranslateX(boundsInScene.getMinX()-25);
-					queenArrows.setTranslateY(boundsInScene.getMinY()-43);
-					b.setGraphic(chosenWhiteQueen);
+						Bounds boundsInScene = b .localToScene(b.getBoundsInLocal());
+						queenArrows.setTranslateX(boundsInScene.getMinX()-25);
+						queenArrows.setTranslateY(boundsInScene.getMinY()-43);
+						b.setGraphic(chosenWhiteQueen);
+					}
+					clickedSoldier = b.getId();
 				}
-				clickedSoldier = b.getId();
-			}
-			//*get possible moves
-			possible = game.getPossibleMovesForWhiteSoldier(s);
-			if(possible!=null) {
-				for (Tile tile : possible) {
-					String possibleTile = tile.getX()+","+tile.getY();
-					String check = null;
-					String key = null;
-					for (String ks : tilesBoardMap.keySet()) {
-						check = tilesBoardMap.get(ks);
-						if(check!=null) {
-							if(check.equals(possibleTile)) {
-								key = ks;
-								break;
+				//*get possible moves
+				possible = game.getPossibleMovesForWhiteSoldier(s);
+				if(possible!=null) {
+					for (Tile tile : possible) {
+						String possibleTile = tile.getX()+","+tile.getY();
+						String check = null;
+						String key = null;
+						for (String ks : tilesBoardMap.keySet()) {
+							check = tilesBoardMap.get(ks);
+							if(check!=null) {
+								if(check.equals(possibleTile)) {
+									key = ks;
+									break;
+								}
 							}
 						}
+						System.out.println("Possible Move:" + key);
 					}
-					System.out.println("Possible Move:" + key);
-				}
 
-			}
-			System.out.println("Here are the possible moves: " + possible);
-		}//No killstreak
+				}
+				System.out.println("Here are the possible moves: " + possible);
+			}//No killstreak
 			//System.out.println("TEST: "  + board[2][3]);
 		}else if(s.getColor().equals(Color.Black))
 			System.out.println("Black Soldier clicked!");
@@ -1536,7 +1675,6 @@ public class gameplayScreenController extends Application implements Initializab
 		}
 
 		//Generate Blue Tile - Maybe ! 
-		GenerateBlueTile(scene) ; 
 
 		//-----------------------Count Your Loses ! 
 		if(this.deadBlackv !=null && this.deadwhitev !=null) {
@@ -1750,11 +1888,12 @@ public class gameplayScreenController extends Application implements Initializab
 
 	}
 
-	public void GenerateBlueTile( Scene s)  {
+	public Tile GenerateBlueTile( Scene s)  {
 
 		// color 1 random Empty tile
 		System.out.println(this.game == null);
-		Tile BlueTile = this.game.generateBlueTile() ; 
+
+		Tile BlueTile = this.game.generateBlueTile(game.getTurn()) ; 
 		if(BlueTile != null ) { 
 			String possibleTile = BlueTile.getX()+","+BlueTile.getY();
 			String check = null;
@@ -1764,13 +1903,16 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println("should be red  :: "+key);
+						//                        System.out.println("should be red  :: "+key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #2EB9FF;");;
-						break;
+						System.out.println("HERE IS THE BLUE TILE OK????: " + BlueTile);
+						blueTile = BlueTile;
+						return BlueTile;
 					}
 				}
 			}
 		}
+		return null;
 
 
 	}

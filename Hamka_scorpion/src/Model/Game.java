@@ -1118,19 +1118,34 @@ public class Game {
 	/**
 	 * @return true if player has exactly 2 soldiers and at least 1 queen, false otherwise
 	 */
-	public boolean checkIfBlueTile() {
-		if((board.countPiece(1)==2 && board.countPiece(11)>=1) || (board.countPiece(2)==2 && board.countPiece(22)>=1)) return true;
+	public boolean checkIfBlueTile(Color turn) {
+		if(turn.equals(Color.White)) {
+			if(board.countPiece(1)==2 && board.countPiece(11)>=1) {
+				return true;
+			}
+		}else {
+			if((board.countPiece(2)==2 && board.countPiece(22)>=1)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	/**
 	 * @return random Tile for a tile in the board as Blue tile.
 	 */
-	public Tile generateBlueTile() {
-		if(checkIfBlueTile()) {
-			int x = (int)(Math.random()*8);
-			int y = (int)(Math.random()*8);
-			return new Tile(x,y);
-		}
+	public Tile generateBlueTile(Color turn) {
+		if(checkIfBlueTile(turn)) {
+			while(true) {
+				int x = (int)(Math.random()*8);
+				int y = (int)(Math.random()*8);
+				Tile tile = new Tile(x,y);
+				if(board.getEmptyTiles().contains(tile)) {
+					return tile;
+				}
+				
+			}
+			}
+		
 		System.out.println("Blue Til Gene- returninng Null ");
 		return null;
 	}
@@ -1154,10 +1169,12 @@ public class Game {
 			op = 1;
 			queOp=11;
 		}
-		if(getTileContent(new Tile(x-2, y)).getSoldierNumber()==op || getTileContent(new Tile(x-2, y)).getSoldierNumber()==queOp || getTileContent(new Tile(x+2, y)).getSoldierNumber()==op ||  getTileContent(new Tile(x+2, y)).getSoldierNumber()==queOp ||
-				getTileContent(new Tile(x, y-2)).getSoldierNumber()==op || getTileContent(new Tile(x, y-2)).getSoldierNumber()==queOp || getTileContent(new Tile(x, y+2)).getSoldierNumber()==op ||  getTileContent(new Tile(x, y+2)).getSoldierNumber()==queOp) 
+		if((getTileContent(getTile(x-2, y))!=null && (getTileContent(new Tile(x-2, y)).getSoldierNumber()==op || getTileContent(new Tile(x-2, y)).getSoldierNumber()==queOp)) ||
+		   (getTileContent(getTile(x+2, y))!=null && (getTileContent(new Tile(x+2, y)).getSoldierNumber()==op ||  getTileContent(new Tile(x+2, y)).getSoldierNumber()==queOp))||
+		   (getTileContent(getTile(x, y-2))!=null  && (getTileContent(new Tile(x, y-2)).getSoldierNumber()==op || getTileContent(new Tile(x, y-2)).getSoldierNumber()==queOp)) ||
+		   (getTileContent(getTile(x, y+2))!=null && (getTileContent(new Tile(x, y+2)).getSoldierNumber()==op ||  getTileContent(new Tile(x, y+2)).getSoldierNumber()==queOp))) 
 			return false;
-
+		
 		int it = 1;
 		while(it<5) {
 			int i = x;
@@ -1180,7 +1197,7 @@ public class Game {
 					j++;
 				}
 				if(counter ==2 ) break;		
-				if(counter<2 && ( getTileContent(new Tile(i,j)).getSoldierNumber() == op || getTileContent(new Tile(i,j)).getSoldierNumber() == queOp )) {
+				if(counter<2 && (getTileContent(new Tile(i,j))!=null && (getTileContent(new Tile(i,j)).getSoldierNumber() == op || getTileContent(new Tile(i,j)).getSoldierNumber() == queOp ))) {
 					System.out.println(counter);
 					return false;
 				}
