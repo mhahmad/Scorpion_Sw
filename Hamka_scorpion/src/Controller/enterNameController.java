@@ -1,6 +1,8 @@
 package Controller;
 
 import Controller.gameplayScreenController;
+import Model.Board;
+import Model.Game;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -44,6 +46,14 @@ public class enterNameController{
 		 StackPane  pane = new StackPane ();
 		 Button closeButton = new Button("Close");
 		 Button startButton = new Button("Start");
+		 player1.setOnKeyTyped(event ->{
+		        int maxCharacters = 15;
+		        if(player1.getText().length() > maxCharacters) event.consume();
+		    });
+		 player2.setOnKeyTyped(event ->{
+		        int maxCharacters = 15;
+		        if(player2.getText().length() > maxCharacters) event.consume();
+		    });
 		 closeButton.setOnAction(e -> {
 			window.close();
 		 });
@@ -80,8 +90,21 @@ public class enterNameController{
                  window.setTitle("Hamka");
                  window.setScene(scene);
                  gameplayScreenController con = loader.getController();
-                 con.p1Name= player1.getText() ;
-                 con.p2Name = player2.getText(); 
+                 gameplayScreenController.p1Name= player1.getText() ;
+                 gameplayScreenController.p2Name = player2.getText() ; 
+             	int[][] startBoard = {
+            			{-1,2,-1,2,-1,2,-1,2},
+            			{2,-1,2,-1,2,-1,2,-1},
+            			{-1,2,-1,2,-1,2,-1,2},
+            			{0,-1,0,-1,0,-1,0,-1},
+            			{-1,0,-1,0,-1,0,-1,0},
+            			{1,-1,1,-1,1,-1,1,-1},
+            			{-1,1,-1,1,-1,1,-1,1},
+            			{1,-1,1,-1,1,-1,1,-1}
+            	};
+             	gameplayScreenController.startBoard = startBoard;
+             	gameplayScreenController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
+             	//gameplayScreenController.game.setBoard(new Board(startBoard));
                  con.start(window);
                  window.show();
                  window.centerOnScreen();

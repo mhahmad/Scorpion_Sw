@@ -208,7 +208,10 @@ public class Game {
 	public void setBoard(Board board) {
 		this.board = board;
 	}
-
+	
+	public void setTurn(Color turn) {
+		this.turn = turn;
+	}
 	public void setSoldiersAndQueenNumbers() {
 		int whiteSolCount = 0, blackSolCount = 0, whiteQueCount = 0 , blackQueCount = 0;
 		System.out.println(board);

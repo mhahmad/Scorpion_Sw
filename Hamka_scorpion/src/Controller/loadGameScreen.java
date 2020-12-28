@@ -6,6 +6,7 @@ import java.io.IOException;
 import Controller.SysData;
 import Model.Board;
 import Model.Color;
+import Model.Game;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,14 +62,14 @@ public class loadGameScreen extends Application{
     @FXML
     public void btnChooseAction(ActionEvent event) throws IOException {
     	Stage window = new Stage();
-    	FileChooser fc = new FileChooser();
-    	fc.getExtensionFilters().addAll(new ExtensionFilter("Txt Files", "*.txt")); // file chooser shows only text files.
-    	File selectedFile = fc.showOpenDialog(null);
-    	if(selectedFile!=null) {
-    		String chosenFilePath = selectedFile.getAbsolutePath();
-    		Board board = new Board(SysData.getInstance().getBoard(chosenFilePath));
-    		Color turn = SysData.getInstance().getTurn(chosenFilePath);
-    		 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+        FileChooser fc = new FileChooser();
+        fc.getExtensionFilters().addAll(new ExtensionFilter("Txt Files", "*.txt")); // file chooser shows only text files.
+        File selectedFile = fc.showOpenDialog(null);
+        if(selectedFile!=null) {
+            String chosenFilePath = selectedFile.getAbsolutePath();
+            Board board = new Board(SysData.getInstance().getBoard(chosenFilePath));
+            Color turn = SysData.getInstance().getTurn(chosenFilePath);
+             FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
              Parent root;
            try {
                root = loader.load();
@@ -76,13 +77,19 @@ public class loadGameScreen extends Application{
              window.setTitle("Hamka");
              window.setScene(scene);
              gameplayScreenController con = loader.getController();
-             con.p1Name= "Player 1" ;
-             con.p2Name = "Player 2";
-             con.game.setBoard(board);
+             gameplayScreenController.p1Name= "Player 1" ;
+             gameplayScreenController.p1Name = "Player 1";
+             gameplayScreenController.game.setBoard(board);
+             gameplayScreenController.startBoard = board.getBoard();
+             gameplayScreenController.loadedBoard = board;
+            gameplayScreenController.game = new Game("Player 1", "Player 1" ,board.getBoard()); //Singletone changes to be in every method.
+            gameplayScreenController.game.setTurn(turn);
+            	
              con.start(window);
              window.show();
              window.centerOnScreen();
-             
+            Stage toClose = (Stage) this.backBtn.getScene().getWindow();
+            toClose.close();
              //stage.close();
            } catch ( Exception e1) {
                // TODO Auto-generated catch block

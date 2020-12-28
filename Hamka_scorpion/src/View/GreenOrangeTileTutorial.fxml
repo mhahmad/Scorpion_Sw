@@ -3,6 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -11,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.gameplayScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.GrnOrangetutrialController">
    <children>
       <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
@@ -291,97 +294,112 @@
                   </VBox>
                </children>
             </HBox>
-            <Pane layoutX="42.0" layoutY="4.0" prefHeight="48.0" prefWidth="981.0" style="-fx-background-color: #4D0000;">
+            <Pane layoutX="42.0" layoutY="14.0" prefHeight="48.0" prefWidth="981.0" style="-fx-background-color: #4D0000;">
                <children>
-                  <Label fx:id="live_pausedlbl" layoutX="474.0" layoutY="13.0" text="Live" textFill="WHITE">
+                  <Label fx:id="live_pausedlbl" layoutX="474.0" layoutY="13.0" text="Tutorial" textFill="WHITE">
                      <font>
                         <Font name="Roboto" size="18.0" />
                      </font>
                   </Label>
-                  <Button fx:id="settingsButton" layoutX="846.0" layoutY="5.0" mnemonicParsing="false" onAction="#settingBtnClicked" style="-fx-background-color: TRANSPARENT;" text="Settings" textFill="WHITE">
+                  <Button fx:id="ExitBtn" layoutX="841.0" layoutY="4.0" mnemonicParsing="false" onAction="#ExitBtnClicked" style="-fx-background-color: #a82c2c;" text="Exit to Main" textFill="WHITE">
                      <font>
-                        <Font size="18.0" />
-                     </font></Button>
-                  <Button layoutX="918.0" layoutY="-4.0" mnemonicParsing="false" onAction="#settingBtnClicked" prefHeight="39.0" prefWidth="47.0" style="-fx-background-color: transparent;">
-                     <graphic>
-                        <ImageView fitHeight="48.0" fitWidth="47.0" onMousePressed="#settingBtnClicked">
-                           <image>
-                              <Image url="@../Resources/settingsIcon.png" />
-                           </image>
-                        </ImageView>
-                     </graphic>
+                        <Font name="System Bold Italic" size="18.0" />
+                     </font>
                   </Button>
                </children></Pane>
-            <ImageView fitHeight="32.0" fitWidth="39.0" layoutX="85.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="32.0" fitWidth="39.0" layoutX="261.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../Resources/blackSoldier.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="34.0" fitWidth="32.0" layoutX="849.0" layoutY="68.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../Resources/whiteSoldier.png" />
-               </image>
-            </ImageView>
-            <Label fx:id="p1" layoutX="125.0" layoutY="74.0" text="Player 1" textFill="WHITE">
+            <Label fx:id="p1" layoutX="297.0" layoutY="72.0" text="Player 1" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="p2" layoutX="889.0" layoutY="71.0" text="Player 2" textFill="WHITE">
+            <Label fx:id="pointsLabel" layoutX="297.0" layoutY="94.0" text="Points:" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="pointsLabel" layoutX="124.0" layoutY="106.0" text="Points:" textFill="WHITE">
+            <Label fx:id="p1Points" layoutX="353.0" layoutY="94.0" prefHeight="15.0" prefWidth="47.0" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Label fx:id="p1Points" layoutX="182.0" layoutY="106.0" prefHeight="25.0" prefWidth="56.0" textFill="WHITE">
+            <Label fx:id="timelbl" layoutX="793.0" layoutY="93.0" prefHeight="18.0" prefWidth="47.0" textFill="WHITE">
                <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="pointsLabel1" layoutX="889.0" layoutY="105.0" text="Points:" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="p2Points" layoutX="931.0" layoutY="105.0" prefHeight="25.0" prefWidth="56.0" textFill="WHITE">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Label fx:id="timelbl" layoutX="559.0" layoutY="89.0" prefHeight="32.0" prefWidth="47.0" textFill="WHITE">
-               <font>
-                  <Font size="20.0" />
+                  <Font size="19.0" />
                </font></Label>
-            <VBox fx:id="deadBlackv" layoutX="82.0" layoutY="161.0" prefHeight="200.0" prefWidth="100.0" />
-            <VBox fx:id="deadwhitev" layoutX="881.0" layoutY="153.0" prefHeight="200.0" prefWidth="100.0" />
-            <Label fx:id="winnerLabel" alignment="CENTER" layoutX="247.0" layoutY="703.0" prefHeight="110.0" prefWidth="583.0" text="Player Wins !" textAlignment="CENTER" textFill="#fcdc3d">
-               <font>
-                  <Font name="Gill Sans Nova" size="72.0" />
-               </font>
-            </Label>
-            <Label layoutX="459.0" layoutY="94.0" prefHeight="25.0" prefWidth="100.0" text="Turn Time :" textFill="WHITE">
+            <Label layoutX="693.0" layoutY="93.0" prefHeight="25.0" prefWidth="100.0" text="Turn Time :" textFill="WHITE">
                <font>
                   <Font name="Roboto" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="GameTime" layoutX="561.0" layoutY="61.0" prefHeight="27.0" prefWidth="47.0" text="00:00" textFill="#ebe3e3">
+            <VBox layoutX="70.0" layoutY="417.0" prefHeight="283.0" prefWidth="154.0" spacing="5.0">
+               <children>
+                  <Button fx:id="YellowTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#YellowTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0f037; -fx-background-radius: 5em;" text="Yelow Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="RedTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="110.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#RedTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0052c; -fx-background-radius: 5em;" text="Red Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="OrangeGreenTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="144.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#OrangeTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0824a; -fx-background-radius: 5em;" text="Orange Green Tiles" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="BlueTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="202.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#BlueTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #43f0f0; -fx-background-radius: 5em;" text="Blue Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
+            <Button fx:id="Instructions" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="50.0" layoutY="88.0" mnemonicParsing="false" prefHeight="309.0" prefWidth="194.0" style="-fx-background-color: FBF5E2; -fx-background-radius: 5em;" text="&#10;* Time plays A Big Role in &#10;this Game ! !&#10;&#10;* Max Turn Time is 2 min&#10;(120 sec ) .&#10;&#10;* U get a +1p for every Sec&#10;less than a Minute !&#10;&#10;* U get -1p for every Sec&#10;beyond a Minute !&#10;&#10;*If  2 min Passed,&#10;without u making A move&#10;the Turn Switchs ! " textAlignment="CENTER" textFill="#bf3f22" textOverrun="LEADING_ELLIPSIS">
                <font>
-                  <Font size="18.0" />
-               </font></Label>
-            <Label layoutX="439.0" layoutY="61.0" text="Game Time :" textFill="#e1d0d0">
-               <font>
-                  <Font size="18.0" />
+                  <Font name="Bell MT Bold" size="14.0" />
                </font>
-            </Label>
-            <Label fx:id="streakLabel" alignment="CENTER" layoutX="219.0" layoutY="711.0" prefHeight="40.0" prefWidth="638.0" text="Color - You Missed yourself a KillStreak Genius!" textFill="#635bff">
+               <effect>
+                  <Lighting diffuseConstant="1.63" specularConstant="0.23" specularExponent="29.31" surfaceScale="3.71">
+                     <bumpInput>
+                        <Shadow />
+                     </bumpInput>
+                     <light>
+                        <Light.Distant color="#eff8d6" />
+                     </light>
+                  </Lighting>
+               </effect>
+            </Button>
+            <Button fx:id="secondNote" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="821.0" layoutY="269.0" lineSpacing="1.5" mnemonicParsing="false" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #ffa585; -fx-background-radius: 5em;" text="Orange Tile : &#10;&#10;if 90 sec Passed Since the&#10;Start of the Turn ,&#10; the Board will show u the&#10;Way ! , by Showing u all &#10;the Possible Move u Could&#10;Make ! " textAlignment="CENTER">
                <font>
-                  <Font size="28.0" />
+                  <Font name="Bell MT Bold" size="15.0" />
                </font>
-            </Label>
+            </Button>
+            <Button fx:id="FirstNote" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="816.0" layoutY="147.0" lineSpacing="1.5" mnemonicParsing="false" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #a1f590; -fx-background-radius: 5em;" text="Green Tile :&#10;&#10;if  30 sec Passed since the &#10;Start of the Turn , &#10;A Green Tile Will &#10;Randomly Show up on the &#10;Board , As A Hint for &#10;a Possible Move !&#10;&#10;&#10;" textAlignment="CENTER">
+               <font>
+                  <Font name="Bell MT Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="thirdNote" alignment="TOP_CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="831.0" layoutY="386.0" lineSpacing="1.5" mnemonicParsing="false" prefHeight="76.0" prefWidth="183.0" style="-fx-background-color: #a1f590; -fx-background-radius: 5em;" text="Stepping on  A&#10; Green Tile&#10;gets u +50 points&#10;&#10;&#10;" textAlignment="CENTER">
+               <font>
+                  <Font name="Bell MT Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="timeUpBtn" alignment="TOP_CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="831.0" layoutY="147.0" lineSpacing="1.5" mnemonicParsing="false" prefHeight="63.0" prefWidth="183.0" style="-fx-background-color: FBF5E2; -fx-background-radius: 5em;" text="Time's Up ! &#10;&#10;White's Turn &#10;&#10;&#10;" textAlignment="CENTER" textFill="#d71414">
+               <font>
+                  <Font name="Bell MT Bold" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="waitFor" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="406.0" layoutY="63.0" lineSpacing="1.5" mnemonicParsing="false" prefHeight="63.0" prefWidth="248.0" style="-fx-background-color: FBF5E2; -fx-background-radius: 5em;" text="- Wait 30 sec for Green Tile&#10;-Wait 90 sec for Orange Tile " textAlignment="CENTER" textFill="#030303">
+               <font>
+                  <Font name="Bell MT Bold" size="15.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

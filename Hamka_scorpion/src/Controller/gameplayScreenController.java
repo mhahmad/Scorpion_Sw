@@ -263,9 +263,9 @@ public class gameplayScreenController extends Application implements Initializab
 	public static boolean lockedForBlue = false;
 	public static String blackStreak = null;
 	public static String whiteStreak = null;
+	public static Board loadedBoard = null;
 
-
-	private  int[][] startBoard = {
+	public static int[][] startBoard = {
 			{-1,2,-1,2,-1,2,-1,2},
 			{2,-1,2,-1,2,-1,2,-1},
 			{-1,2,-1,2,-1,2,-1,2},
@@ -295,25 +295,32 @@ public class gameplayScreenController extends Application implements Initializab
 	String direction = null;
 
 	//private Game game  = new Game("White", "Black", startBoard);
-	public   Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+	public static  Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
+		if(p1Name == null)
+            p1Name = "p1";
+        if(p2Name == null)
+            p2Name = "p2";
+
+        if(game == null)
+             game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 		timeSeconds = new SimpleIntegerProperty(STARTTIME);
 		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
 		SysData.getInstance().getQuestions();
-
+		
 		stage.setScene(scene);
 		stage.setResizable(false);
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
+	
 
-
-
+		
 
 
 
@@ -337,11 +344,20 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
+		if(p1Name == null)
+            p1Name = "p1";
+        if(p2Name == null)
+            p2Name = "p2";
+
+        if(game == null)
+             game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+	
 		Timer t = new javax.swing.Timer(1000, new ActionListener(){
 
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent arg0) {
 				// TODO Auto-generated method stub
+				
 				boolean x=true;
 				long displayMinutes=0;
 				//long secondspassed=0 ; 
@@ -390,8 +406,13 @@ public class gameplayScreenController extends Application implements Initializab
 		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 		p1.setText(game.getblackPlayer());
 		p2.setText(game.getwhitePlayer());
-		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
-		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+		if(game.getTurn().equals(Color.Black)) {
+			p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+			p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+		}else {
+			p2.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
+			p2.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+		}
 		winnerLabel.setVisible(false);
 		streakLabel.setVisible(false);
 
@@ -681,7 +702,8 @@ public class gameplayScreenController extends Application implements Initializab
 		queenArrows.setVisible(false);
 		updateTurnLabels();
 		streakLabel.setVisible(false);
-
+		if(SysData.getInstance().getQuestionList().isEmpty())
+			SysData.getInstance().refillQuestionList();
 		Button currentTile;
 		Board gBoard = game.getBoard();
 		int[][] board = gBoard.getBoard();
@@ -1599,8 +1621,9 @@ public class gameplayScreenController extends Application implements Initializab
 
 		int whiteAliveCout = 0 ; 
 		int blackAliveCount = 0 ;
-
+		
 		int [][]board = game.getBoard().getBoard();
+		game.getBoard().printBoard();
 		System.out.println("In refresh");
 		//Parent  root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
 		//Scene  scene = new Scene(root);
