@@ -518,8 +518,9 @@ public class gameplayScreenController extends Application implements Initializab
 			if(result.isPresent()) {
 				Board board = game.getBoard();
 				Color turn = game.getTurn();
-				SysData.getInstance().saveGame(board, turn,result.get());
-				settings.window.close();
+				String p1 = game.getblackPlayer();
+				String p2 = game.getwhitePlayer();
+				SysData.getInstance().saveGame(board, turn,p1,p2,game.getblackPlayerPoints(),game.getwhitePlayerPoints(),result.get());
 			}
 
 

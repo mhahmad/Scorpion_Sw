@@ -421,7 +421,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 			if(result.isPresent()) {
 				Board board = game.getBoard();
 				Color turn = game.getTurn();
-				SysData.getInstance().saveGame(board, turn,result.get());
+				//SysData.getInstance().saveGame(board, turn,result.get());
 				settings.window.close();
 			}
 			

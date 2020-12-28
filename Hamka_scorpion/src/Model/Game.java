@@ -29,7 +29,7 @@ public class Game {
 
 	Color turn;
 
-	public Game(String whitePlayer , String blackPlayer, int[][] gameBoard) {
+	public Game(String blackPlayer , String whitePlayer, int[][] gameBoard) {
 		this.whitePlayer = whitePlayer;
 		this.blackPlayer = blackPlayer;
 		this.whitePlayerPoints = 0;

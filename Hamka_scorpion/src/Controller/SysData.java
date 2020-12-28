@@ -420,18 +420,39 @@ public class SysData {
 	 */
 	public Color getTurn(String chosenFilePath) {
 		String arr[] = loadBoardText(chosenFilePath);
-		if(arr[arr.length-1].equals("B")) {
-			return Color.Black;
+		for(int i = 0 ; i < arr.length ; i++) {
+			if(arr[i].equals("W") || arr[i].equals("B")) {
+				if(arr[i].equals("W"))
+					return Color.White;
+				else
+					return Color.Black;
+			}
 		}
-		return Color.White;
+		return Color.Black;
 	}
 	
+	public boolean IsNameAndPointsIncluded (String chosenFilePath) {
+		String arr[] = loadBoardText(chosenFilePath);
+		if(arr[arr.length - 1].equals("B") || arr[arr.length - 1].equals("W"))
+			return false;
+		return true;
+	}
+	public ArrayList<String> getNameAndPoints(String chosenFilePath){
+		ArrayList<String> toReturn = new ArrayList<>();
+		String arr[] = loadBoardText(chosenFilePath);
+		toReturn.add(arr[arr.length-4]);
+		toReturn.add(arr[arr.length-3]);
+		toReturn.add(arr[arr.length-2]);
+		toReturn.add(arr[arr.length-1]);
+		return toReturn;
+		
+	}
 	/***
 	 * This method responsible for saving games , i.e writes the board and turn to an external file in order to load them when needed.
 	 * @param board
 	 * @param turn
 	 */
-	public void saveGame(Board board , Color turn , String fileName) {
+	public void saveGame(Board board , Color turn ,String player1Name , String player2Name,int p1Points ,int p2Points,String fileName ) {
 		int board2D[][] = board.getBoard();
 		try {
 			FileWriter myWriter = new FileWriter("savedGames/" +fileName +".txt");
@@ -440,12 +461,14 @@ public class SysData {
 					if(board2D[i][j] != -1)
 						myWriter.write(board2D[i][j] + ",");
 				}
-				myWriter.write('\n');
 			}
 			if(turn.equals(Color.Black))
-				myWriter.write('B');
+				myWriter.write("B");
 			else
-				myWriter.write('W');
+				myWriter.write("W");
+			if(player1Name != null && player2Name != null) {
+				myWriter.write(","+player1Name + ","+player2Name+"," + p1Points +"," + p2Points) ;
+			}
 			myWriter.close();
 		}catch(Exception e) {
 			e.printStackTrace();
