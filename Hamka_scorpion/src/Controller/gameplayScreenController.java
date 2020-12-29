@@ -536,7 +536,7 @@ public class gameplayScreenController extends Application implements Initializab
 			//		    System.out.println("time left : "+newTimeValue);
 			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, this.game.getTurn());
             if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, this.game.getTurn());
-            if(newTimeValue.intValue() == 115) {SwapTurn();  try {
+            if(newTimeValue.intValue() == 1) {SwapTurn();  try {
                 flag=0;
                 clearBoard(game, scene, root);
                 ClearColoredTiles(scene);
@@ -946,8 +946,6 @@ public class gameplayScreenController extends Application implements Initializab
 								lockedForStreak = false;
 
 							if(greenTile != null && greenTile.equals(t)) {
-								if(!lockedForStreak)
-									SwapTurn();
 								game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
 								greenTile = null;
 							}
@@ -1036,8 +1034,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 								if(greenTile != null && greenTile.equals(t2)) {
-									if(!lockedForStreak)
-										SwapTurn();
+
 									game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
 									greenTile = null;
 								}
@@ -1324,8 +1321,6 @@ public class gameplayScreenController extends Application implements Initializab
 								lockedForStreak = false;
 
 							if(greenTile != null && greenTile.equals(t)) {
-								if(!lockedForStreak)
-									SwapTurn();
 								game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
 								greenTile = null;
 							}
@@ -1411,8 +1406,6 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 								if(greenTile != null && greenTile.equals(t2)) {
-									if(!lockedForStreak)
-										SwapTurn();
 									game.setblackPlayerPoints(game.getblackPlayerPoints() + 50);
 									greenTile = null;
 								}
