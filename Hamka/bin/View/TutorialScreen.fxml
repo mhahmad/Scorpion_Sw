@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.tutorialScreen">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.tutorialScreen">
    <children>
       <ImageView fitHeight="960.0" fitWidth="1200.0">
          <image>
@@ -27,24 +27,19 @@
       </Pane>
       <Pane layoutX="140.0" layoutY="146.0" prefHeight="785.0" prefWidth="921.0" style="-fx-background-color: #630000; -fx-border-color: #444444; -fx-background-radius: 25; -fx-border-width: 6; -fx-border-radius: 20;">
          <children>
-            <ImageView fx:id="queenConvertBtn" fitHeight="262.0" fitWidth="252.0" layoutX="144.0" layoutY="106.0" onMouseClicked="#queenConvertBtnClicked" onMouseEntered="#queenConvertBtnMouseEntered" onMouseExited="#queenConvertBtnMouseExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="queenConvertBtn" fitHeight="262.0" fitWidth="252.0" layoutX="149.0" layoutY="106.0" onMouseClicked="#queenConvertBtnClicked" onMouseEntered="#queenConvertBtnMouseEntered" onMouseExited="#queenConvertBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="Resources/queenConvert.jpg" />
+                  <Image url="@../Resources/queenConvert.jpg" />
                </image>
             </ImageView>
             <ImageView fx:id="killStreakBtn" fitHeight="262.0" fitWidth="252.0" layoutX="521.0" layoutY="106.0" onMouseClicked="#killStreakBtnClicked" onMouseEntered="#killStreakBtnMouseEntered" onMouseExited="#killStreakBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="Resources/killStreak.jpg" />
+                  <Image url="@../Resources/killStreak.jpg" />
                </image>
             </ImageView>
-            <ImageView fx:id="queenCrossBtn" fitHeight="262.0" fitWidth="252.0" layoutX="144.0" layoutY="421.0" onMouseEntered="#queenCrossBtnMouseEntered" onMouseExited="#queenCrossBtnMouseExit" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="coloredTilesBtn" fitHeight="262.0" fitWidth="252.0" layoutX="335.0" layoutY="420.0" onMouseClicked="#ColoredTileBtnClicked" onMouseEntered="#coloredTilesBtnMouseEntered" onMouseExited="#coloredTilesBtnMouseExit" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="Resources/queenCrossing.jpg" />
-               </image>
-            </ImageView>
-            <ImageView fx:id="coloredTilesBtn" fitHeight="262.0" fitWidth="252.0" layoutX="521.0" layoutY="421.0" onMouseClicked="#ColoredTileBtnClicked" onMouseEntered="#coloredTilesBtnMouseEntered" onMouseExited="#coloredTilesBtnMouseExit" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="Resources/tiles.jpg" />
+                  <Image url="@../Resources/tiles.png" />
                </image>
             </ImageView>
             <Button fx:id="backBtn" layoutX="401.0" layoutY="719.0" mnemonicParsing="false" onAction="#backBtnClicked" prefHeight="49.0" prefWidth="119.0" style="-fx-background-color: #b4f49c; -fx-background-radius: 17; -fx-border-color: #000000; -fx-border-width: 2; -fx-border-radius: 15; -fx-background-insets: 0;" text="Back">

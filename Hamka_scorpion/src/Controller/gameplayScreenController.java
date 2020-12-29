@@ -534,9 +534,16 @@ public class gameplayScreenController extends Application implements Initializab
 			//   System.out.println("Time left: "+timeSeconds.toString());
 
 			//		    System.out.println("time left : "+newTimeValue);
-			if(newTimeValue.intValue() == 90) 	greenTile = GenerateGreenTiles(scene, this.game.getTurn());
-			if(newTimeValue.intValue() == 30) 	GenerateOrangeTiles(scene, this.game.getTurn());
-			if(newTimeValue.intValue() == 0) game.handTurn();
+			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, this.game.getTurn());
+            if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, this.game.getTurn());
+            if(newTimeValue.intValue() == 115) {SwapTurn();  try {
+                flag=0;
+                clearBoard(game, scene, root);
+                ClearColoredTiles(scene);
+                refreshBoard(game,scene, root);
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }}
 			//   System.err.println("oldEime Value : "+oldTimeValue);
 			if(newTimeValue.intValue() > oldTimeValue.intValue()) {
 				if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
@@ -1806,9 +1813,8 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 	//------------------------------colored tiles  ;
 	public Tile  GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
-boolean flag =true ; 
 		// color 3 random Empty tiles
-		do {
+
 		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
 		if(redTile != null ) { 
 			String possibleTile = redTile.getX()+","+redTile.getY();
@@ -1820,20 +1826,15 @@ boolean flag =true ;
 					if(check.equals(possibleTile)) {
 						key = ks;
 						//						System.out.println("should be red  :: "+key);
-						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
-							System.out.println("the "+key+" is Black ! ");
-
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
-						flag = false ;
 						return redTile;
-					}
 						
 					}
 				}
 			}
 		}
 		
-		}while(flag) ;
+	
 		return null;
 
 	}
@@ -1843,9 +1844,7 @@ boolean flag =true ;
 
 
 	public Tile GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
-boolean flag = true ; 
 		// color 1 random Empty tile
-		do {
 		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
 		if(greenTile != null ) { 
 			String possibleTile = greenTile.getX()+","+greenTile.getY();
@@ -1856,19 +1855,12 @@ boolean flag = true ;
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						Sysstem.out.println("should be red  :: "+key);
-						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
-							System.out.println("the "+key+" is Black ! ");
-
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
-						flag =false ; 
 						return greenTile;
-					}
 					}
 				}
 			}
 		}
-		}while(flag); 
 		return null;
 	}
 
