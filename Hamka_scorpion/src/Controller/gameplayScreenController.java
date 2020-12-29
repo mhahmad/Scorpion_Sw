@@ -1806,8 +1806,9 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 	//------------------------------colored tiles  ;
 	public Tile  GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
-
+boolean flag =true ; 
 		// color 3 random Empty tiles
+		do {
 		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
 		if(redTile != null ) { 
 			String possibleTile = redTile.getX()+","+redTile.getY();
@@ -1819,12 +1820,20 @@ public class gameplayScreenController extends Application implements Initializab
 					if(check.equals(possibleTile)) {
 						key = ks;
 						//						System.out.println("should be red  :: "+key);
+						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
+							System.out.println("the "+key+" is Black ! ");
+
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+						flag = false ;
 						return redTile;
+					}
+						
 					}
 				}
 			}
 		}
+		
+		}while(flag) ;
 		return null;
 
 	}
@@ -1834,8 +1843,9 @@ public class gameplayScreenController extends Application implements Initializab
 
 
 	public Tile GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
-
+boolean flag = true ; 
 		// color 1 random Empty tile
+		do {
 		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
 		if(greenTile != null ) { 
 			String possibleTile = greenTile.getX()+","+greenTile.getY();
@@ -1846,13 +1856,19 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println("should be red  :: "+key);
+						//						Sysstem.out.println("should be red  :: "+key);
+						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
+							System.out.println("the "+key+" is Black ! ");
+
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+						flag =false ; 
 						return greenTile;
+					}
 					}
 				}
 			}
 		}
+		}while(flag); 
 		return null;
 	}
 
@@ -1888,7 +1904,7 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
-	public ArrayList<Tile> GenerateYellowTiles( Scene s)  {
+	public ArrayList<Tile> GenerateYellowTiles(Scene s)  {
 		ArrayList<Tile> tilesToReturn = new ArrayList<Tile>();
 		// color 3 random Empty tiles
 		for (Tile tile : this.game.generateYellowTiles()) {
@@ -1901,9 +1917,13 @@ public class gameplayScreenController extends Application implements Initializab
 					if(check.equals(possibleTile)) {
 						key = ks;
 						//	System.out.println(key);
+						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
+							System.out.println("the "+key+" is Black ! ");
+						
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
 						tilesToReturn.add(tile);
 						break;
+						}
 					}
 				}
 			}

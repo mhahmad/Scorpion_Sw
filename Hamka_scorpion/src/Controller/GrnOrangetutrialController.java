@@ -659,7 +659,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 			 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 				
-			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/BlueTileTutorial.fxml"));
+			 FXMLLoader loader = new FXMLLoader(BlueTileTutController.class.getResource("/View/BlueTileTutorial.fxml"));
 			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
 	        Parent root;
 	      try {
@@ -672,7 +672,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	        con.start(window);
 	        window.show();
 	        window.centerOnScreen();
-	    	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+	    	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
 	    	} catch ( Exception e1) {
 	          // TODO Auto-generated catch block
 	          e1.printStackTrace();
@@ -697,7 +697,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
            con.start(window);
            window.show();
            window.centerOnScreen();
-       	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+      // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
        	} catch ( Exception e1) {
              // TODO Auto-generated catch block
              e1.printStackTrace();
@@ -722,7 +722,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
           con.start(window);
           window.show();
           window.centerOnScreen();
-      	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+   //   	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
       	} catch ( Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -746,7 +746,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
          con.start(window);
          window.show();
          window.centerOnScreen();
-     	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+    // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
      	} catch ( Exception e1) {
            // TODO Auto-generated catch block
            e1.printStackTrace();

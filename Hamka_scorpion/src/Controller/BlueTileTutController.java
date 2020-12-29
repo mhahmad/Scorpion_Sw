@@ -453,7 +453,7 @@ public class BlueTileTutController extends Application implements Initializable 
         con.start(window);
         window.show();
         window.centerOnScreen();
-    	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+    	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
     	} catch ( Exception e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
@@ -505,7 +505,7 @@ public class BlueTileTutController extends Application implements Initializable 
             con.start(window);
             window.show();
             window.centerOnScreen();
-        	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+        	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
         	} catch ( Exception e1) {
               // TODO Auto-generated catch block
               e1.printStackTrace();
@@ -529,7 +529,7 @@ public class BlueTileTutController extends Application implements Initializable 
           con.start(window);
           window.show();
           window.centerOnScreen();
-      	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+      //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
       	} catch ( Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
@@ -553,7 +553,7 @@ public class BlueTileTutController extends Application implements Initializable 
          con.start(window);
          window.show();
          window.centerOnScreen();
-     	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+     //((Stage)this.BlueTileBtn.getScene().getWindow()).close();
      	} catch ( Exception e1) {
            // TODO Auto-generated catch block
            e1.printStackTrace();

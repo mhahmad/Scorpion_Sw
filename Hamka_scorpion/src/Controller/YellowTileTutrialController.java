@@ -189,7 +189,19 @@ public class YellowTileTutrialController  extends Application implements Initial
     private Button ExitBtn;
     
    
-   
+
+    @FXML
+    private Button YellowTileBtn;
+
+    @FXML
+    private Button RedTileBtn;
+
+    @FXML
+    private Button OrangeGreenTileBtn;
+
+    @FXML
+    private Button BlueTileBtn;
+    
     
  
     @FXML
@@ -198,15 +210,10 @@ public class YellowTileTutrialController  extends Application implements Initial
     @FXML
     private Button instructions;
 
-    @FXML
-    private Button NextTut;
-
+   
     
     
-    @FXML
-    void NextTutClicked(ActionEvent event) {
 
-    }
     
     
 	inGameSettings settings = new inGameSettings();;
@@ -388,6 +395,7 @@ public class YellowTileTutrialController  extends Application implements Initial
 		
 		
 
+		OrangeGreenTileBtn.setStyle(" -fx-background-radius : 5em ; -fx-background-color: linear-gradient(from 0px 0px to 210px 0px, green 0%, green 36.84%, orange 36.84%, orange 100%);");
 
 //------------------------------------------------
 		
@@ -535,7 +543,107 @@ public class YellowTileTutrialController  extends Application implements Initial
 
 
 //------------------------Timer Related  
+	  @FXML
+	    void BlueTileBtnClicked(ActionEvent event) {
 
+			 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+				
+			 FXMLLoader loader = new FXMLLoader(BlueTileTutController .class.getResource("/View/BlueTileTutorial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+	        Parent root;
+	      try {
+	          root = loader.load();
+	        Scene scene = new Scene(root);
+	        window.setTitle("Hamka");
+	        window.setScene(scene);
+	        BlueTileTutController con = loader.getController();
+	 
+	        con.start(window);
+	        window.show();
+	        window.centerOnScreen();
+	    	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+	    	} catch ( Exception e1) {
+	          // TODO Auto-generated catch block
+	          e1.printStackTrace();
+	      }
+        
+	    }
+
+	    @FXML
+	    void OrangeTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/GreenOrangeTileTutorial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+         Parent root;
+       try {
+           root = loader.load();
+         Scene scene = new Scene(root);
+         window.setTitle("Hamka");
+         window.setScene(scene);
+         GrnOrangetutrialController con = loader.getController();
+  
+         con.start(window);
+         window.show();
+         window.centerOnScreen();
+    // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+     	} catch ( Exception e1) {
+           // TODO Auto-generated catch block
+           e1.printStackTrace();
+       }
+	    	
+	    }
+
+	    @FXML
+	    void RedTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("/View/RedTileTutrial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+        Parent root;
+      try {
+          root = loader.load();
+        Scene scene = new Scene(root);
+        window.setTitle("Hamka");
+        window.setScene(scene);
+        RedTileTutorialcontroller con = loader.getController();
+ 
+        con.start(window);
+        window.show();
+        window.centerOnScreen();
+ //   	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+    	} catch ( Exception e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+      }
+	    }
+
+	    @FXML
+	    void YellowTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("/View/YellowTileTutrial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+       Parent root;
+     try {
+         root = loader.load();
+       Scene scene = new Scene(root);
+       window.setTitle("Hamka");
+       window.setScene(scene);
+       YellowTileTutrialController con = loader.getController();
+
+       con.start(window);
+       window.show();
+       window.centerOnScreen();
+  // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+   	} catch ( Exception e1) {
+         // TODO Auto-generated catch block
+         e1.printStackTrace();
+     }
+	    }
+	    
+	    
+	
 //-------------------------------------
 	
 	@FXML

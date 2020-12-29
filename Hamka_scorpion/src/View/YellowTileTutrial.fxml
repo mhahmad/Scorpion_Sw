@@ -3,7 +3,6 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.effect.Lighting?>
 <?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -334,7 +333,7 @@
                   <Font name="Bell MT Bold" size="15.0" />
                </font>
             </Button>
-            <Button fx:id="instructions" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="43.0" layoutY="68.0" mnemonicParsing="false" prefHeight="396.0" prefWidth="202.0" style="-fx-background-color: #eeffab; -fx-background-radius: 5em;" text="* &#10;there are 3 lvls of Questions&#10;- Easy / Mid / Hard . &#10;&#10;* &#10;Question point Values : &#10;Easy | 100 points&#10;Mid | 200 points&#10;Hard | 500 points&#10;&#10;*&#10;&#10;correct answer Adds Points&#10;Incorrect answer Subtracts &#10;points &#10;&#10;*&#10;&#10;Each Turn played , &#10;3 Yellow Tiles Are &#10;Randomly Generated ! &#10;&#10;" textAlignment="CENTER" textFill="#bf3f22" textOverrun="LEADING_ELLIPSIS">
+            <Button fx:id="instructions" alignment="TOP_CENTER" contentDisplay="TOP" layoutX="43.0" layoutY="54.0" mnemonicParsing="false" prefHeight="352.0" prefWidth="202.0" style="-fx-background-color: #eeffab; -fx-background-radius: 5em;" text="* &#10;there are 3 lvls of Questions&#10;- Easy / Mid / Hard . &#10;&#10;* &#10;Question point Values : &#10;Easy | 100 points&#10;Mid | 200 points&#10;Hard | 500 points&#10;&#10;*&#10;correct answer Adds Points&#10;Incorrect answer Subtracts &#10;points &#10;&#10;*&#10;Each Turn played , &#10;3 Yellow Tiles Are &#10;Randomly Generated ! &#10;&#10;" textAlignment="CENTER" textFill="#bf3f22" textOverrun="LEADING_ELLIPSIS">
                <font>
                   <Font name="Bell MT Bold" size="14.0" />
                </font>
@@ -346,14 +345,30 @@
                   </Lighting>
                </effect>
             </Button>
-            <Button fx:id="NextTut" layoutX="809.0" layoutY="74.0" mnemonicParsing="false" onAction="#NextTutClicked" style="-fx-background-color: #a82c2c;" text="Next Tutorial" textFill="WHITE">
-               <font>
-                  <Font name="System Bold Italic" size="18.0" />
-               </font>
-               <effect>
-                  <DropShadow color="#c9b93a" height="52.14" radius="25.197499999999998" spread="0.29" width="50.65" />
-               </effect>
-            </Button>
+            <VBox layoutX="67.0" layoutY="428.0" prefHeight="283.0" prefWidth="154.0" spacing="5.0">
+               <children>
+                  <Button fx:id="YellowTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#YellowTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0f037; -fx-background-radius: 5em;" text="Yelow Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="RedTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="110.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#RedTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0052c; -fx-background-radius: 5em;" text="Red Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="OrangeGreenTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="144.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#OrangeTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #f0824a; -fx-background-radius: 5em;" text="Orange Green Tiles" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="BlueTileBtn" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="6.0" layoutX="10.0" layoutY="202.0" lineSpacing="1.5" mnemonicParsing="false" onAction="#BlueTileBtnClicked" prefHeight="182.0" prefWidth="202.0" style="-fx-background-color: #43f0f0; -fx-background-radius: 5em;" text="Blue Tile" textAlignment="CENTER">
+                     <font>
+                        <Font name="Bell MT Bold" size="15.0" />
+                     </font>
+                  </Button>
+               </children>
+            </VBox>
          </children>
       </Pane>
    </children>

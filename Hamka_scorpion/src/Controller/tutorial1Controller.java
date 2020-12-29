@@ -276,8 +276,8 @@ public class tutorial1Controller  extends Application implements Initializable {
 	    void NextTutClicked(ActionEvent event) {
 		
 			Stage window = (Stage)this.NextTut.getScene().getWindow();
-		
-				 FXMLLoader loader = new FXMLLoader(TiletutorialController.class.getResource("/View/tutorialColoredTiles.fxml"));
+		//
+				 FXMLLoader loader = new FXMLLoader(KillSTutrialController.class.getResource("/View/KillStreakTutrial.fxml"));
 				// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
                  Parent root;
                try {
@@ -285,12 +285,12 @@ public class tutorial1Controller  extends Application implements Initializable {
                  Scene scene = new Scene(root);
                  window.setTitle("Hamka");
                  window.setScene(scene);
-                 TiletutorialController con = loader.getController();
+                 KillSTutrialController con = loader.getController();
           
                  con.start(window);
                  window.show();
                  window.centerOnScreen();
-             	((Stage)this.NextTut.getScene().getWindow()).close();
+             	//((Stage)this.NextTut.getScene().getWindow()).close();
              	} catch ( Exception e1) {
                    // TODO Auto-generated catch block
                    e1.printStackTrace();

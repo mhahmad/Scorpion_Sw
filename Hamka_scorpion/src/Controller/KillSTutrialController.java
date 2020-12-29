@@ -1,5 +1,4 @@
-  package Controller;
-
+package Controller;
 
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -8,7 +7,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -56,7 +54,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
@@ -75,9 +72,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class TiletutorialController   extends Application implements Initializable {
-
-	
+public class KillSTutrialController  extends Application implements Initializable{
 
 	@FXML
 	private Pane paneBoard;
@@ -182,29 +177,30 @@ public class TiletutorialController   extends Application implements Initializab
 	@FXML
 	private Button tile28;
 
+	  
+    @FXML
+    private Button ExitBtn;
 
-	 @FXML
-	    private Button ExitBtn;
+   //-------------------Colored Tiles 
+    @FXML
+    private Button NextTut;
+
+
+ 
+    @FXML
+    private Button FirstNote;
+
+    @FXML
+    private Button thirdNote;
+
+    @FXML
+    private Button secondNote;
+
+
     
-    @FXML
-    private Button firstNote;
-
-
-    @FXML
-    private Button YellowTileBtn;
-
-
-
-    @FXML
-    private Button RedTileBtn;
-
-    @FXML
-    private Button OrangeGreenTileBtn;
-
-    @FXML
-    private Button BlueTileBtn;
-
-   
+    
+    //------------------
+    
 	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
     public static String p2Name ="p2";
@@ -213,12 +209,8 @@ public class TiletutorialController   extends Application implements Initializab
 	Button br = new Button();
 	Button tr = new Button();
 	Button bl = new Button();
-	//---------------------------------------
-	// Colored Tile Related 
-	Button BlueTile = null ; 
-	ArrayList<Tile> WelcomeSoldeirBack = null ; 
- 
-    //-----------------------------------
+	
+
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
 	public static ArrayList<Tile> possible = null;
@@ -226,14 +218,14 @@ public class TiletutorialController   extends Application implements Initializab
 
 
 	private int[][] startBoard = {
-			{-1,0,-1,0,-1,0,-1,0},
+			{-1,0,-1,2,-1,2,-1,0},
+			{0,-1,2,-1,2,-1,0,-1},
+			{-1,1,-1,0,-1,22,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,0},
+			{-1,0,-1,1,-1,0,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,0,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,0,-1,0,-1}
+			{-1,0,-1,1,-1,1,-1,0},
+			{1,-1,0,-1,0,-1,0,-1}
 	};
 	
 	// check Blue tile Gen 
@@ -251,15 +243,15 @@ public class TiletutorialController   extends Application implements Initializab
 	public static Parent  root;
 	public static Scene scene;
 	GridPane queenArrows = new GridPane();
-      static boolean BoardLocked = false ; 
+
 	String direction = null;
-	String SoldeirReturns= "10,10" ; 
+	
 	//private Game game  = new Game("White", "Black", startBoard);
 	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		root = FXMLLoader.load(getClass().getResource("/View/tutorialColoredTiles.fxml"));
+		root = FXMLLoader.load(getClass().getResource("/View/KillStreakTutrial.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
@@ -269,36 +261,22 @@ public class TiletutorialController   extends Application implements Initializab
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
-        stage.show();
+
+
+		//	((Button)root.getChildrenUnmodifiable().get(root.getChildrenUnmodifiable().indexOf( (Button) scene.lookup("#tile3")))).setGraphic(img); 
+		stage.show();
 		stage.setTitle("Hamka - Match");
          
 
-	
+		//System.out.println("START   " + tile1)
+
+
+
+
 	}
 	
 
-	   @FXML
-	    void ExitBtnClicked(ActionEvent event) {
-	    	
-			((Stage)this.ExitBtn.getScene().getWindow()).close();
 
-			Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
-			Parent toLoad;
-			try {
-				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
-				Scene scene = new Scene(toLoad);
-				stage.setScene(scene);
-				stage.centerOnScreen();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-			
-			  stage.show();
-				stage.setTitle("Hamka - Match");
-		         
-	    }
-	   
 
 	public static void main(String[] arg) {
 		launch(arg);
@@ -311,19 +289,26 @@ public class TiletutorialController   extends Application implements Initializab
 	      //------------------------------
 		buildTilesBoardMap();
 	
-
 		
 		
-		
-	    //------------------------------
 	
+		
+		
+//----------Timer related
+
+        
+	   
+            
+        
+	  //  OverAllTimer();
+	    //------------------------------
+
 		queenArrows.setVisible(false);
 		queenArrows.setVgap(2);
 		queenArrows.setHgap(2);
 		queenArrows.setPadding(new Insets(0, 10, 0, 10));
 		queenArrows.setMinHeight(20);
 		queenArrows.setMinWidth(20);
-		
 		queenArrows.add(tl,5,5);
 		queenArrows.add(br, 6, 6);
 		queenArrows.add(tr, 6, 5);
@@ -334,13 +319,9 @@ public class TiletutorialController   extends Application implements Initializab
 			queenArrows.setVisible(false);
 		});
 		paneBoard.getChildren().add(queenArrows);
-
 		//pane.setVisible(true);
 		queenArrows.setTranslateX(10);
 		queenArrows.setTranslateY(10);
-		
-		
-		
 		//        orig.getChildren().add(b5);
 		//        ss.getChildren().addAll(orig,pane);
 		ImageView b1Image = new ImageView(
@@ -361,15 +342,74 @@ public class TiletutorialController   extends Application implements Initializab
 		tr.setStyle("-fx-background-color: transparent;");
 		bl.setStyle("-fx-background-color: transparent;");
 		
-		
-		OrangeGreenTileBtn.setStyle(" -fx-background-radius : 5em ; -fx-background-color: linear-gradient(from 0px 0px to 210px 0px, green 0%, green 36.84%, orange 36.84%, orange 100%);");
-	 this.firstNote.setVisible(true);
-	   
-	   
+
+//------------ Notes :
+		this.FirstNote.setVisible(true);
+		this.secondNote.setVisible(false);
+     	this.thirdNote.setVisible(false);
+     	this.NextTut.setVisible(false);
+          
 	}
+
+	//	@FXML
+	//	public Stage flip() {
+	//	 Stage s = (Stage)tile1.getScene().getWindow();
+	//	 return s ;
+	//	}
+	//	
+	//	public void FillBoard() {
+	//		
+	//		try {
+	//		for(int i = 0; i<=7; i++) {
+	//			for(int j = 0; j<=7; j++) {
+	//            ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
+	//            ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
+	//
+	//    		String value = i + ","+j;
+	//    		String key = tilesBoardMap.get(value);
+	//			Button btn = (Button) flip().getScene().lookup("#"+key);
+	//         //   System.out.println(tile1);
+	//            tile1.setGraphic(blackSoldier);
+	//    		
+	//			}
+	//		}
+	//		}catch (Exception e) {
+	//			e.getCause();
+	//			e.printStackTrace();
+	//		}
+	//	}
 
 	
 
+	   @FXML
+	    void NextTutClicked(ActionEvent event) {
+		
+			Stage window = (Stage)this.NextTut.getScene().getWindow();
+		
+				 FXMLLoader loader = new FXMLLoader(TiletutorialController.class.getResource("/View/tutorialColoredTiles.fxml"));
+				// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+              Parent root;
+            try {
+                root = loader.load();
+              Scene scene = new Scene(root);
+              window.setTitle("Hamka");
+              window.setScene(scene);
+              TiletutorialController con = loader.getController();
+       
+              con.start(window);
+              window.show();
+              window.centerOnScreen();
+          	//((Stage)this.NextTut.getScene().getWindow()).close();
+          	} catch ( Exception e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+				 
+				 
+				 
+	    }
+	   
+	   
 	public void buildTilesBoardMap() {
 		tilesBoardMap = new HashMap<>();
 		tilesBoardMap.put("tile1", "0,1");
@@ -414,148 +454,42 @@ public class TiletutorialController   extends Application implements Initializab
 	}
 
 
-//-----------------------Color Tile Buttons Related  
+//------------------------Timer Related  
+
+	@FXML
+    void ExitBtnClicked(ActionEvent event) {
+    	
+		((Stage)this.ExitBtn.getScene().getWindow()).close();
+
+		Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
+		Parent toLoad;
+		try {
+			toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+			Scene scene = new Scene(toLoad);
+			stage.setScene(scene);
+			stage.centerOnScreen();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		  stage.show();
+			stage.setTitle("Hamka - Match");
+	         
+    }
 	
-	 @FXML
-	    void BlueTileBtnClicked(ActionEvent event) {
- 
-		 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-			
-		 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/BlueTileTutorial.fxml"));
-		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-        Parent root;
-      try {
-          root = loader.load();
-        Scene scene = new Scene(root);
-        window.setTitle("Hamka");
-        window.setScene(scene);
-        BlueTileTutController con = loader.getController();
- 
-        con.start(window);
-        window.show();
-        window.centerOnScreen();
-    //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-    	} catch ( Exception e1) {
-          // TODO Auto-generated catch block
-          e1.printStackTrace();
-      }
-      
-//		int [][] tempBoard = {
-//					{-1,0,-1,2,-1,0,-1,22},
-//					{0,-1,2,-1,0,-1,0,-1},
-//					{-1,0,-1,0,-1,0,-1,0},
-//					{0,-1,0,-1,0,-1,0,-1},
-//					{-1,0,-1,0,-1,0,-1,0},
-//					{0,-1,0,-1,0,-1,0,-1},
-//					{-1,1,-1,0,-1,0,-1,0},
-//					{0,-1,0,-1,1,-1,1,-1}
-//			};
-//		 
-//          this.game.setBoard(new Board(tempBoard));
-//          try {
-//			refreshBoard(game, scene, root);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//          // Setting up the Blue Tile
-//          this.BlueTile = ((Button)scene.lookup("#tile15")) ; 
-//                ((Button)scene.lookup("#tile15")).setStyle("-fx-background-color: #2EB9FF;");             
-//                this.secondNote.setVisible(false);
-//                this.thirdNote.setVisible(false);
-//                this.FourthNote.setVisible(false);
-//                this.instructions.setVisible(true);
-//           	 this.firstNote.setVisible(true);
-           	   
-	    }
 
-
-	    @FXML
-	    void OrangeTileBtnClicked(ActionEvent event) {
-	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-			
-			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/GreenOrangeTileTutorial.fxml"));
-			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-            Parent root;
-          try {
-              root = loader.load();
-            Scene scene = new Scene(root);
-            window.setTitle("Hamka");
-            window.setScene(scene);
-            GrnOrangetutrialController con = loader.getController();
-     
-            con.start(window);
-            window.show();
-            window.centerOnScreen();
-        //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-        	} catch ( Exception e1) {
-              // TODO Auto-generated catch block
-              e1.printStackTrace();
-          }
-	    }
-
-	    @FXML
-	    void RedTileBtnClicked(ActionEvent event) {
-	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-			
-			 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("/View/RedTileTutrial.fxml"));
-			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-           Parent root;
-         try {
-             root = loader.load();
-           Scene scene = new Scene(root);
-           window.setTitle("Hamka");
-           window.setScene(scene);
-           RedTileTutorialcontroller con = loader.getController();
-    
-           con.start(window);
-           window.show();
-           window.centerOnScreen();
-  //     	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-       	} catch ( Exception e1) {
-             // TODO Auto-generated catch block
-             e1.printStackTrace();
-         }
-	    }
-
-	    @FXML
-	    void YellowTileBtnClicked(ActionEvent event) {
-
-	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-			
-			 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("/View/YellowTileTutrial.fxml"));
-			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-          Parent root;
-        try {
-            root = loader.load();
-          Scene scene = new Scene(root);
-          window.setTitle("Hamka");
-          window.setScene(scene);
-          YellowTileTutrialController con = loader.getController();
-   
-          con.start(window);
-          window.show();
-          window.centerOnScreen();
-  //s    	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-      	} catch ( Exception e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-        }
-        
-	    }
-
-	    
-	  
 //-------------------------------------
 	
+	
+	///--------------------------
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
-       
-        if(((Button)event.getSource()).getId().equals("tile32") ) {
-        	
-        }
-      
-     
+
+
+	
+		
+		
 		queenArrows.setVisible(false);
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
@@ -592,67 +526,43 @@ public class TiletutorialController   extends Application implements Initializab
 		ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
 		chosenBlackSoldier.setFitHeight(45);
 		chosenBlackSoldier.setFitWidth(45);
-		
+		ImageView chosenWhiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteSoldier.png")));
+		chosenWhiteSoldier.setFitHeight(45);
+		chosenWhiteSoldier.setFitWidth(45);
 		ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 		blackSoldier.setFitHeight(45);
 		blackSoldier.setFitWidth(45);
-	
+		ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
+		whiteSoldier.setFitHeight(45);
+		whiteSoldier.setFitWidth(45);
 		ImageView possibleMove = new ImageView(new Image(getClass().getResourceAsStream("/Resources/possibleMove.png")));
 		possibleMove.setFitHeight(45);
 		possibleMove.setFitWidth(45);
-		
 		ImageView chosenBlackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackQueen.png")));
 		chosenBlackQueen.setFitHeight(45);
 		chosenBlackQueen.setFitWidth(45);
-		
+		ImageView chosenWhiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteQueen.png")));
+		chosenWhiteQueen.setFitHeight(45);
+		chosenWhiteQueen.setFitWidth(45);
 		ImageView blackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackQueen.png")));
 		blackQueen.setFitHeight(45);
 		blackQueen.setFitWidth(45);
-		
-
-		
-		   if(BoardLocked) { // the board is partially locked except the tiles possible 
-				//System.out.println("sdsds" + prev);
-				//Convert tile to i,j
-			   System.out.println(" ladies andd  gentle men we have entered!!!!!!!!!!!!!!!!!!s ");
-			 String prev = tilesBoardMap.get( ((Button)event.getSource()).getId()) ; 
-			 this.SoldeirReturns= prev ;
-				String[] parts2= prev.split(",");
-				String part21 = parts2[0]; 
-				String part22 = parts2[1]; 
-				//Tile converted to i,j format to be used with the board 2d arary.
-				Integer desti = Integer.parseInt(part21);
-				Integer destj = Integer.parseInt(part22);
-				Tile prevT = new Tile(desti, destj);
-
-				//System.out.println("Prev Tile: " + prevT);
-				Soldier prevS = new Soldier(2) ;
-
-	        	System.out.println("welcome Tile List : "+WelcomeSoldeirBack);
-	        	for (Tile t : WelcomeSoldeirBack) {  //a tile was selected before, and current tile is used to make the move.
-					int coordinateI = t.getX();
-					int coordinateJ = t.getY();
-					if(i==coordinateI && j == coordinateJ){
-
-						
-			               ((Button)event.getSource()).setGraphic(blackSoldier);
-						//game.moveBlackSoldier(prevS, t, WelcomeSoldeirBack);
-						
-						//occupiedTilesOriginalColor(scene) ; 
-				
-						System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+		ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
+		whiteQueen.setFitHeight(45);
+		whiteQueen.setFitWidth(45);
 
 
-						System.out.println("Now It's White's turn");
-						clickedSoldier=null;
-						
-						break;
+		//	System.out.println();
+		//		System.out.println(currentTile);
+		//	System.out.println("i is:" + i + ", j  is: "+ j);
+		//System.out.println(currentTile.getId().equals("tile1"));
+		//((Button) scene.lookup("#"+"tile1")).setGraphic(null);
+		//		Button b = getButtonById(currentTile.getId());
+		//		System.out.println("Here");
+		//		System.out.println(b);
+		//		System.out.println("End");
+		//		b.setGraphic(chosenBlackSoldier);
 
-					}
-				}
-	        }
-
-	
 
 
 		Tile current = new Tile(i, j);
@@ -663,7 +573,9 @@ public class TiletutorialController   extends Application implements Initializab
 		//		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
 		if(color==Color.Black) { //Black's turn
-		
+			StopWatch turnTimer = new StopWatch();
+			turnTimer.start();
+			System.out.println();
 
 			System.out.println("switching to Black  !!");
 			SwitchTurntoBlack(i , j , s , currentTile , blackSoldier, chosenBlackSoldier, blackQueen,  chosenBlackQueen) ; 
@@ -671,7 +583,7 @@ public class TiletutorialController   extends Application implements Initializab
 		}
 		else if(color==Color.White) { //turn.color = Color.White
 			System.out.println("switching to White !!");
-			//SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
+			SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
 
 
 
@@ -689,28 +601,24 @@ public class TiletutorialController   extends Application implements Initializab
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
-
 		} );
 		tr.setOnAction(e -> {
 			direction = "TR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
-
 		} );
 		bl.setOnAction(e -> {
 			direction = "BL";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
-
 		} );
 		br.setOnAction(e -> {
 			direction = "BR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
-
 		} );
 
 
@@ -751,18 +659,14 @@ public class TiletutorialController   extends Application implements Initializab
 							//	from.setGraphic(null);
 							//System.out.println(prevS);
 							game.moveBlackSoldier(prevS, t, possible);
-							
+							//game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+							//Timer Related - 
 							occupiedTilesOriginalColor(scene) ; 
 							//ClearColoredTiles(scene);
-							//GenerateYellowTiles(scene);
-						//	GenerateRedTiles(scene, Color.White);
+					        // GenerateRedTiles(scene, Color.Black);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-//							if(game.isGameOver()) {
-//								winnerLabel.setText(game.winner() + " Wins!");
-//								winnerLabel.setVisible(true);
-//								boardOFF();
-//							}
+						
 
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
@@ -778,9 +682,8 @@ public class TiletutorialController   extends Application implements Initializab
 				}
 
 				else if(prevS.getSoldierNumber()==22) {
-					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas  : " + possibleQueen);
+					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas" + possibleQueen);
 					if(possibleQueen!=null) {
-						
 						for (Tile t2 : possibleQueen.keySet()) {  //a tile was selected before, and current tile is used to make the move.
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
@@ -792,22 +695,17 @@ public class TiletutorialController   extends Application implements Initializab
 								//Button from = getButtonById(clickedSoldier);
 								//	from.setGraphic(null);
 								//System.out.println("Prev Tile: " + prevT);
-							//	System.out.println("moves: "+t2.getX()+ " "+t2.getY());
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
-								
+							
 								occupiedTilesOriginalColor(scene) ; 
 							//	ClearColoredTiles(scene);
-							//	GenerateYellowTiles(scene);
-							//	GenerateRedTiles(scene, Color.White);
-							 	//GenerateGreenTiles(scene, Color.White);
+						      //   GenerateRedTiles(scene, Color.Black);
+
+								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-//								if(game.isGameOver()) {
-//									winnerLabel.setText(game.winner() + " Wins!");
-//									winnerLabel.setVisible(true);
-//									boardOFF();
-//									}
+							
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -949,7 +847,6 @@ public class TiletutorialController   extends Application implements Initializab
 			}
 			////*get Soldier's possible moves
 			possible = game.getPossibleMovesForBlackSoldier(s);
-			 
 			System.out.println("????????????????????");
 			if(possible!=null) {
 				for (Tile tile : possible) {
@@ -1038,16 +935,13 @@ public class TiletutorialController   extends Application implements Initializab
 
 							//System.out.println(prevS);
 							game.moveWhiteSoldier(prevS, t, possible);
-							
 							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
-						
-							//Timer Related - 
 							occupiedTilesOriginalColor(scene) ; 
 						//	ClearColoredTiles(scene);
-						//	GenerateYellowTiles(scene);
-						//	GenerateRedTiles(scene, Color.White);
-							//GenerateGreenTiles(scene, Color.White);
 						
+							//GenerateGreenTiles(scene, Color.White);
+							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
+							
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
 							break;
@@ -1071,21 +965,13 @@ public class TiletutorialController   extends Application implements Initializab
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
-								
 								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-							
 								//Timer Related - 
 								occupiedTilesOriginalColor(scene) ; 
-							//	ClearColoredTiles(scene);
-							//	GenerateYellowTiles(scene);
-							//	GenerateRedTiles(scene, Color.White);
+								//ClearColoredTiles(scene);
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-//								if(game.isGameOver()) {
-//									winnerLabel.setText(game.winner() + " Wins!");
-//									winnerLabel.setVisible(true);	
-//									boardOFF();
-//								}
+								
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;
@@ -1233,8 +1119,8 @@ public class TiletutorialController   extends Application implements Initializab
 	public void refreshBoard(Game game, Scene scene, Parent root) throws IOException {
 
 		int whiteAliveCout = 0 ; 
-		int blackAliveCount = 0 ;
-		
+		int blackeAliveCout = 0 ; 
+
 		int [][]board = game.getBoard().getBoard();
 		System.out.println("In refresh");
 		//Parent  root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
@@ -1242,13 +1128,11 @@ public class TiletutorialController   extends Application implements Initializab
 		//	clearBoard(game,  scene,  root);
 		//	int c = 0;
 		//clearBoard(game, scene, root);
-	
-	
-		
 		for(int i = 0; i<=7; i++) {
 			for(int j = 0; j<=7; j++) {
 
 				//for(int j = 2; j<8; j+=2) {
+
 				
 				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 				blackSoldier.setFitHeight(45);
@@ -1269,7 +1153,7 @@ public class TiletutorialController   extends Application implements Initializab
 				//					((Button) scene.lookup("#"+ks)).setGraphic(null);
 				//				}
 				buildTilesBoardMap();
-                
+
 				String dest = i+","+j;
 				String check = null;
 				String key = null;
@@ -1294,206 +1178,109 @@ public class TiletutorialController   extends Application implements Initializab
 					((Button) scene.lookup("#"+key)).setGraphic(whiteSoldier);
 					whiteAliveCout++ ; 
 				}else if(board[i][j]==2) { 
-					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-					 if(board[3][4]==22 || board[3][4]== 2) {
-						 ((Button) scene.lookup("#"+key)).setOnMouseClicked(null);
-					 }
+								blackeAliveCout++ ; 
+
+					if(i == 1 && j ==2 ) {
+						//((Button) scene.lookup("#"+key)).setGraphic(null);
+						ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
+						chosenBlackSoldier.setFitHeight(45);
+						chosenBlackSoldier.setFitWidth(45);			
+						 ((Button) scene.lookup("#"+key)).setGraphic(chosenBlackSoldier);
+					 ((Button) scene.lookup("#tile13")).setStyle("-fx-background-color: #f2140c;");
+						 
+					
+					}else { if(i == 3 && j ==0 )  this.FirstNote.setVisible(false);
+						 ((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
+					}
+					
 					//blackAliveCount++; 
 				}else if(board[i][j]==0 && key!=null ) {
-				((Button) scene.lookup("#"+key)).setGraphic(null);
+					((Button) scene.lookup("#"+key)).setGraphic(null);
 
 				}else if (board[i][j]==11) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
 					whiteAliveCout++ ; 
 
 				}else if (board[i][j]==22) {
+				 //((Button) scene.lookup("#"+key)).setStyle("-fx-background-color: #000000;");
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
-					 if(board[3][4]==22 || board[3][4]== 2) {
-						 ((Button) scene.lookup("#"+key)).setOnMouseClicked(null);
-					 }
-					blackAliveCount++; 
-				}
-					
-				String[] parts2= this.SoldeirReturns.split(",");
-				String part21 = parts2[0]; 
-				String part22 = parts2[1]; 
-				//Tile converted to i,j format to be used with the board 2d arary.
-				Integer desti = Integer.parseInt(part21);
-				Integer destj = Integer.parseInt(part22);
-				if(i== desti && j == destj) {
-					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-				boardOFF();
-				this.BlueTileBtn.setOnAction(null);
-				this.SoldeirReturns= "10,10" ; 
-				}
-			  
-
-
-				//					String value ; 
-				//
-				//					//value = i*4 + j ; 
-				//					value=String.valueOf((i*4+j)) ; 
-
-				//	String key = tilesBoardMap.get(value);
-				//	    		System.out.println(value+"//");
-				//	    		if(board[i][j]== 1) {
-				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img2);
-				//
-				//	    		}
-				//	    		
-				//	    		if(board[i][j]== 2) {
-				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img);
-				//
-				//	    		}
-
-				//					if(Integer.parseInt(value) <13) {
-				//						System.out.println("#tile"+value);
-				//						((Button) scene.lookup("#tile"+value)).setGraphic(blackSoldier);
-				//					}
-				//					if(Integer.parseInt(value) >20) {
-				//						((Button) scene.lookup("#tile"+value)).setGraphic(whiteSoldier);
-				//					}
-
-
-
-				// Button btn = (Button) scene.lookup("#"+key);
-				//System.out.println(tile1);
-				// btn.setGraphic(img);
-				
 			}
+				
+
+                   
+			occupiedTilesOriginalColor(scene);
+				
+	 }
+			
+		}
+		
+		if((whiteAliveCout == 1 && blackeAliveCout== 4 )||(whiteAliveCout == 2 && blackeAliveCout== 3 )) {
+			// the tutorial is Dones
+			this.NextTut.setVisible(true);
+			boardOFF() ; 
+		}
+		
+		((Button) scene.lookup("#tile1")).setOnMouseClicked(null);
+		((Button) scene.lookup("#tile2")).setOnMouseClicked(null);
+		((Button) scene.lookup("#tile3")).setOnMouseClicked(null);
+		((Button) scene.lookup("#tile9")).setOnMouseClicked(null);
+		//((Button) scene.lookup("#tile11")).setOnMouseClicked(null);
+		//((Button) scene.lookup("#tile14")).setOnMouseClicked(null);
+
+		((Button) scene.lookup("#tile23")).setOnMouseClicked(null);
+		((Button) scene.lookup("#tile26")).setOnMouseClicked(null);
+
+		//Generate Blue Tile - Maybe ! 
+		if((whiteAliveCout == 4 && blackeAliveCout== 4 ) || (whiteAliveCout == 5 && blackeAliveCout== 3 ) ) {
+			if(blackeAliveCout== 3) {
+				this.secondNote.setVisible(true);
+				this.FirstNote.setVisible(false);
+				 ((Button) scene.lookup("#tile13")).setStyle("-fx-background-color: #000000;");
+			}
+			
+			this.thirdNote.setVisible(true);
+			((Button) scene.lookup("#tile22")).setStyle("-fx-background-color: #ff3414;");
+			((Button) scene.lookup("#tile24")).setStyle("-fx-background-color: #ff3414;");
+			((Button) scene.lookup("#tile31")).setStyle("-fx-background-color: #ff3414;");
+			((Button) scene.lookup("#tile13")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile7")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile4")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile5")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile6")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile8")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile10")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile12")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile13")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile14")).setOnMouseClicked(null);
+		//	((Button) scene.lookup("#tile15")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile16")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile17")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile18")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile19")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile20")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile21")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile23")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile25")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile26")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile27")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile28")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile29")).setOnMouseClicked(null);
+			((Button) scene.lookup("#tile30")).setOnMouseClicked(null);
 			
 
 
 		}
-		
-//		if(blackAliveCount == 1 ) {
-//			//this.secondNote.setText("hello there , \n we wish a merry Christmas \n mother fucker") ;
-//           this.secondNote.setVisible(true);
-//			
-//			this.thirdNote.setVisible(true);
-//			//System.out.println(this.thirdNote.getText());
-//		}
-		//Generate Blue Tile - Maybe ! 
-	//	GenerateBlueTile(scene) ; 
-		
-//-----------------------------------------------
 
-        if( !this.BoardLocked && (board[3][4]==22 || board[3][4]== 2) ) {
-        	System.out.println("u clikced a blue tile My G !");
-        	 
-        	  ((Button)scene.lookup("#tile1")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile3")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile4")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile2")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile6")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile15")).setStyle("-fx-background-color: #4d4d4f;");
-
-        	  ((Button)scene.lookup("#tile5")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile7")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile8")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile9")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile10")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile11")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile12")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile13")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile14")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile16")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile19")).setStyle("-fx-background-color: #4d4d4f;");
-        	  ((Button)scene.lookup("#tile20")).setStyle("-fx-background-color: #4d4d4f;");
-        	  
-        	  //-----------------------------------------
-        	  ((Button)scene.lookup("#tile30")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile29")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile28")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile27")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile26")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile24")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile23")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile22")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile21")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile22")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile17")).setStyle("-fx-background-color: #862994;");
-        	  ((Button)scene.lookup("#tile18")).setStyle("-fx-background-color: #862994;");
-
-        	  
-        	  //-----------------------
-        		
-        	  
-        	  //-------------------------
-        	  tile17.setOnMouseClicked(null);
-      		tile18.setOnMouseClicked(null);
-      		tile21.setOnMouseClicked(null);
-      		tile22.setOnMouseClicked(null);
-      		tile23.setOnMouseClicked(null);
-      		tile24.setOnMouseClicked(null);
-      		tile25.setOnMouseClicked(null);
-      		tile26.setOnMouseClicked(null);
-      		tile27.setOnMouseClicked(null);
-      		tile28.setOnMouseClicked(null);
-      		tile29.setOnMouseClicked(null);
-      		tile30.setOnMouseClicked(null);
-      		tile31.setOnMouseClicked(null);
-      		tile32.setOnMouseClicked(null);
-
-      	
-      		
-      		
-      		/*
-    tilesBoardMap.put("tile1", "0,1");
-	tilesBoardMap.put("tile2", "0,3");
-	tilesBoardMap.put("tile3", "0,5");
-	tilesBoardMap.put("tile4", "0,7");
-
-	tilesBoardMap.put("tile5", "1,0");
-	tilesBoardMap.put("tile6", "1,2");
-	tilesBoardMap.put("tile7", "1,4");
-	tilesBoardMap.put("tile8", "1,6");
-
-	tilesBoardMap.put("tile9", "2,1");
-	tilesBoardMap.put("tile10", "2,3");
-	tilesBoardMap.put("tile11", "2,5");
-	tilesBoardMap.put("tile12", "2,7");
-
-	tilesBoardMap.put("tile13", "3,0");
-	tilesBoardMap.put("tile14", "3,2");
-	tilesBoardMap.put("tile15", "3,4");
-	tilesBoardMap.put("tile16", "3,6");
-
-      		 */
-      		WelcomeSoldeirBack= new ArrayList<>() ; 
-      		WelcomeSoldeirBack.add(new Tile(0,1)) ; 
-      		WelcomeSoldeirBack.add(new Tile(0,3)) ; 
-      		WelcomeSoldeirBack.add(new Tile(0,5)) ; 
-      		WelcomeSoldeirBack.add(new Tile(0,7)) ; 
-      		WelcomeSoldeirBack.add(new Tile(1,0)) ; 
-      		WelcomeSoldeirBack.add(new Tile(1,2)) ; 
-      		WelcomeSoldeirBack.add(new Tile(1,4)) ; 
-      		WelcomeSoldeirBack.add(new Tile(1,6)) ; 
-      		WelcomeSoldeirBack.add(new Tile(2,1)) ; 
-      		WelcomeSoldeirBack.add(new Tile(2,3)) ; 
-      		WelcomeSoldeirBack.add(new Tile(2,5)) ; 
-      		WelcomeSoldeirBack.add(new Tile(2,7)) ; 
-      		WelcomeSoldeirBack.add(new Tile(3,0)) ; 	      
-      		WelcomeSoldeirBack.add(new Tile(3,2)) ; 
-      		WelcomeSoldeirBack.add(new Tile(3,4)) ; 
-      		WelcomeSoldeirBack.add(new Tile(3,6)) ; 
-
-
-      		this.BoardLocked =true ; 
-        	
-      		
-
-        	  
-        }
-    
-
-		
 	}
 
-	
+	public int getWinnerPoints() {
+		if(game.winner().equals(game.getblackPlayer()))
+			return game.getblackPlayerPoints();
+		else
+			return game.getwhitePlayerPoints();
+	}
 	public void boardOFF() {
-	
-		tile1.setOnMouseClicked(null);
+			tile1.setOnMouseClicked(null);
 		tile2.setOnMouseClicked(null);
 		tile3.setOnMouseClicked(null);
 		tile4.setOnMouseClicked(null);
@@ -1542,85 +1329,9 @@ public class TiletutorialController   extends Application implements Initializab
 
 	
 
-	public void ClearColoredTiles(Scene s) {
-		//Clear all Empty Tiles 
-		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
-			String possibleTile = tile.getX()+","+tile.getY();
-			String check = null;
-			String key = null;
-			for (String ks : tilesBoardMap.keySet()) {
-				check = tilesBoardMap.get(ks);
-				if(check!=null) {
-					if(check.equals(possibleTile)) {
-						key = ks;
-						//						System.out.println(key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
-						//break;
-					}
-				}
-			}
-		}
-
-	}
-	//------------------------------colored tiles  ;
-	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
-
-		// color 3 random Empty tiles
-		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
-		if(redTile != null ) { 
-			String possibleTile = redTile.getX()+","+redTile.getY();
-			String check = null;
-			String key = null;
-			for (String ks : tilesBoardMap.keySet()) {
-				check = tilesBoardMap.get(ks);
-				if(check!=null) {
-					if(check.equals(possibleTile)) {
-						key = ks;
-						//						System.out.println("should be red  :: "+key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
-						break;
-					}
-				}
-			}
-		}
-
-	}
-
-
-	//-----------------------green Tile
-
-//
-//	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
-//
-//		// color 1 random Empty tile
-//		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
-//		if(greenTile != null ) { 
-//			String possibleTile = greenTile.getX()+","+greenTile.getY();
-//			String check = null;
-//			String key = null;
-//			for (String ks : tilesBoardMap.keySet()) {
-//				check = tilesBoardMap.get(ks);
-//				if(check!=null) {
-//					if(check.equals(possibleTile)) {
-//						key = ks;
-//						//						System.out.println("should be red  :: "+key);
-//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
-//						break;
-//					}
-//				}
-//			}
-//		}
-//
-//	}
-
-
-
-	//-------------------------
-
-//	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
-//
-//		// color 3 random Empty tiles
-//		for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
+//	public void ClearColoredTiles(Scene s) {
+//		//Clear all Empty Tiles 
+//		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
 //			String possibleTile = tile.getX()+","+tile.getY();
 //			String check = null;
 //			String key = null;
@@ -1629,41 +1340,27 @@ public class TiletutorialController   extends Application implements Initializab
 //				if(check!=null) {
 //					if(check.equals(possibleTile)) {
 //						key = ks;
-//						//						System.out.println("should be orange  :: "+key);
-//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
-//						break;
+//						//						System.out.println(key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
+//						//break;
 //					}
 //				}
 //			}
 //		}
 //
 //	}
+	//------------------------------colored tiles  ;
 
 
 
-	public void GenerateYellowTiles( Scene s)  {
-
-		// color 3 random Empty tiles
-		for (Tile tile : this.game.generateYellowTiles()) {
-			String possibleTile = tile.getX()+","+tile.getY();
-			String check = null;
-			String key = null;
-			for (String ks : tilesBoardMap.keySet()) {
-				check = tilesBoardMap.get(ks);
-				if(check!=null) {
-					if(check.equals(possibleTile)) {
-						key = ks;
-						//	System.out.println(key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
-						break;
-					}
-				}
-			}
-		}
-
-
-	}
 	
+
+
+
+
+
+	//-------------------------
+
 
 
 	public Button getButtonById(String id) {
@@ -1735,64 +1432,72 @@ public class TiletutorialController   extends Application implements Initializab
 		return false ; 
 	}
 
-
+	
 
   
-    void Showallpossiblemoves( ArrayList<Tile> possible , Scene s) {
-    	ClearColoredTiles(s);
-    	System.out.println("///// : "+possible);
-    	for (Tile tile : possible) {
-			String possibleTile = tile.getX()+","+tile.getY();
+    
+	
+	void OverAllTimer() {
+		
+		 boolean x=true;
+		    long displayMinutes=0;
+		    //long secondspassed=0 ; 
+		    long starttime=System.currentTimeMillis();
+		    System.out.println("Timer:");
+		    while(x)
+		    {
+		    	
+		        try {
+					TimeUnit.SECONDS.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        long timepassed=System.currentTimeMillis()-starttime;
+		      long  secondspassed=timepassed/1000;
+		        if(secondspassed==60)
+		        {
+		            secondspassed=0;
+		            starttime=System.currentTimeMillis();
+		        }
+		        if((secondspassed%60)==0)
+		        displayMinutes++;
+
+		System.out.println( displayMinutes+" : "+secondspassed);
+		
+		
+	}
+		    
+		    
+		
+
+}
+
+	
+	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
+
+		// color 3 random Empty tiles
+		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+		if(redTile != null ) { 
+			String possibleTile = redTile.getX()+","+redTile.getY();
 			String check = null;
 			String key = null;
 			for (String ks : tilesBoardMap.keySet()) {
 				check = tilesBoardMap.get(ks);
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
-
 						key = ks;
-						//	System.out.println(key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #16f033;");
-						((Button) s.lookup("#"+key)).setStyle("-fx-border-color: #16f01d ; -fx-background-color: #16f033;");
- System.out.println("key fuck : "+key );
-					break ; 
-				}
+						//						System.out.println("should be red  :: "+key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+						break;
+					}
 				}
 			}
 		}
 
-    }
+	}
+	
+	
+	
 
-//    void setUpBoardToBringSoldeirBack() {
-//		String check = null;
-//
-//		
-//		
-//				
-//			
-//    	for (Entry<String , String> entry : tilesBoardMap.entrySet()) {
-//			check = entry.getValue() ; 
-//			if(check!=null) {
-//				String[] parts = check.split(",");
-//				String part1 = parts[0]; 
-//				String part2 = parts[1]; 
-//				//Tile converted to i,j format to be used with the board 2d arary.
-//				Integer ii = Integer.parseInt(part1);
-//				Integer jj = Integer.parseInt(part2);
-//				
-//if (this.game.checkIfLegalPosition(2, new Tile(ii,jj)) ) {
-//	this.WelcomeSoldeirBack.add(entry.getKey()) ; 
-//	
-//	((Button) scene.lookup("#"+entry.getKey())).setStyle("-fx-background-color: #8fff8f ;");
-//}
-//
-//			
-//			}
-//		}
-//    	
-//		
-//    }
-	
-	
-	
 }
