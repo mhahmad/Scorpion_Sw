@@ -1263,7 +1263,7 @@ public class Game {
 
 				if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.Black).isEmpty()) {
 					candidates.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
-				}else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.White).isEmpty()){
+				}else if (turn.equals(Color.White) && getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.White).isEmpty()){
 					candidates.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
 				}
 			}

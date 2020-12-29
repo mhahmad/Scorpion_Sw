@@ -266,9 +266,9 @@ public class gameplayScreenController extends Application implements Initializab
 	public static Board loadedBoard = null;
 
 	public static int[][] startBoard = {
-			{-1,2,-1,2,-1,2,-1,2},
-			{2,-1,2,-1,2,-1,2,-1},
-			{-1,2,-1,2,-1,2,-1,2},
+			{-1,2,-1,2,-1,0,-1,0},
+			{0,-1,0,-1,22,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
 			{1,-1,1,-1,1,-1,1,-1},
@@ -300,27 +300,27 @@ public class gameplayScreenController extends Application implements Initializab
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
 		if(p1Name == null)
-            p1Name = "p1";
-        if(p2Name == null)
-            p2Name = "p2";
+			p1Name = "p1";
+		if(p2Name == null)
+			p2Name = "p2";
 
-        if(game == null)
-             game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+		if(game == null)
+			game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 		timeSeconds = new SimpleIntegerProperty(STARTTIME);
 		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
 		SysData.getInstance().getQuestions();
-		
+
 		stage.setScene(scene);
 		stage.setResizable(false);
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
-	
 
-		
+
+
 
 
 
@@ -345,19 +345,19 @@ public class gameplayScreenController extends Application implements Initializab
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		if(p1Name == null)
-            p1Name = "p1";
-        if(p2Name == null)
-            p2Name = "p2";
+			p1Name = "p1";
+		if(p2Name == null)
+			p2Name = "p2";
 
-        if(game == null)
-             game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
-	
+		if(game == null)
+			game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
+
 		Timer t = new javax.swing.Timer(1000, new ActionListener(){
 
 			@Override
 			public void actionPerformed(java.awt.event.ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				
+
 				boolean x=true;
 				long displayMinutes=0;
 				//long secondspassed=0 ; 
@@ -491,9 +491,9 @@ public class gameplayScreenController extends Application implements Initializab
 			}
 		});
 		settings.exitBtn.setOnAction(e -> {
-			
+
 			((Stage)settings.exitBtn.getScene().getWindow()).close();
-			
+
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
@@ -535,15 +535,15 @@ public class gameplayScreenController extends Application implements Initializab
 
 			//		    System.out.println("time left : "+newTimeValue);
 			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, this.game.getTurn());
-            if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, this.game.getTurn());
-            if(newTimeValue.intValue() == 1) {SwapTurn();  try {
-                flag=0;
-                clearBoard(game, scene, root);
-                ClearColoredTiles(scene);
-                refreshBoard(game,scene, root);
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }}
+			if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, this.game.getTurn());
+			if(newTimeValue.intValue() == 1) {SwapTurn();  try {
+				flag=0;
+				clearBoard(game, scene, root);
+				ClearColoredTiles(scene);
+				refreshBoard(game,scene, root);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}}
 			//   System.err.println("oldEime Value : "+oldTimeValue);
 			if(newTimeValue.intValue() > oldTimeValue.intValue()) {
 				if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
@@ -872,6 +872,8 @@ public class gameplayScreenController extends Application implements Initializab
 
 		if(lockedForBlue && s==null) {
 			if(game.ressurectSoldier(2, current)) {
+				occupiedTilesOriginalColor(scene);
+				ClearColoredTiles(scene);
 				System.out.println("Revived");
 				SwapTurn();
 				blueTile = null;
@@ -881,11 +883,11 @@ public class gameplayScreenController extends Application implements Initializab
 				System.out.println("Invalid Position");
 
 		}
-		
+
 		if(flag == 0 ) {
 			yellowTiles = GenerateYellowTiles(scene);
 			flag++;
-			redTile = GenerateRedTiles(scene, Color.White);
+			redTile = GenerateRedTiles(scene, Color.Black);
 			if(blackSoldiers ==2 && blackQueens == 1 && !lockedForBlue)
 				blueTile = GenerateBlueTile(scene);
 		}
@@ -963,6 +965,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForRedTile = false;
 								}
 							}else if(blueTile != null && blueTile.equals(t)) {
+
 								lockedForBlue = true;
 							}
 							else if(yellowTiles.contains(t)) {
@@ -1083,6 +1086,8 @@ public class gameplayScreenController extends Application implements Initializab
 			if(!InvalidMove) {
 				try {
 					refreshBoard(game,scene, root);
+					if(lockedForBlue)
+						possibleRes(scene, Color.Black);
 					Button b = getButtonById(currentTile.getId());
 					//				b.setGraphic(chosenBlackSoldier);
 					clickedSoldier = b.getId();
@@ -1453,6 +1458,9 @@ public class gameplayScreenController extends Application implements Initializab
 			if(!InvalidMove) {
 				try {
 					refreshBoard(game,scene, root);
+					if(lockedForBlue)
+						if(lockedForBlue)
+							possibleRes(scene, Color.White);
 					Button b = getButtonById(currentTile.getId());
 					//				b.setGraphic(chosenBlackSoldier);
 					clickedSoldier = b.getId();
@@ -1463,7 +1471,7 @@ public class gameplayScreenController extends Application implements Initializab
 							b.setGraphic(chosenWhiteSoldier);
 							yellowTiles = GenerateYellowTiles(scene);
 							flag++;
-							redTile = GenerateRedTiles(scene, Color.Black);
+							redTile = GenerateRedTiles(scene, Color.White);
 						} //If it's a queen, no need to mark it as chosen.
 					}
 
@@ -1622,7 +1630,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 		int whiteAliveCout = 0 ; 
 		int blackAliveCount = 0 ;
-		
+
 		int [][]board = game.getBoard().getBoard();
 		game.getBoard().printBoard();
 		System.out.println("In refresh");
@@ -1821,13 +1829,13 @@ public class gameplayScreenController extends Application implements Initializab
 						//						System.out.println("should be red  :: "+key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
 						return redTile;
-						
+
 					}
 				}
 			}
 		}
-		
-	
+
+
 		return null;
 
 	}
@@ -1904,10 +1912,10 @@ public class gameplayScreenController extends Application implements Initializab
 						//	System.out.println(key);
 						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
 							System.out.println("the "+key+" is Black ! ");
-						
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
-						tilesToReturn.add(tile);
-						break;
+
+							((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
+							tilesToReturn.add(tile);
+							break;
 						}
 					}
 				}
@@ -1944,6 +1952,33 @@ public class gameplayScreenController extends Application implements Initializab
 		}
 		return null;
 
+
+	}
+
+	public void possibleRes( Scene s, Color c)  {
+
+		// color 1 random Empty tile
+		System.out.println(this.game == null);
+
+		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+			String possibleTile = tile.getX()+","+tile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						int obj = 0;
+						if(c == Color.Black) obj=2;
+						if(c == Color.White) obj =1;
+						if(game.checkIfLegalPosition(obj, tile)) 
+							((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #C0C0C0;");;
+							//break;
+					}
+				}
+			}
+		}
 
 	}
 

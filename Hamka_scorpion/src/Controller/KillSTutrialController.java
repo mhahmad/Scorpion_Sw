@@ -1186,8 +1186,10 @@ public class KillSTutrialController  extends Application implements Initializabl
 						chosenBlackSoldier.setFitHeight(45);
 						chosenBlackSoldier.setFitWidth(45);			
 						 ((Button) scene.lookup("#"+key)).setGraphic(chosenBlackSoldier);
+						 if( ((Button) scene.lookup("#tile13")).getOnMouseClicked() != null) {
 					 ((Button) scene.lookup("#tile13")).setStyle("-fx-background-color: #f2140c;");
-						 
+		           ((Button) scene.lookup("#tile11")).setOnMouseClicked(null);
+						 }
 					
 					}else { if(i == 3 && j ==0 )  this.FirstNote.setVisible(false);
 						 ((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
@@ -1203,7 +1205,13 @@ public class KillSTutrialController  extends Application implements Initializabl
 
 				}else if (board[i][j]==22) {
 				 //((Button) scene.lookup("#"+key)).setStyle("-fx-background-color: #000000;");
+					
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
+//					if(i == 5 && j==2 ) {
+//						this.secondNote.ssetVisible(true);
+//						this.FirstNote.setVisible(false);
+//						 ((Button) scene.lookup("#tile13")).setStyle("-fx-background-color: #000000;");
+//					}
 			}
 				
 
@@ -1232,16 +1240,26 @@ public class KillSTutrialController  extends Application implements Initializabl
 
 		//Generate Blue Tile - Maybe ! 
 		if((whiteAliveCout == 4 && blackeAliveCout== 4 ) || (whiteAliveCout == 5 && blackeAliveCout== 3 ) ) {
+			  ((Button) scene.lookup("#tile11")).setOnMouseClicked(event -> {
+				  try {
+					this.tileClicked(event);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			  });
 			if(blackeAliveCout== 3) {
 				this.secondNote.setVisible(true);
 				this.FirstNote.setVisible(false);
 				 ((Button) scene.lookup("#tile13")).setStyle("-fx-background-color: #000000;");
+
 			}
 			
 			this.thirdNote.setVisible(true);
 			((Button) scene.lookup("#tile22")).setStyle("-fx-background-color: #ff3414;");
 			((Button) scene.lookup("#tile24")).setStyle("-fx-background-color: #ff3414;");
 			((Button) scene.lookup("#tile31")).setStyle("-fx-background-color: #ff3414;");
+			occupiedTilesOriginalColor(scene);
 			((Button) scene.lookup("#tile13")).setOnMouseClicked(null);
 			((Button) scene.lookup("#tile7")).setOnMouseClicked(null);
 			((Button) scene.lookup("#tile4")).setOnMouseClicked(null);
