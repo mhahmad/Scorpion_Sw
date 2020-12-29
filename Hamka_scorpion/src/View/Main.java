@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import Controller.SysData;
+import Controller.popupQuestion;
+import Controller.winnerWindow;
 import Model.Game;
 import Model.Queen;
 import Model.Soldier;
@@ -160,5 +162,6 @@ public class Main  {
 	g.moveBlackSoldier(s, next ,moves);
 		System.out.println(g.getKillStreak(s));
 	g.moveStreak(s, g.getTileContent(new Tile(4,3)), new Tile(2,1));*/
+	
 	}
 }

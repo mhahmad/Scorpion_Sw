@@ -231,6 +231,7 @@ public class gameplayScreenController extends Application implements Initializab
 	int flag = 0;
 	inGameSettings settings = new inGameSettings();;
 	popupQuestion quesPop = new popupQuestion();
+	winnerWindow winnerWin = new winnerWindow();
 	Tile greenTile = null;
 	Tile redTile = null;
 	public static String p1Name = "p1";
@@ -421,7 +422,22 @@ public class gameplayScreenController extends Application implements Initializab
 			this.timeline.play();
 			this.live_pausedlbl.setText("Live");
 		});
+		
+		winnerWin.nextBtn.setOnAction(e -> {
+			((Stage)winnerWin.nextBtn.getScene().getWindow()).close();
 
+			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
+			Parent toLoad;
+			try {
+				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+				Scene scene = new Scene(toLoad);
+				stage.setScene(scene);
+				stage.centerOnScreen();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
 		quesPop.nextBtn.setOnAction(e -> {
 			quesPop.points.setText("");
 			if(quesPop.nextBtn.getText().equals("Next")) {
@@ -992,6 +1008,8 @@ public class gameplayScreenController extends Application implements Initializab
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
 								winnerLabel.setText(game.winner() + " Wins!");
+								winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
+								winnerWin.display();
 								winnerLabel.setVisible(true);
 								boardOFF();
 							}
@@ -1073,6 +1091,8 @@ public class gameplayScreenController extends Application implements Initializab
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
 									winnerLabel.setText(game.winner() + " Wins!");
+									winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
+									winnerWin.display();
 									winnerLabel.setVisible(true);
 									boardOFF();
 								}
@@ -1372,6 +1392,8 @@ public class gameplayScreenController extends Application implements Initializab
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
 								winnerLabel.setText(game.winner() + " Wins!");
+								winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
+								winnerWin.display();
 								winnerLabel.setVisible(true);
 								boardOFF();
 							}
@@ -1449,6 +1471,8 @@ public class gameplayScreenController extends Application implements Initializab
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
 									winnerLabel.setText(game.winner() + " Wins!");
+									winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
+									winnerWin.display();
 									winnerLabel.setVisible(true);
 									boardOFF();
 								}
