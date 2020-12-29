@@ -876,6 +876,7 @@ public class gameplayScreenController extends Application implements Initializab
 				ClearColoredTiles(scene);
 				System.out.println("Revived");
 				SwapTurn();
+				flag=0;
 				blueTile = null;
 				lockedForBlue = false;
 				InvalidMove = false;
@@ -965,7 +966,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForRedTile = false;
 								}
 							}else if(blueTile != null && blueTile.equals(t)) {
-
+								flag++;
 								lockedForBlue = true;
 							}
 							else if(yellowTiles.contains(t)) {
@@ -1046,6 +1047,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForStreak = false;
 								}else if(blueTile != null && blueTile.equals(t2)) {
 									lockedForBlue = true;
+									flag++;
 								}
 								else if(yellowTiles.contains(t2)) {
 									quesPop.question = SysData.getInstance().randomQuestion();
@@ -1265,6 +1267,7 @@ public class gameplayScreenController extends Application implements Initializab
 			if(game.ressurectSoldier(1, current)) {
 				System.out.println("Revived");
 				SwapTurn();
+				flag=0;
 				blueTile = null;
 				lockedForBlue = false;
 				InvalidMove = false;
@@ -1344,6 +1347,7 @@ public class gameplayScreenController extends Application implements Initializab
 							}// End red Tile
 							else if(blueTile != null && blueTile.equals(t)) {
 								lockedForBlue = true;
+								flag++;
 							}
 							else if(yellowTiles.contains(t)) {
 								//Swapping turn occures after question is answered.
@@ -1419,6 +1423,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForStreak = false;
 								}else if(blueTile != null && blueTile.equals(t2)) {
 									lockedForBlue = true;
+									flag++;
 								}
 								else if(yellowTiles.contains(t2)) {
 									quesPop.question = SysData.getInstance().randomQuestion();
