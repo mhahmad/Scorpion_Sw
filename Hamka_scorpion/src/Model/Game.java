@@ -1088,7 +1088,30 @@ public class Game {
 		return toReturn;
 	}
 
+	/***
+	 * This method generates a 3 random tiles and returns them.
+	 * @return
+	 */
+	public ArrayList<Tile> generateYellowTiles(ArrayList<Tile> poss){
+		ArrayList<Tile> toReturn = new ArrayList<Tile>();
+		int count = 0;
+		for(;;) {
+			int x = (int)(Math.random()*8);
+			int y = (int)(Math.random()*8);
+			
+		//System.out.println(poss);
+			if((board.getEmptyTiles().contains(new Tile(x,y))) && poss.contains(new Tile(x,y))) {
 
+				if(!toReturn.contains(new Tile(x,y))) {
+					toReturn.add(new Tile(x,y));
+					count++;
+				}
+			}
+			if(count ==3) break;
+		}
+		return toReturn;
+	}
+	
 	/***GREEN TILE *** 
 	 * This method generates a green tile of all the possible tiles for the player.
 	 * @param turn
@@ -1118,6 +1141,49 @@ public class Game {
 		return possibleMovesArray.get(randomNumber);
 	}
 
+	//----------------
+	
+	/***GREEN TILE *** 
+	 * This method generates a green tile of all the possible tiles for the player.
+	 * @param turn
+	 * @return
+	 */
+	public Tile generateGreenTile(Color turn,ArrayList<Tile> poss) {
+		HashSet<Tile> allPossibleMoves = new HashSet<Tile>();
+		ArrayList<Tile> possibleMovesArray = new ArrayList<Tile>();
+		if(turn == Color.Black) {
+			HashMap<Tile, Soldier> blackSoldiers = board.getSameColorSoldiers(2);
+			for(Soldier s : blackSoldiers.values()) {
+				if(getPossibleMovesForBlackSoldier(s) != null) {
+					for(Tile t :getPossibleMovesForBlackSoldier(s) ) {
+				//	allPossibleMoves.addAll(getPossibleMovesForBlackSoldier(s));
+					if(poss.contains(t)) allPossibleMoves.add(t) ;
+					}
+			}
+		}
+		}		
+		else {
+
+			HashMap<Tile, Soldier> whiteSoldiers = board.getSameColorSoldiers(1);
+			for(Soldier s : whiteSoldiers.values()) {
+				if( getPossibleMovesForWhiteSoldier(s) !=null) {
+				//	allPossibleMoves.addAll(getPossibleMovesForWhiteSoldier(s));
+					for(Tile t : getPossibleMovesForWhiteSoldier(s)) {
+						if(poss.contains(t)) {
+							allPossibleMoves.add(t) ; 
+						}
+					}
+					
+				}
+			}			
+		}
+		
+		possibleMovesArray.addAll(allPossibleMoves);
+		int numberOfMoves = possibleMovesArray.size();
+		int randomNumber = ThreadLocalRandom.current().nextInt(0 , numberOfMoves );
+		return possibleMovesArray.get(randomNumber);
+	}
+	
 	/**
 	 * @return true if player has exactly 2 soldiers and at least 1 queen, false otherwise
 	 */
@@ -1280,7 +1346,61 @@ public class Game {
 		return null ; 
 	}
 
+	//----------
+	
+		/*** RED TILE ***
+		 * This method generates a random red tile from the player's possible moves and returns it.
+		 * @param turn
+		 * @return
+		 */
+		public Tile generateRedTile(Color turn,ArrayList<Tile> poss) {
+			if(turn == null) return null;
+			ArrayList<Tile> candidates = new ArrayList<Tile>();
+			if(getKills(turn)== null || getKills(turn).size()< 1) {
+				//System.out.println("inside  Red Tile Meth");
+				for(Tile tile : board.getPlayerPositions(turn)) {
+	                // System.out.println(turn.toString()+"  tiles :::: "+tile.getX() + " "+ tile.getY());
+					if(turn.equals(Color.Black) && getPossibleMovesForBlackSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.Black).isEmpty()) {
+					if(getPossibleMovesForBlackSoldier(getTileContent(tile))== null ) System.out.println("the posible moves is null - Black");
+						if(getPossibleMovesForBlackSoldier(getTileContent(tile)) != null) {
+						for(Tile t : getPossibleMovesForBlackSoldier(getTileContent(tile))){
+						if(poss.contains(t)) {
+							candidates.add(t) ;
+						}
+						}
+						}
+						             //  candidates.addAll(getPossibleMovesForBlackSoldier(getTileContent(tile)));
+					}else if (getPossibleMovesForWhiteSoldier(getTileContent(tile))!=null && getBiasQueenKills(Color.White).isEmpty()){
+						if(getPossibleMovesForWhiteSoldier(getTileContent(tile))== null ) System.out.println("the posible moves is null - White");
 
+						if(getPossibleMovesForWhiteSoldier(getTileContent(tile))!= null) {
+						for(Tile t : getPossibleMovesForWhiteSoldier(getTileContent(tile))){
+							if(poss.contains(t)) {
+								candidates.add(t) ;
+								
+							}
+							}
+						}
+	                                //candidates.addAll(getPossibleMovesForWhiteSoldier(getTileContent(tile)));
+					}
+				}
+			}
+			          System.out.println("printing candidates in red Gen"+candidates);
+			int max = candidates.size();
+		//	int max = poss.size();
+			//  System.out.println(candidates);
+			int random = (int)(Math.random()*max);
+			//       System.out.println(" red Tile Feild random : "+ random);
+			//       System.out.println(candidates +" this is candidates ! ");
+			if(candidates.size() > random)
+				return candidates.get(random);
+
+			//       System.out.println("Returning  NULLL ! ");
+			return null ; 
+		}
+
+		//------------------
+		
 	public HashMap<Tile,Soldier> getQueenBiasMoves(Queen queen , String direction){
 		HashMap<Tile,Soldier> movesMap = new HashMap<>();
 		Tile lastTileInBias = null;

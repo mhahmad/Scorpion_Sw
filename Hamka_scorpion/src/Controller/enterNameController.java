@@ -3,6 +3,7 @@ package Controller;
 import Controller.gameplayScreenController;
 import Model.Board;
 import Model.Game;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +12,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -115,6 +118,70 @@ public class enterNameController{
                }
 			 }
 		 });
+		 
+		 // on Enter press 
+		 player2.setOnKeyPressed(new EventHandler<KeyEvent>()
+		    {
+		        @Override
+		        public void handle(KeyEvent ke)
+		        {
+		            if (ke.getCode().equals(KeyCode.ENTER))
+		            {
+		            	 String p1 = player1.getText();
+		    			 String p2 = player2.getText();
+		    			 
+		    			 if(p1.isEmpty() || p2.isEmpty()) {
+		    				 if(p1.isEmpty()) {
+		    					 errorLabel.setVisible(true);
+		    					 player1.setStyle("-fx-border-color : #FF0000; -fx-border-width: 2");
+		    				 }else {
+		    					 player1.setStyle("-fx-border-width: 0");
+		    				 }
+		    				 if(p2.isEmpty()) {
+		    					 errorLabel.setVisible(true);
+		    					 player2.setStyle("-fx-border-color : #FF0000; -fx-border-width: 2");
+		    				 }else {
+		    					 player1.setStyle("-fx-border-width: 0");
+		    				 }
+		    			 }else {
+		    				 // GO TO BOARD SCREEN
+		    				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+		                     Parent root;
+		                   try {
+		                       root = loader.load();
+		                     Scene scene = new Scene(root);
+		                     window.setTitle("Hamka");
+		                     window.setScene(scene);
+		                     gameplayScreenController con = loader.getController();
+		                     gameplayScreenController.p1Name= player1.getText() ;
+		                     gameplayScreenController.p2Name = player2.getText() ; 
+		                 	int[][] startBoard = {
+		                			{-1,2,-1,2,-1,2,-1,2},
+		                			{2,-1,2,-1,2,-1,2,-1},
+		                			{-1,2,-1,2,-1,2,-1,2},
+		                			{0,-1,0,-1,0,-1,0,-1},
+		                			{-1,0,-1,0,-1,0,-1,0},
+		                			{1,-1,1,-1,1,-1,1,-1},
+		                			{-1,1,-1,1,-1,1,-1,1},
+		                			{1,-1,1,-1,1,-1,1,-1}
+		                	};
+		                 	gameplayScreenController.startBoard = startBoard;
+		                 	gameplayScreenController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
+		                 	//gameplayScreenController.game.setBoard(new Board(startBoard));
+		                     con.start(window);
+		                     window.show();
+		                     window.centerOnScreen();
+		                     st.close();
+		                   } catch ( Exception e1) {
+		                       // TODO Auto-generated catch block
+		                       e1.printStackTrace();
+		                   }
+		    			 }
+		            	
+		            }
+		        }
+		    });
+		 
 		 errorLabel.setVisible(false);
 		 errorLabel.setFont(Font.font("Arial Black", FontWeight.NORMAL, FontPosture.REGULAR, 12));
 		 errorLabel.setTextFill(Color.RED);

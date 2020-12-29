@@ -1819,7 +1819,40 @@ public class gameplayScreenController extends Application implements Initializab
 	}
 
 
+//-------------------------
+	
 
+	public ArrayList<Tile> getEmptyNotColoredTiles(Scene s) {
+		//Clear all Empty Tiles 
+		ArrayList<Tile> toReturn = new ArrayList<>() ; 
+		for (Tile tile :this.game.getBoard().getEmptyTiles()) {
+			String possibleTile = tile.getX()+","+tile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						//						System.out.println(key);
+						if(((Button) s.lookup("#"+key)).getStyle().equals(("-fx-background-color: #000000;"))){
+							// the Tile is empty and Black
+							toReturn.add(tile) ;
+						}
+						//break;
+					}
+				}
+			}
+		}
+		//System.out.println("method empty not colored , returning Empty Array ! ");
+		return toReturn  ; 
+
+	}
+	
+	
+	
+	
+	//---------------------------
 
 	public void ClearColoredTiles(Scene s) {
 		//Clear all Empty Tiles 
@@ -1845,7 +1878,7 @@ public class gameplayScreenController extends Application implements Initializab
 	public Tile  GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
 		// color 3 random Empty tiles
 
-		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+		Tile redTile = this.game.generateRedTile(Nowplaying,getEmptyNotColoredTiles(scene))  ; 
 		if(redTile != null ) { 
 			String possibleTile = redTile.getX()+","+redTile.getY();
 			String check = null;
@@ -1875,7 +1908,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 	public Tile GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
 		// color 1 random Empty tile
-		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
+		Tile greenTile = this.game.generateGreenTile(Nowplaying, getEmptyNotColoredTiles(scene)) ; 
 		if(greenTile != null ) { 
 			String possibleTile = greenTile.getX()+","+greenTile.getY();
 			String check = null;
@@ -1929,7 +1962,7 @@ public class gameplayScreenController extends Application implements Initializab
 	public ArrayList<Tile> GenerateYellowTiles(Scene s)  {
 		ArrayList<Tile> tilesToReturn = new ArrayList<Tile>();
 		// color 3 random Empty tiles
-		for (Tile tile : this.game.generateYellowTiles()) {
+		for (Tile tile : this.game.generateYellowTiles(getEmptyNotColoredTiles(scene))) {
 			String possibleTile = tile.getX()+","+tile.getY();
 			String check = null;
 			String key = null;

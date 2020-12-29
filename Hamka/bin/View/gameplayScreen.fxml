@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.gameplayScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.gameplayScreenController">
    <children>
       <Pane fx:id="paneBoard" layoutX="-42.0" layoutY="-4.0" prefHeight="832.0" prefWidth="1023.0" style="-fx-background-color: #6C3131;">
          <children>
@@ -368,7 +368,7 @@
                   <Font name="Roboto" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="GameTime" layoutX="561.0" layoutY="61.0" prefHeight="27.0" prefWidth="47.0" text="00:00" textFill="#ebe3e3">
+            <Label fx:id="GameTime" layoutX="561.0" layoutY="61.0" prefHeight="27.0" prefWidth="47.0" text="0:0" textFill="#ebe3e3">
                <font>
                   <Font size="18.0" />
                </font></Label>
