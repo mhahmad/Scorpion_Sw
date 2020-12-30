@@ -225,7 +225,7 @@ public class gameplayScreenController extends Application implements Initializab
 	@FXML
 	private Label streakLabel;
 
-
+	boolean isGameOver = false;
 	ArrayList<Tile> yellowTiles = new ArrayList<>();
 	Tile blueTile = null;
 	int flag = 0;
@@ -267,10 +267,10 @@ public class gameplayScreenController extends Application implements Initializab
 	public static Board loadedBoard = null;
 
 	public static int[][] startBoard = {
-			{-1,2,-1,2,-1,0,-1,0},
-			{0,-1,0,-1,22,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
+			{0,-1,0,-1,2,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
 			{1,-1,1,-1,1,-1,1,-1},
 			{-1,1,-1,1,-1,1,-1,1},
@@ -943,7 +943,8 @@ public class gameplayScreenController extends Application implements Initializab
 
 							game.moveBlackSoldier(prevS, t, possible);
 							Soldier afterKill;
-
+							if(game.isGameOver())
+								isGameOver = true;
 							//check if a killstreak is available.
 							boolean killed = false;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
@@ -985,7 +986,7 @@ public class gameplayScreenController extends Application implements Initializab
 								flag++;
 								lockedForBlue = true;
 							}
-							else if(yellowTiles.contains(t)) {
+							else if(yellowTiles.contains(t) && !isGameOver) {
 								quesPop.question = SysData.getInstance().randomQuestion();
 								quesPop.display();
 								SysData.getInstance().questionIsShown(quesPop.question);
@@ -1004,14 +1005,16 @@ public class gameplayScreenController extends Application implements Initializab
 							//Timer Related - 
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
+							blueTile = null;
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
+								winnerLabel.setVisible(true);
+								boardOFF();
 								winnerLabel.setText(game.winner() + " Wins!");
 								winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
 								winnerWin.display();
-								winnerLabel.setVisible(true);
-								boardOFF();
+								
 							}
 
 							System.out.println("Now It's White's turn");
@@ -1039,6 +1042,8 @@ public class gameplayScreenController extends Application implements Initializab
 								boolean killed = false;
 								game.queenMove(prevQ, t2, possibleQueen);
 								Queen afterKill;
+								if(game.isGameOver())
+									isGameOver = true;
 								if(k!=null) { //if this move was a kill, then we need to check for a killstreak.
 									killed = true;
 									afterKill = (Queen) game.getTileContent(t2);
@@ -1067,7 +1072,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForBlue = true;
 									flag++;
 								}
-								else if(yellowTiles.contains(t2)) {
+								else if(yellowTiles.contains(t2) && !isGameOver) {
 									quesPop.question = SysData.getInstance().randomQuestion();
 									quesPop.display();
 									SysData.getInstance().questionIsShown(quesPop.question);
@@ -1086,15 +1091,17 @@ public class gameplayScreenController extends Application implements Initializab
 								//Timer Related - 
 								occupiedTilesOriginalColor(scene) ; 
 								ClearColoredTiles(scene);
+								blueTile = null;
 								//GenerateYellowTiles(scene);
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
+									winnerLabel.setVisible(true);
+									boardOFF();
 									winnerLabel.setText(game.winner() + " Wins!");
 									winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
 									winnerWin.display();
-									winnerLabel.setVisible(true);
-									boardOFF();
+									
 								}
 								System.out.println("Now It's White's turn");
 								//clickedSoldier=null;
@@ -1330,6 +1337,8 @@ public class gameplayScreenController extends Application implements Initializab
 							game.moveWhiteSoldier(prevS, t, possible);
 							//check if a killstreak is available.
 							boolean killed = false;
+							if(game.isGameOver())
+								isGameOver = true;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
 							Soldier afterKill;
 							if(kills!=null && !kills.isEmpty() && !lockedForRedTile) { //if this move was a kill, then we need to check for a killstreak.
@@ -1369,7 +1378,7 @@ public class gameplayScreenController extends Application implements Initializab
 								lockedForBlue = true;
 								flag++;
 							}
-							else if(yellowTiles.contains(t)) {
+							else if(yellowTiles.contains(t) && !isGameOver) {
 								//Swapping turn occures after question is answered.
 								quesPop.question = SysData.getInstance().randomQuestion();
 								quesPop.display();
@@ -1387,15 +1396,17 @@ public class gameplayScreenController extends Application implements Initializab
 							//Timer Related - 
 							occupiedTilesOriginalColor(scene) ; 
 							ClearColoredTiles(scene);
+							blueTile = null;
 							//GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							if(game.isGameOver()) {
+								winnerLabel.setVisible(true);
+								boardOFF();
 								winnerLabel.setText(game.winner() + " Wins!");
 								winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
 								winnerWin.display();
-								winnerLabel.setVisible(true);
-								boardOFF();
+								
 							}
 
 							System.out.println("Now It's Black's turn");
@@ -1420,6 +1431,8 @@ public class gameplayScreenController extends Application implements Initializab
 								boolean killed = false;
 								game.queenMove(prevQ, t2, possibleQueen);
 								Queen afterKill;
+								if(game.isGameOver())
+									isGameOver = true;
 								if(k!=null) { //if this move was a kill, then we need to check for a killstreak.
 									killed = true;
 									afterKill = (Queen) game.getTileContent(t2);
@@ -1447,7 +1460,7 @@ public class gameplayScreenController extends Application implements Initializab
 									lockedForBlue = true;
 									flag++;
 								}
-								else if(yellowTiles.contains(t2)) {
+								else if(yellowTiles.contains(t2) && !isGameOver) {
 									quesPop.question = SysData.getInstance().randomQuestion();
 									quesPop.display();
 									SysData.getInstance().questionIsShown(quesPop.question);
@@ -1465,16 +1478,18 @@ public class gameplayScreenController extends Application implements Initializab
 								//Timer Related - 
 								occupiedTilesOriginalColor(scene); //KEEP 
 								ClearColoredTiles(scene); 
+								blueTile = null;
 								//GenerateYellowTiles(scene);
 								//GenerateRedTiles(scene, Color.White);
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 								if(game.isGameOver()) {
+									winnerLabel.setVisible(true);
+									boardOFF();
 									winnerLabel.setText(game.winner() + " Wins!");
 									winnerWin.winnerLabel.setText(game.winner() + "  Wins .");
 									winnerWin.display();
-									winnerLabel.setVisible(true);
-									boardOFF();
+									
 								}
 								System.out.println("Now It's White's turn");
 								//clickedSoldier=null;

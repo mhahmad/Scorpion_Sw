@@ -1899,7 +1899,7 @@ public class Game {
 	 * @return
 	 */
 	public boolean isGameOver() {
-		if((this.whitePlayerSoldiers == 0 && this.whitePlayerQueens == 0 ) || (this.blackPlayerQueens == 0 && this.blackPlayerSoldiers == 0) || (noMoreMovesForPlayer(Color.Black) || noMoreMovesForPlayer(Color.White)))
+		if((this.whitePlayerSoldiers == 0 && this.whitePlayerQueens == 0 ) || (this.blackPlayerQueens == 0 && this.blackPlayerSoldiers == 0) || (noMoreMovesForPlayer(Color.Black) && noMoreMovesForPlayer(Color.White)) || (noMoreMovesForPlayer(Color.White) && noMoreMovesForPlayer(Color.Black)))
 			return true;
 		else 
 			return false;
