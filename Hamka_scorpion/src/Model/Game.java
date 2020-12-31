@@ -473,7 +473,7 @@ public class Game {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(new Queen(11), nextPos);
 						board.removeSoldier(queenToBurn, queenToBurn.getPosition());
-						this.whitePlayerSoldiers--;
+						this.whitePlayerQueens--;
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen, you also missed a kill , your queen " + queenToBurn.getPosition() + " is dead.");
 					}
 				}
@@ -606,7 +606,7 @@ public class Game {
 						board.removeSoldier(s, currentPos);
 						board.setSoldier(new Queen(22), nextPos);
 						board.removeSoldier(queenToBurn, queenToBurn.getPosition());
-						this.blackPlayerSoldiers--;
+						this.blackPlayerQueens--;
 						System.out.println("soldier moved to " + nextPos.getX() + "," + nextPos.getY() + " and became a queen, you also missed a kill , your queen " + queenToBurn.getPosition() + " is dead.");
 					}
 				}
@@ -736,6 +736,10 @@ public class Game {
 				}else {
 					System.out.println("You missed a prior kill , therefore your queen is burned");
 					board.removeSoldier(queen, queen.getPosition());
+					if(queen.getSoldierNumber() == 22)
+						this.blackPlayerQueens--;
+					else
+						this.whitePlayerQueens--;
 				}
 			}else if(((getKills(turn) != null && !getKills(turn).isEmpty()) || (getAllQueensKills(turn) != null &&!getAllQueensKills(turn).isEmpty())) && possibleMoves.get(next) == null) {
 				if(!getKills(turn).isEmpty()) {
