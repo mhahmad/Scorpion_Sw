@@ -27,13 +27,24 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class loadGameScreen extends Application implements Initializable {
 
+	@FXML
+	private ImageView background;
+
+	@FXML
+	private Pane headerPane;
+
+	@FXML
+	private Pane middlePane;
 	@FXML
 	private Button backBtn;
 
@@ -141,6 +152,8 @@ public class loadGameScreen extends Application implements Initializable {
             	 loadGameBtn.setDisable(false);
              }
          });
+		darkTheme(SysData.darkTheme);
+
 	}
 	
 	
@@ -217,4 +230,18 @@ public class loadGameScreen extends Application implements Initializable {
 		
 
 	}
+	
+	public void darkTheme(boolean isOn) {
+    	if(isOn) {
+    		background.setImage(new Image("Resources/darkThemeBackground.png"));
+    		headerPane.setStyle("-fx-background-color : #201C1C");
+    		middlePane.setStyle("-fx-background-color :  #272626 ; -fx-background-radius:  17; -fx-border-radius:  15; -fx-border-color: #444444; -fx-border-width:  5;");
+    	
+    	}else {
+    		background.setImage(new Image("Resources/mainMenuBackground.png"));
+    		headerPane.setStyle("-fx-background-color :  #630000;");
+    		middlePane.setStyle("-fx-background-color :  #630000 ; -fx-background-radius:  17; -fx-border-radius:  15; -fx-border-color: #444444; -fx-border-width:  5;");
+    	
+    	}
+    }
 }

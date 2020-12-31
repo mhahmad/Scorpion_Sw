@@ -1,20 +1,33 @@
 package Controller;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-public class tutorialScreen extends Application{
+public class tutorialScreen extends Application implements Initializable{
 
+	@FXML
+    private ImageView background;
+
+    @FXML
+    private Pane headerPane;
+
+    @FXML
+    private Pane middlePane;
 	@FXML
     private ImageView queenConvertBtn;
 
@@ -181,4 +194,27 @@ public class tutorialScreen extends Application{
 			   Scene scene = new Scene(toLoad);
 			   stage.setScene(scene);
 		    }
+
+
+	    
+	    public void darkTheme(boolean isOn) {
+	    	if(isOn) {
+	    		background.setImage(new Image("Resources/darkThemeBackground.png"));
+	    		headerPane.setStyle("-fx-background-color : #201C1C");
+	    		middlePane.setStyle("-fx-background-color :  #272626 ; -fx-background-radius: 33; -fx-border-radius: 30; -fx-border-color: #444444; -fx-border-width: 8;");
+	    	
+	    	}else {
+	    		background.setImage(new Image("Resources/mainMenuBackground.png"));
+	    		headerPane.setStyle("-fx-background-color :  #630000;");
+	    		middlePane.setStyle("-fx-background-color :  #630000 ; -fx-background-radius: 33; -fx-border-radius: 30; -fx-border-color: #444444; -fx-border-width: 8;");
+	    	
+	    	}
+	    }
+
+		@Override
+		public void initialize(URL location, ResourceBundle resources) {
+			// TODO Auto-generated method stub
+			darkTheme(SysData.darkTheme);
+
+		}
 }

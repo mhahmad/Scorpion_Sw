@@ -20,13 +20,23 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class leaderboardScreen extends Application implements Initializable {
 
     @FXML
     private Button backBtn;
+    @FXML
+    private ImageView background;
 
+    @FXML
+    private Pane headerPane;
+
+    @FXML
+    private Pane middlePane;
     @FXML
     private TableView<Winner> leaderboardTable;
     @FXML
@@ -73,6 +83,7 @@ public class leaderboardScreen extends Application implements Initializable {
 		 this.resultColumn.setCellValueFactory(new PropertyValueFactory<>("winnerPoints"));
 
 	        this.leaderboardTable.setItems(getWinners());
+	        darkTheme(SysData.darkTheme);
 	}
 	
 	
@@ -83,4 +94,18 @@ public class leaderboardScreen extends Application implements Initializable {
 		System.out.println(winners);
 		return winners;
 	} 
+	
+	public void darkTheme(boolean isOn) {
+    	if(isOn) {
+    		background.setImage(new Image("Resources/darkThemeBackground.png"));
+    		headerPane.setStyle("-fx-background-color : #201C1C");
+    		middlePane.setStyle("-fx-background-color :  #272626 ; -fx-background-radius:  17; -fx-border-radius:  15; -fx-border-color: #444444; -fx-border-width: 6;");
+    	
+    	}else {
+    		background.setImage(new Image("Resources/mainMenuBackground.png"));
+    		headerPane.setStyle("-fx-background-color :  #630000;");
+    		middlePane.setStyle("-fx-background-color :  #630000 ; -fx-background-radius:  17; -fx-border-radius:  15; -fx-border-color: #444444; -fx-border-width: 6;");
+    	
+    	}
+    }
 }

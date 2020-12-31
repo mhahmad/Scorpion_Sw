@@ -192,7 +192,10 @@ public class enterNameController{
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 layout.getChildren().addAll(label1,player1,label2,player2,errorLabel,pane);
-		 layout.setStyle("-fx-background-color: #8B0000	");
+		 if(SysData.darkTheme)
+			 layout.setStyle("-fx-background-color: #3E3E3E	");
+		 else
+			 layout.setStyle("-fx-background-color: #8B0000	");
 		 Scene scene = new Scene(layout);
 		 window.setScene(scene);
 		 window.showAndWait();

@@ -31,7 +31,7 @@ public class SysData {
 
 	private static SysData instance = new SysData();
 	public static int count = 0;
-	
+	public static boolean darkTheme = false;
 
 	private SysData() {}
 	
@@ -140,6 +140,9 @@ public class SysData {
 	}
 	
 	
+	public void darkTheme(boolean on) {
+		darkTheme = on;
+	}
 	/***
 	 * 
 	 * @param winner

@@ -79,7 +79,8 @@ import javafx.util.Duration;
 public class gameplayScreenController extends Application implements Initializable {
 
 
-
+	@FXML
+	private Pane headerPane;
 	@FXML
 	private Pane paneBoard;
 
@@ -268,7 +269,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 	public static int[][] startBoard = {
 			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,0,-1,0,-1},
+			{0,-1,2,-1,22,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
 			{0,-1,0,-1,2,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
@@ -345,6 +346,7 @@ public class gameplayScreenController extends Application implements Initializab
 
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
+		darkTheme(SysData.darkTheme);
 		if(p1Name == null)
 			p1Name = "p1";
 		if(p2Name == null)
@@ -2198,5 +2200,15 @@ public class gameplayScreenController extends Application implements Initializab
 		}
 	}
 
-
+	public void darkTheme(boolean isOn) {
+    	if(isOn) {
+    		headerPane.setStyle("-fx-background-color : #201C1C");
+    		paneBoard.setStyle("-fx-background-color :  #3E3E3E ;");
+    	
+    	}else {
+    		headerPane.setStyle("-fx-background-color :  #630000;");
+    		paneBoard.setStyle("-fx-background-color :   #6C3131 ;");
+    	
+    	}
+    }
 }

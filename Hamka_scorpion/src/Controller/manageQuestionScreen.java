@@ -27,6 +27,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -72,7 +74,14 @@ public class manageQuestionScreen extends Application implements Initializable {
 
     @FXML
     private TextField ans4Field;
+    @FXML
+    private ImageView background;
 
+    @FXML
+    private Pane headerPane;
+
+    @FXML
+    private Pane middlePane;
     @FXML
     private ComboBox<String> combo ;
     @FXML
@@ -84,6 +93,7 @@ public class manageQuestionScreen extends Application implements Initializable {
 	@Override
 	public void initialize(java.net.URL location, ResourceBundle resources) {
 		// TODO Auto-generated method stub
+		darkTheme(SysData.darkTheme);
 		ObservableList<String> options = 
 			    FXCollections.observableArrayList(
 			        "1",
@@ -241,4 +251,20 @@ public class manageQuestionScreen extends Application implements Initializable {
 		return questions;
 	}
 
+	
+	public void darkTheme(boolean isOn) {
+    	if(isOn) {
+    		background.setImage(new Image("Resources/darkThemeBackground.png"));
+    		headerPane.setStyle("-fx-background-color : #201C1C");
+    		middlePane.setStyle("-fx-background-color :  #272626 ; -fx-background-radius:  12; -fx-border-radius:  10; -fx-border-color: #444444; -fx-border-width: 4;");
+    		innerPanel.setStyle("-fx-background-color :   #444343 ;  -fx-border-color: #000000; -fx-border-width:  1;");
+    		
+    	}else {
+    		background.setImage(new Image("Resources/mainMenuBackground.png"));
+    		headerPane.setStyle("-fx-background-color :  #630000;");
+    		middlePane.setStyle("-fx-background-color :  #630000 ; -fx-background-radius:  12; -fx-border-radius:  10; -fx-border-color: #444444; -fx-border-width: 4;");
+    		innerPanel.setStyle("-fx-background-color :   #8B0000 ;  -fx-border-color: #000000; -fx-border-width:  1;");
+
+    	}
+    }
 }
