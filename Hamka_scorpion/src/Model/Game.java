@@ -1219,6 +1219,27 @@ public class Game {
 		return null;
 	}
 
+	///-------------------------------
+	/**
+	 * @return random Tile for a tile in the board as Blue tile.
+	 */
+	public Tile generateBlueTile(Color turn, ArrayList<Tile> poss) {
+		if(checkIfBlueTile(turn)) {
+			while(true) {
+				int x = (int)(Math.random()*8);
+				int y = (int)(Math.random()*8);
+				Tile tile = new Tile(x,y);
+				if( poss.contains(tile)) {
+					return tile;
+				}
+				
+			}
+			}
+		
+		System.out.println("Blue Til Gene- returninng Null ");
+		return null;
+	}
+	
 	/**
 	 * 
 	 * @param obj the type of the soldier (white or black)

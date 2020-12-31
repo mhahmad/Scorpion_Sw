@@ -2009,8 +2009,8 @@ public class gameplayScreenController extends Application implements Initializab
 
 		// color 1 random Empty tile
 		System.out.println(this.game == null);
-
-		Tile BlueTile = this.game.generateBlueTile(game.getTurn()) ; 
+              System.out.println(game.getTurn()+ " for Generating Blue Tile ");
+		Tile BlueTile = this.game.generateBlueTile(game.getTurn(),getEmptyNotColoredTiles(scene)) ; 
 		if(BlueTile != null ) { 
 			String possibleTile = BlueTile.getX()+","+BlueTile.getY();
 			String check = null;
