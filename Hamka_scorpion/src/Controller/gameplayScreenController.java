@@ -268,14 +268,14 @@ public class gameplayScreenController extends Application implements Initializab
 	public static Board loadedBoard = null;
 
 	public static int[][] startBoard = {
+			{-1,2,-1,0,-1,2,-1,2},
+			{2,-1,1,-1,2,-1,2,-1},
+			{-1,0,-1,2,-1,2,-1,0},
+			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,2,-1,22,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,2,-1,0,-1},
-			{-1,0,-1,0,-1,0,-1,0},
-			{1,-1,1,-1,1,-1,1,-1},
-			{-1,1,-1,1,-1,1,-1,1},
-			{1,-1,1,-1,1,-1,1,-1}
+			{0,-1,0,-1,0,-1,0,-1},
+			{-1,2,-1,2,-1,0,-1,0},
+			{11,-1,0,-1,0,-1,0,-1}
 	};
 
 	// check Blue tile Gen 
@@ -950,7 +950,7 @@ public class gameplayScreenController extends Application implements Initializab
 							//check if a killstreak is available.
 							boolean killed = false;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
-							if(kills!=null && !kills.isEmpty() &&  !lockedForRedTile) { //if this move was a kill, then we need to check for a killstreak.
+							if(kills!=null && !kills.isEmpty() ) { //if this move was a kill, then we need to check for a killstreak.
 								killed = true;
 								afterKill = game.getTileContent(t);
 								if(afterKill != null)
@@ -1343,7 +1343,7 @@ public class gameplayScreenController extends Application implements Initializab
 								isGameOver = true;
 							ArrayList<Tile> kills = game.getKillMove(possible, prevT);
 							Soldier afterKill;
-							if(kills!=null && !kills.isEmpty() && !lockedForRedTile) { //if this move was a kill, then we need to check for a killstreak.
+							if(kills!=null && !kills.isEmpty() ) { //if this move was a kill, then we need to check for a killstreak.
 								killed = true;
 								afterKill = game.getTileContent(t);
 								if(afterKill != null)
