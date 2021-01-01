@@ -1,4 +1,5 @@
-package Controller;
+  package View;
+
 
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -7,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -54,6 +56,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
@@ -71,8 +74,10 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
-public class GrnOrangetutrialController extends Application implements Initializable{
 
+public class TiletutorialController   extends Application implements Initializable {
+
+	
 
 	@FXML
 	private Pane paneBoard;
@@ -177,38 +182,18 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	@FXML
 	private Button tile28;
 
-	@FXML
-	private Label p1;
 
-
-//	@FXML
-//	private Label pointsLabel;
-
-	@FXML
-	private Label p1Points;
-
-	@FXML
-	private Label pointsLabel1;
-
-
-	  
-    @FXML
-    private Button ExitBtn;
-	
-
-	@FXML
-	private Label displayTimer;
-	
-
- 
-    @FXML
-    private Label live_pausedlbl;
+	 @FXML
+	    private Button ExitBtn;
     
-   //-------------------Colored Tiles 
-    
+    @FXML
+    private Button firstNote;
+
 
     @FXML
     private Button YellowTileBtn;
+
+
 
     @FXML
     private Button RedTileBtn;
@@ -218,20 +203,8 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
     @FXML
     private Button BlueTileBtn;
-    
-    @FXML
-    private Button secondNote;
 
-    @FXML
-    private Button FirstNote;
-
-    @FXML
-    private Button thirdNote;
-    
-    @FXML
-    private Button timeUpBtn;
-    //------------------
-    
+   
 	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
     public static String p2Name ="p2";
@@ -240,18 +213,11 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	Button br = new Button();
 	Button tr = new Button();
 	Button bl = new Button();
-	
-	//---------------------Timer RElated ! s
-		private static final Integer STARTTIME = 120; // We can make it Max turn Time ! 
-		private static Timeline timeline;
-    @FXML
-    private Label timelbl;
-    private static IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);    
-             // Method res setTimmer() ; 
-    
-   String GreenTile= " " ; 
-    
-    private final StringProperty time = new SimpleStringProperty() ; 
+	//---------------------------------------
+	// Colored Tile Related 
+	Button BlueTile = null ; 
+	ArrayList<Tile> WelcomeSoldeirBack = null ; 
+ 
     //-----------------------------------
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
@@ -260,14 +226,14 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 
 	private int[][] startBoard = {
-			{-1,2,-1,2,-1,2,-1,0},
-			{0,-1,0,-1,2,-1,0,-1},
-			{-1,2,-1,0,-1,2,-1,0},
+			{-1,0,-1,0,-1,0,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,1,-1,0,-1},
-			{-1,1,-1,1,-1,1,-1,1},
-			{0,-1,1,-1,0,-1,0,-1}
+			{0,-1,0,-1,0,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
+			{0,-1,0,-1,0,-1,0,-1},
+			{-1,0,-1,0,-1,0,-1,0},
+			{0,-1,0,-1,0,-1,0,-1}
 	};
 	
 	// check Blue tile Gen 
@@ -285,15 +251,15 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	public static Parent  root;
 	public static Scene scene;
 	GridPane queenArrows = new GridPane();
-
+      static boolean BoardLocked = false ; 
 	String direction = null;
-	
+	String SoldeirReturns= "10,10" ; 
 	//private Game game  = new Game("White", "Black", startBoard);
 	private Game game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		root = FXMLLoader.load(getClass().getResource("/View/GreenOrangeTileTutorial.fxml"));
+		root = FXMLLoader.load(getClass().getResource("tutorialColoredTiles.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
@@ -303,23 +269,14 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
-
-
-
-
-		//((Button) scene.lookup("#tile3")).setGraphic(img);
-		//	((Button)root.getChildrenUnmodifiable().get(root.getChildrenUnmodifiable().indexOf( (Button) scene.lookup("#tile3")))).setGraphic(img); 
-		stage.show();
+        stage.show();
 		stage.setTitle("Hamka - Match");
-         setTimmer() ; // Black's Turn Starts when opening window ! 
          
 
-
-
-
-
+	
 	}
 	
+
 	   @FXML
 	    void ExitBtnClicked(ActionEvent event) {
 	    	
@@ -328,7 +285,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 			Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
 			Parent toLoad;
 			try {
-				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 				Scene scene = new Scene(toLoad);
 				stage.setScene(scene);
 				stage.centerOnScreen();
@@ -341,9 +298,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 				stage.setTitle("Hamka - Match");
 		         
 	    }
-		
-
-
+	   
 
 	public static void main(String[] arg) {
 		launch(arg);
@@ -352,150 +307,23 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		
-		 Timer t = new javax.swing.Timer(1000, new ActionListener(){
-		     
-				@Override
-				public void actionPerformed(java.awt.event.ActionEvent arg0) {
-					// TODO Auto-generated method stub
-					 boolean x=true;
-		     		    long displayMinutes=0;
-		     		    //long secondspassed=0 ; 
-		     		    long starttime=System.currentTimeMillis();
-		     		 //   System.out.println("Timer:");
-		     		    
-		     		    if(scene == null) {
-		     			try {
-							root = FXMLLoader.load(getClass().getResource("/View/GreenOrangeTileTutorial.fxml"));
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-		     			scene = new Scene(root);
-		     		    }
-		     		    while(  scene.getWindow()!=null && scene.getWindow().isShowing())
-		     		    {
-		     		    	
-		     		        try {
-		     					TimeUnit.SECONDS.sleep(1);
-		     				} catch (InterruptedException e) {
-		     					// TODO Auto-generated catch block
-		     					e.printStackTrace();
-		     				}
-		     		        long timepassed=System.currentTimeMillis()-starttime;
-		     		      long  secondspassed=timepassed/1000;
-		     		        if(secondspassed==60)
-		     		        {
-		     		            secondspassed=0;
-		     		            starttime=System.currentTimeMillis();
-		     		        }
-		     		        if((secondspassed%60)==0)
-		     		        displayMinutes++;
-
-		              	time.set( displayMinutes+" :: "+secondspassed);
-		     		System.out.println(time.getValue());
-		     	
-
-		     		
-		     	}				
-					
-				}
-		    });
-		    t.start();
 		    
 	      //------------------------------
 		buildTilesBoardMap();
-		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
-		p1.setText(game.getblackPlayer());
-		p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
-		p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
+	
+
 		
 		
 		
-		
-		settings.saveBtn.setOnAction(e -> {
-			TextInputDialog td = new TextInputDialog();
-			td.initStyle(StageStyle.UNDECORATED);
-			td.setGraphic(null);
-			td.setHeaderText("Save Game File :");
-			Optional<String> result = td.showAndWait();
-			if(result.isPresent()) {
-				Board board = game.getBoard();
-				Color turn = game.getTurn();
-				//SysData.getInstance().saveGame(board, turn,result.get());
-				settings.window.close();
-			}
-			
-
-		});
-//----------Timer related
-	    timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
-	        // code to execute here...
-	        // e.g.
-	        //System.out.println("Time left: "+newTimeValue);
-	    	
-		 //   System.out.println("Time left: "+timeSeconds.toString());
-	    	
-//		    System.out.println("time left : "+newTimeValue);
-		    if(newTimeValue.intValue() == 90) 	{
-		    	GenerateGreenTiles(scene, Color.Black);
-		    	this.FirstNote.setVisible(true);
-				this.secondNote.setVisible(false);
-				//this.thirdNote.setVisible(true);
-				this.timeUpBtn.setVisible(false);
-
-		    }
-		    if(newTimeValue.intValue() == 30) {
-		    	GenerateOrangeTiles(scene, Color.Black);
-		    	this.FirstNote.setVisible(false);
-				this.secondNote.setVisible(true);
-				this.thirdNote.setVisible(false);
-				this.timeUpBtn.setVisible(false);
-
-		    }
-		    if(newTimeValue.intValue() == 0) {
-		    	GenerateOrangeTiles(scene, Color.Black);
-		    	this.FirstNote.setVisible(false);
-				this.secondNote.setVisible(false);
-				this.thirdNote.setVisible(false);
-				this.timeUpBtn.setVisible(true);
-				boardOFF( ) ;
-		    }
-		    
-		 //   System.err.println("oldEime Value : "+oldTimeValue);
-		    if(newTimeValue.intValue() > oldTimeValue.intValue()) {
-		    	System.out.println("new is bogger than old ! and its :"+game.getTurn());
-           if(this.game.getTurn().equals(Color.White)) {	// now its white's turn - adding the time points from the Black's turn    
-	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
-        	this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
-        System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
-              ((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
-
-          }
-           
-           if(this.game.getTurn().equals(Color.Black)) {	   // white's Turn 
- 	    	  System.out.println("its :------------------------ "+this.game.getTurn());  	
- 	    		this.game.setblackPlayerPoints( this.game.getblackPlayerPoints() +oldTimeValue.intValue()-60) ; 
- 	           System.out.println("Adding points to Black " +(oldTimeValue.intValue()-60));
- 	                 ((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
-
-           }
-        	   
-		    }
-	    });
-	    
-        
-	   
-            
-        
-	  //  OverAllTimer();
 	    //------------------------------
-
+	
 		queenArrows.setVisible(false);
 		queenArrows.setVgap(2);
 		queenArrows.setHgap(2);
 		queenArrows.setPadding(new Insets(0, 10, 0, 10));
 		queenArrows.setMinHeight(20);
 		queenArrows.setMinWidth(20);
+		
 		queenArrows.add(tl,5,5);
 		queenArrows.add(br, 6, 6);
 		queenArrows.add(tr, 6, 5);
@@ -506,9 +334,13 @@ public class GrnOrangetutrialController extends Application implements Initializ
 			queenArrows.setVisible(false);
 		});
 		paneBoard.getChildren().add(queenArrows);
+
 		//pane.setVisible(true);
 		queenArrows.setTranslateX(10);
 		queenArrows.setTranslateY(10);
+		
+		
+		
 		//        orig.getChildren().add(b5);
 		//        ss.getChildren().addAll(orig,pane);
 		ImageView b1Image = new ImageView(
@@ -529,43 +361,14 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		tr.setStyle("-fx-background-color: transparent;");
 		bl.setStyle("-fx-background-color: transparent;");
 		
+		
 		OrangeGreenTileBtn.setStyle(" -fx-background-radius : 5em ; -fx-background-color: linear-gradient(from 0px 0px to 210px 0px, green 0%, green 36.84%, orange 36.84%, orange 100%);");
-
-//------------ Notes :
-		this.FirstNote.setVisible(false);
-		this.secondNote.setVisible(false);
-		this.thirdNote.setVisible(false);
-          this.timeUpBtn.setVisible(false);
-
+	 this.firstNote.setVisible(true);
+	   
+	   
 	}
 
-	//	@FXML
-	//	public Stage flip() {
-	//	 Stage s = (Stage)tile1.getScene().getWindow();
-	//	 return s ;
-	//	}
-	//	
-	//	public void FillBoard() {
-	//		
-	//		try {
-	//		for(int i = 0; i<=7; i++) {
-	//			for(int j = 0; j<=7; j++) {
-	//            ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
-	//            ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/black_piece.png")));
-	//
-	//    		String value = i + ","+j;
-	//    		String key = tilesBoardMap.get(value);
-	//			Button btn = (Button) flip().getScene().lookup("#"+key);
-	//         //   System.out.println(tile1);
-	//            tile1.setGraphic(blackSoldier);
-	//    		
-	//			}
-	//		}
-	//		}catch (Exception e) {
-	//			e.getCause();
-	//			e.printStackTrace();
-	//		}
-	//	}
+	
 
 	public void buildTilesBoardMap() {
 		tilesBoardMap = new HashMap<>();
@@ -611,80 +414,91 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	}
 
 
-//------------------------Timer Related  
-
-	public static void setTimmer() {
-		
-	//	 Timeline timeline = new Timeline(); 
-		//sprivate Label timerLabel = new Label();
-		 
-
-	//	 IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
-		
-		   if(timeline != null) {
-		    	System.out.println("timeLine stoping ");
-               timeline.stop();
-		    }
-		   
-		if(((Label) scene.lookup("#"+"timelbl")) != null) {
-			  ((Label) scene.lookup("#"+"timelbl")).textProperty().unbind();
-		    ((Label) scene.lookup("#"+"timelbl")).setText(timeSeconds.toString());
-
-		   // ((Label) scene.lookup("#"+"timelbl")).setTextFill(Color.valueOf("#00000"));
-//		    ((Label) scene.lookup("#"+"timelbl")).setStyle("-fx-font-size: 4em;");
-
-		    // Bind the timerLabel text property to the timeSeconds property
-		    ((Label) scene.lookup("#"+"timelbl")).textProperty().bind(timeSeconds.asString());
-
-		}
-		 
-
-            timeSeconds.set(STARTTIME);
-            timeline = new Timeline();
-
-            KeyValue keyValue = new KeyValue(timeSeconds, 0);
-            KeyFrame keyFrame = new KeyFrame(Duration.seconds(STARTTIME + 1), keyValue);
-
-            timeline.getKeyFrames().add(keyFrame);
-            timeline.playFromStart();
-
-     System.out.println("get every seconds value and display to console window");
-		 
-	}
-
-//-------------------------------------
+//-----------------------Color Tile Buttons Related  
 	
-	  @FXML
+	 @FXML
 	    void BlueTileBtnClicked(ActionEvent event) {
-
-			 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-				
-			 FXMLLoader loader = new FXMLLoader(BlueTileTutController.class.getResource("/View/BlueTileTutorial.fxml"));
-			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-	        Parent root;
-	      try {
-	          root = loader.load();
-	        Scene scene = new Scene(root);
-	        window.setTitle("Hamka");
-	        window.setScene(scene);
-	        BlueTileTutController con = loader.getController();
-	 
-	        con.start(window);
-	        window.show();
-	        window.centerOnScreen();
-	    	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-	    	} catch ( Exception e1) {
-	          // TODO Auto-generated catch block
-	          e1.printStackTrace();
-	      }
-          
+ 
+		 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+		 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("BlueTileTutorial.fxml"));
+		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+        Parent root;
+      try {
+          root = loader.load();
+        Scene scene = new Scene(root);
+        window.setTitle("Hamka");
+        window.setScene(scene);
+        BlueTileTutController con = loader.getController();
+ 
+        con.start(window);
+        window.show();
+        window.centerOnScreen();
+    //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+    	} catch ( Exception e1) {
+          // TODO Auto-generated catch block
+          e1.printStackTrace();
+      }
+      
+//		int [][] tempBoard = {
+//					{-1,0,-1,2,-1,0,-1,22},
+//					{0,-1,2,-1,0,-1,0,-1},
+//					{-1,0,-1,0,-1,0,-1,0},
+//					{0,-1,0,-1,0,-1,0,-1},
+//					{-1,0,-1,0,-1,0,-1,0},
+//					{0,-1,0,-1,0,-1,0,-1},
+//					{-1,1,-1,0,-1,0,-1,0},
+//					{0,-1,0,-1,1,-1,1,-1}
+//			};
+//		 
+//          this.game.setBoard(new Board(tempBoard));
+//          try {
+//			refreshBoard(game, scene, root);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//          // Setting up the Blue Tile
+//          this.BlueTile = ((Button)scene.lookup("#tile15")) ; 
+//                ((Button)scene.lookup("#tile15")).setStyle("-fx-background-color: #2EB9FF;");             
+//                this.secondNote.setVisible(false);
+//                this.thirdNote.setVisible(false);
+//                this.FourthNote.setVisible(false);
+//                this.instructions.setVisible(true);
+//           	 this.firstNote.setVisible(true);
+           	   
 	    }
+
 
 	    @FXML
 	    void OrangeTileBtnClicked(ActionEvent event) {
 	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 			
-			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/GreenOrangeTileTutorial.fxml"));
+			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("GreenOrangeTileTutorial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+            Parent root;
+          try {
+              root = loader.load();
+            Scene scene = new Scene(root);
+            window.setTitle("Hamka");
+            window.setScene(scene);
+            GrnOrangetutrialController con = loader.getController();
+     
+            con.start(window);
+            window.show();
+            window.centerOnScreen();
+        //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+        	} catch ( Exception e1) {
+              // TODO Auto-generated catch block
+              e1.printStackTrace();
+          }
+	    }
+
+	    @FXML
+	    void RedTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("RedTileTutrial.fxml"));
 			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
            Parent root;
          try {
@@ -692,24 +506,24 @@ public class GrnOrangetutrialController extends Application implements Initializ
            Scene scene = new Scene(root);
            window.setTitle("Hamka");
            window.setScene(scene);
-           GrnOrangetutrialController con = loader.getController();
+           RedTileTutorialcontroller con = loader.getController();
     
            con.start(window);
            window.show();
            window.centerOnScreen();
-      // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+  //     	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
        	} catch ( Exception e1) {
              // TODO Auto-generated catch block
              e1.printStackTrace();
          }
-	    	
 	    }
 
 	    @FXML
-	    void RedTileBtnClicked(ActionEvent event) {
+	    void YellowTileBtnClicked(ActionEvent event) {
+
 	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 			
-			 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("/View/RedTileTutrial.fxml"));
+			 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("YellowTileTutrial.fxml"));
 			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
           Parent root;
         try {
@@ -717,57 +531,31 @@ public class GrnOrangetutrialController extends Application implements Initializ
           Scene scene = new Scene(root);
           window.setTitle("Hamka");
           window.setScene(scene);
-          RedTileTutorialcontroller con = loader.getController();
+          YellowTileTutrialController con = loader.getController();
    
           con.start(window);
           window.show();
           window.centerOnScreen();
-   //   	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+  //s    	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
       	} catch ( Exception e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
+        
 	    }
 
-	    @FXML
-	    void YellowTileBtnClicked(ActionEvent event) {
-	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-			
-			 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("/View/YellowTileTutrial.fxml"));
-			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-         Parent root;
-       try {
-           root = loader.load();
-         Scene scene = new Scene(root);
-         window.setTitle("Hamka");
-         window.setScene(scene);
-         YellowTileTutrialController con = loader.getController();
-  
-         con.start(window);
-         window.show();
-         window.centerOnScreen();
-    // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-     	} catch ( Exception e1) {
-           // TODO Auto-generated catch block
-           e1.printStackTrace();
-       }
-	    }
 	    
-	    
+	  
+//-------------------------------------
 	
-	///--------------------------
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
-
-		this.thirdNote.setVisible(false);
-
-		if(((Button)event.getSource()).getId().equals(this.GreenTile)   ) {
-			this.thirdNote.setVisible(true);
-			this.game.setblackPlayerPoints(this.game.getblackPlayerPoints() + 50 );
-		((Label)scene.lookup("#p1Points")).setText(String.valueOf(this.game.getblackPlayerPoints()));
-		}
-		
-		
+       
+        if(((Button)event.getSource()).getId().equals("tile32") ) {
+        	
+        }
+      
+     
 		queenArrows.setVisible(false);
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
@@ -789,8 +577,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		String dest = tilesBoardMap.get((String)((Control)event.getSource()).getId());
 		//		 root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
 		//		 scene = new Scene(root);
-		//currentTile = (Button) scene.lookup("#"+(String)((Control)event.getSource()).getId());
-		currentTile = ((Button) event.getSource());
+		currentTile = (Button) scene.lookup("#"+(String)((Control)event.getSource()).getId());
 
 		//Convert tile to i,j
 		String[] parts = dest.split(",");
@@ -805,43 +592,67 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
 		chosenBlackSoldier.setFitHeight(45);
 		chosenBlackSoldier.setFitWidth(45);
-		ImageView chosenWhiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteSoldier.png")));
-		chosenWhiteSoldier.setFitHeight(45);
-		chosenWhiteSoldier.setFitWidth(45);
+		
 		ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 		blackSoldier.setFitHeight(45);
 		blackSoldier.setFitWidth(45);
-		ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
-		whiteSoldier.setFitHeight(45);
-		whiteSoldier.setFitWidth(45);
+	
 		ImageView possibleMove = new ImageView(new Image(getClass().getResourceAsStream("/Resources/possibleMove.png")));
 		possibleMove.setFitHeight(45);
 		possibleMove.setFitWidth(45);
+		
 		ImageView chosenBlackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackQueen.png")));
 		chosenBlackQueen.setFitHeight(45);
 		chosenBlackQueen.setFitWidth(45);
-		ImageView chosenWhiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteQueen.png")));
-		chosenWhiteQueen.setFitHeight(45);
-		chosenWhiteQueen.setFitWidth(45);
+		
 		ImageView blackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackQueen.png")));
 		blackQueen.setFitHeight(45);
 		blackQueen.setFitWidth(45);
-		ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
-		whiteQueen.setFitHeight(45);
-		whiteQueen.setFitWidth(45);
+		
+
+		
+		   if(BoardLocked) { // the board is partially locked except the tiles possible 
+				//System.out.println("sdsds" + prev);
+				//Convert tile to i,j
+			   System.out.println(" ladies andd  gentle men we have entered!!!!!!!!!!!!!!!!!!s ");
+			 String prev = tilesBoardMap.get( ((Button)event.getSource()).getId()) ; 
+			 this.SoldeirReturns= prev ;
+				String[] parts2= prev.split(",");
+				String part21 = parts2[0]; 
+				String part22 = parts2[1]; 
+				//Tile converted to i,j format to be used with the board 2d arary.
+				Integer desti = Integer.parseInt(part21);
+				Integer destj = Integer.parseInt(part22);
+				Tile prevT = new Tile(desti, destj);
+
+				//System.out.println("Prev Tile: " + prevT);
+				Soldier prevS = new Soldier(2) ;
+
+	        	System.out.println("welcome Tile List : "+WelcomeSoldeirBack);
+	        	for (Tile t : WelcomeSoldeirBack) {  //a tile was selected before, and current tile is used to make the move.
+					int coordinateI = t.getX();
+					int coordinateJ = t.getY();
+					if(i==coordinateI && j == coordinateJ){
+
+						
+			               ((Button)event.getSource()).setGraphic(blackSoldier);
+						//game.moveBlackSoldier(prevS, t, WelcomeSoldeirBack);
+						
+						//occupiedTilesOriginalColor(scene) ; 
+				
+						System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 
 
-		//	System.out.println();
-		//		System.out.println(currentTile);
-		//	System.out.println("i is:" + i + ", j  is: "+ j);
-		//System.out.println(currentTile.getId().equals("tile1"));
-		//((Button) scene.lookup("#"+"tile1")).setGraphic(null);
-		//		Button b = getButtonById(currentTile.getId());
-		//		System.out.println("Here");
-		//		System.out.println(b);
-		//		System.out.println("End");
-		//		b.setGraphic(chosenBlackSoldier);
+						System.out.println("Now It's White's turn");
+						clickedSoldier=null;
+						
+						break;
 
+					}
+				}
+	        }
+
+	
 
 
 		Tile current = new Tile(i, j);
@@ -852,9 +663,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		//		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
 		if(color==Color.Black) { //Black's turn
-			StopWatch turnTimer = new StopWatch();
-			turnTimer.start();
-			System.out.println();
+		
 
 			System.out.println("switching to Black  !!");
 			SwitchTurntoBlack(i , j , s , currentTile , blackSoldier, chosenBlackSoldier, blackQueen,  chosenBlackQueen) ; 
@@ -862,7 +671,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		}
 		else if(color==Color.White) { //turn.color = Color.White
 			System.out.println("switching to White !!");
-			SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
+			//SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
 
 
 
@@ -880,24 +689,28 @@ public class GrnOrangetutrialController extends Application implements Initializ
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		tr.setOnAction(e -> {
 			direction = "TR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		bl.setOnAction(e -> {
 			direction = "BL";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		br.setOnAction(e -> {
 			direction = "BR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 
 
@@ -938,18 +751,18 @@ public class GrnOrangetutrialController extends Application implements Initializ
 							//	from.setGraphic(null);
 							//System.out.println(prevS);
 							game.moveBlackSoldier(prevS, t, possible);
-							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
-							//game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-							//Timer Related - 
-							setTimmer();
-							p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
-							p1.setTextFill(javafx.scene.paint.Color.WHITE);
+							
 							occupiedTilesOriginalColor(scene) ; 
-							ClearColoredTiles(scene);
-					
+							//ClearColoredTiles(scene);
+							//GenerateYellowTiles(scene);
+						//	GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-						
+//							if(game.isGameOver()) {
+//								winnerLabel.setText(game.winner() + " Wins!");
+//								winnerLabel.setVisible(true);
+//								boardOFF();
+//							}
 
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
@@ -965,8 +778,9 @@ public class GrnOrangetutrialController extends Application implements Initializ
 				}
 
 				else if(prevS.getSoldierNumber()==22) {
-					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas" + possibleQueen);
+					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas  : " + possibleQueen);
 					if(possibleQueen!=null) {
+						
 						for (Tile t2 : possibleQueen.keySet()) {  //a tile was selected before, and current tile is used to make the move.
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
@@ -978,21 +792,22 @@ public class GrnOrangetutrialController extends Application implements Initializ
 								//Button from = getButtonById(clickedSoldier);
 								//	from.setGraphic(null);
 								//System.out.println("Prev Tile: " + prevT);
+							//	System.out.println("moves: "+t2.getX()+ " "+t2.getY());
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
-								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
-								//game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
-								p1.setTextFill(javafx.scene.paint.Color.WHITE);
-								//Timer Related - 
-								setTimmer();
-								occupiedTilesOriginalColor(scene) ; 
-								ClearColoredTiles(scene);
 								
-								//GenerateGreenTiles(scene, Color.White);
+								occupiedTilesOriginalColor(scene) ; 
+							//	ClearColoredTiles(scene);
+							//	GenerateYellowTiles(scene);
+							//	GenerateRedTiles(scene, Color.White);
+							 	//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-							
+//								if(game.isGameOver()) {
+//									winnerLabel.setText(game.winner() + " Wins!");
+//									winnerLabel.setVisible(true);
+//									boardOFF();
+//									}
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -1134,6 +949,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 			}
 			////*get Soldier's possible moves
 			possible = game.getPossibleMovesForBlackSoldier(s);
+			 
 			System.out.println("????????????????????");
 			if(possible!=null) {
 				for (Tile tile : possible) {
@@ -1222,18 +1038,16 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 							//System.out.println(prevS);
 							game.moveWhiteSoldier(prevS, t, possible);
-							p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
-							p1.setFont(Font.font("System",FontWeight.BOLD, FontPosture.REGULAR, 20));
-							p1.setTextFill(javafx.scene.paint.Color.DARKORANGE);
-							//Timer Related - 
-							setTimmer();
-							occupiedTilesOriginalColor(scene) ; 
-							ClearColoredTiles(scene);
-						
-							//GenerateGreenTiles(scene, Color.White);
-							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							
+							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+						
+							//Timer Related - 
+							occupiedTilesOriginalColor(scene) ; 
+						//	ClearColoredTiles(scene);
+						//	GenerateYellowTiles(scene);
+						//	GenerateRedTiles(scene, Color.White);
+							//GenerateGreenTiles(scene, Color.White);
+						
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
 							break;
@@ -1257,17 +1071,21 @@ public class GrnOrangetutrialController extends Application implements Initializ
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
-								p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
+								
 								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-								p1.setFont(Font.font("System",FontWeight.NORMAL, FontPosture.REGULAR, 16));
-								p1.setTextFill(javafx.scene.paint.Color.WHITE);
+							
 								//Timer Related - 
-								setTimmer();
 								occupiedTilesOriginalColor(scene) ; 
-								ClearColoredTiles(scene);
+							//	ClearColoredTiles(scene);
+							//	GenerateYellowTiles(scene);
+							//	GenerateRedTiles(scene, Color.White);
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-								
+//								if(game.isGameOver()) {
+//									winnerLabel.setText(game.winner() + " Wins!");
+//									winnerLabel.setVisible(true);	
+//									boardOFF();
+//								}
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;
@@ -1424,6 +1242,9 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		//	clearBoard(game,  scene,  root);
 		//	int c = 0;
 		//clearBoard(game, scene, root);
+	
+	
+		
 		for(int i = 0; i<=7; i++) {
 			for(int j = 0; j<=7; j++) {
 
@@ -1448,7 +1269,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 				//					((Button) scene.lookup("#"+ks)).setGraphic(null);
 				//				}
 				buildTilesBoardMap();
-
+                
 				String dest = i+","+j;
 				String check = null;
 				String key = null;
@@ -1474,9 +1295,12 @@ public class GrnOrangetutrialController extends Application implements Initializ
 					whiteAliveCout++ ; 
 				}else if(board[i][j]==2) { 
 					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-					blackAliveCount++; 
+					 if(board[3][4]==22 || board[3][4]== 2) {
+						 ((Button) scene.lookup("#"+key)).setOnMouseClicked(null);
+					 }
+					//blackAliveCount++; 
 				}else if(board[i][j]==0 && key!=null ) {
-					((Button) scene.lookup("#"+key)).setGraphic(null);
+				((Button) scene.lookup("#"+key)).setGraphic(null);
 
 				}else if (board[i][j]==11) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
@@ -1484,9 +1308,25 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 				}else if (board[i][j]==22) {
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
+					 if(board[3][4]==22 || board[3][4]== 2) {
+						 ((Button) scene.lookup("#"+key)).setOnMouseClicked(null);
+					 }
 					blackAliveCount++; 
 				}
-				
+					
+				String[] parts2= this.SoldeirReturns.split(",");
+				String part21 = parts2[0]; 
+				String part22 = parts2[1]; 
+				//Tile converted to i,j format to be used with the board 2d arary.
+				Integer desti = Integer.parseInt(part21);
+				Integer destj = Integer.parseInt(part22);
+				if(i== desti && j == destj) {
+					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
+				boardOFF();
+				this.BlueTileBtn.setOnAction(null);
+				this.SoldeirReturns= "10,10" ; 
+				}
+			  
 
 
 				//					String value ; 
@@ -1526,21 +1366,133 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 		}
 		
+//		if(blackAliveCount == 1 ) {
+//			//this.secondNote.setText("hello there , \n we wish a merry Christmas \n mother fucker") ;
+//           this.secondNote.setVisible(true);
+//			
+//			this.thirdNote.setVisible(true);
+//			//System.out.println(this.thirdNote.getText());
+//		}
 		//Generate Blue Tile - Maybe ! 
+	//	GenerateBlueTile(scene) ; 
 		
+//-----------------------------------------------
 
+        if( !this.BoardLocked && (board[3][4]==22 || board[3][4]== 2) ) {
+        	System.out.println("u clikced a blue tile My G !");
+        	 
+        	  ((Button)scene.lookup("#tile1")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile3")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile4")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile2")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile6")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile15")).setStyle("-fx-background-color: #4d4d4f;");
+
+        	  ((Button)scene.lookup("#tile5")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile7")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile8")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile9")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile10")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile11")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile12")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile13")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile14")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile16")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile19")).setStyle("-fx-background-color: #4d4d4f;");
+        	  ((Button)scene.lookup("#tile20")).setStyle("-fx-background-color: #4d4d4f;");
+        	  
+        	  //-----------------------------------------
+        	  ((Button)scene.lookup("#tile30")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile29")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile28")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile27")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile26")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile24")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile23")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile22")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile21")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile22")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile17")).setStyle("-fx-background-color: #862994;");
+        	  ((Button)scene.lookup("#tile18")).setStyle("-fx-background-color: #862994;");
+
+        	  
+        	  //-----------------------
+        		
+        	  
+        	  //-------------------------
+        	  tile17.setOnMouseClicked(null);
+      		tile18.setOnMouseClicked(null);
+      		tile21.setOnMouseClicked(null);
+      		tile22.setOnMouseClicked(null);
+      		tile23.setOnMouseClicked(null);
+      		tile24.setOnMouseClicked(null);
+      		tile25.setOnMouseClicked(null);
+      		tile26.setOnMouseClicked(null);
+      		tile27.setOnMouseClicked(null);
+      		tile28.setOnMouseClicked(null);
+      		tile29.setOnMouseClicked(null);
+      		tile30.setOnMouseClicked(null);
+      		tile31.setOnMouseClicked(null);
+      		tile32.setOnMouseClicked(null);
+
+      	
+      		
+      		
+      		/*
+    tilesBoardMap.put("tile1", "0,1");
+	tilesBoardMap.put("tile2", "0,3");
+	tilesBoardMap.put("tile3", "0,5");
+	tilesBoardMap.put("tile4", "0,7");
+
+	tilesBoardMap.put("tile5", "1,0");
+	tilesBoardMap.put("tile6", "1,2");
+	tilesBoardMap.put("tile7", "1,4");
+	tilesBoardMap.put("tile8", "1,6");
+
+	tilesBoardMap.put("tile9", "2,1");
+	tilesBoardMap.put("tile10", "2,3");
+	tilesBoardMap.put("tile11", "2,5");
+	tilesBoardMap.put("tile12", "2,7");
+
+	tilesBoardMap.put("tile13", "3,0");
+	tilesBoardMap.put("tile14", "3,2");
+	tilesBoardMap.put("tile15", "3,4");
+	tilesBoardMap.put("tile16", "3,6");
+
+      		 */
+      		WelcomeSoldeirBack= new ArrayList<>() ; 
+      		WelcomeSoldeirBack.add(new Tile(0,1)) ; 
+      		WelcomeSoldeirBack.add(new Tile(0,3)) ; 
+      		WelcomeSoldeirBack.add(new Tile(0,5)) ; 
+      		WelcomeSoldeirBack.add(new Tile(0,7)) ; 
+      		WelcomeSoldeirBack.add(new Tile(1,0)) ; 
+      		WelcomeSoldeirBack.add(new Tile(1,2)) ; 
+      		WelcomeSoldeirBack.add(new Tile(1,4)) ; 
+      		WelcomeSoldeirBack.add(new Tile(1,6)) ; 
+      		WelcomeSoldeirBack.add(new Tile(2,1)) ; 
+      		WelcomeSoldeirBack.add(new Tile(2,3)) ; 
+      		WelcomeSoldeirBack.add(new Tile(2,5)) ; 
+      		WelcomeSoldeirBack.add(new Tile(2,7)) ; 
+      		WelcomeSoldeirBack.add(new Tile(3,0)) ; 	      
+      		WelcomeSoldeirBack.add(new Tile(3,2)) ; 
+      		WelcomeSoldeirBack.add(new Tile(3,4)) ; 
+      		WelcomeSoldeirBack.add(new Tile(3,6)) ; 
+
+
+      		this.BoardLocked =true ; 
+        	
+      		
+
+        	  
+        }
+    
+
+		
 	}
 
-	public int getWinnerPoints() {
-		if(game.winner().equals(game.getblackPlayer()))
-			return game.getblackPlayerPoints();
-		else
-			return game.getwhitePlayerPoints();
-	}
+	
 	public void boardOFF() {
-		SysData.getInstance().addWinnerToLeaderboard(new Winner(game.winner(),getWinnerPoints()," "));
-		SysData.getInstance().writeWinnersIntoFile();
-		timeline.stop();
+	
 		tile1.setOnMouseClicked(null);
 		tile2.setOnMouseClicked(null);
 		tile3.setOnMouseClicked(null);
@@ -1611,18 +1563,12 @@ public class GrnOrangetutrialController extends Application implements Initializ
 
 	}
 	//------------------------------colored tiles  ;
+	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
 
-
-
-	
-
-
-	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
-
-		// color 1 random Empty tile
-		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
-		if(greenTile != null ) { 
-			String possibleTile = greenTile.getX()+","+greenTile.getY();
+		// color 3 random Empty tiles
+		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+		if(redTile != null ) { 
+			String possibleTile = redTile.getX()+","+redTile.getY();
 			String check = null;
 			String key = null;
 			for (String ks : tilesBoardMap.keySet()) {
@@ -1631,8 +1577,7 @@ public class GrnOrangetutrialController extends Application implements Initializ
 					if(check.equals(possibleTile)) {
 						key = ks;
 						//						System.out.println("should be red  :: "+key);
-						this.GreenTile= key ;
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
 						break;
 					}
 				}
@@ -1642,13 +1587,64 @@ public class GrnOrangetutrialController extends Application implements Initializ
 	}
 
 
+	//-----------------------green Tile
+
+//
+//	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
+//
+//		// color 1 random Empty tile
+//		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
+//		if(greenTile != null ) { 
+//			String possibleTile = greenTile.getX()+","+greenTile.getY();
+//			String check = null;
+//			String key = null;
+//			for (String ks : tilesBoardMap.keySet()) {
+//				check = tilesBoardMap.get(ks);
+//				if(check!=null) {
+//					if(check.equals(possibleTile)) {
+//						key = ks;
+//						//						System.out.println("should be red  :: "+key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+//						break;
+//					}
+//				}
+//			}
+//		}
+//
+//	}
+
+
 
 	//-------------------------
 
-	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
+//	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
+//
+//		// color 3 random Empty tiles
+//		for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
+//			String possibleTile = tile.getX()+","+tile.getY();
+//			String check = null;
+//			String key = null;
+//			for (String ks : tilesBoardMap.keySet()) {
+//				check = tilesBoardMap.get(ks);
+//				if(check!=null) {
+//					if(check.equals(possibleTile)) {
+//						key = ks;
+//						//						System.out.println("should be orange  :: "+key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
+//						break;
+//					}
+//				}
+//			}
+//		}
+//
+//	}
+
+
+
+	public void GenerateYellowTiles( Scene s)  {
 
 		// color 3 random Empty tiles
-		for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
+		for (Tile tile : this.game.generateYellowTiles()) {
 			String possibleTile = tile.getX()+","+tile.getY();
 			String check = null;
 			String key = null;
@@ -1657,22 +1653,18 @@ public class GrnOrangetutrialController extends Application implements Initializ
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println("should be orange  :: "+key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
+						//	System.out.println(key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");;
 						break;
 					}
 				}
 			}
 		}
 
+
 	}
-
-
-
-
 	
 
-	
 
 	public Button getButtonById(String id) {
 		//Button toReturn =null;
@@ -1743,58 +1735,64 @@ public class GrnOrangetutrialController extends Application implements Initializ
 		return false ; 
 	}
 
-	
-	@FXML
-	void settingBtnClicked(ActionEvent event) throws Exception{
-		this.timeline.stop();
-		settings.display();
-		this.live_pausedlbl.setText("Paused");
 
-		settings.showWin();
-	}
-	
 
   
-    
-	
-	void OverAllTimer() {
-		
-		 boolean x=true;
-		    long displayMinutes=0;
-		    //long secondspassed=0 ; 
-		    long starttime=System.currentTimeMillis();
-		    System.out.println("Timer:");
-		    while(x)
-		    {
-		    	
-		        try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+    void Showallpossiblemoves( ArrayList<Tile> possible , Scene s) {
+    	ClearColoredTiles(s);
+    	System.out.println("///// : "+possible);
+    	for (Tile tile : possible) {
+			String possibleTile = tile.getX()+","+tile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+
+						key = ks;
+						//	System.out.println(key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #16f033;");
+						((Button) s.lookup("#"+key)).setStyle("-fx-border-color: #16f01d ; -fx-background-color: #16f033;");
+ System.out.println("key fuck : "+key );
+					break ; 
 				}
-		        long timepassed=System.currentTimeMillis()-starttime;
-		      long  secondspassed=timepassed/1000;
-		        if(secondspassed==60)
-		        {
-		            secondspassed=0;
-		            starttime=System.currentTimeMillis();
-		        }
-		        if((secondspassed%60)==0)
-		        displayMinutes++;
+				}
+			}
+		}
 
-		System.out.println( displayMinutes+" : "+secondspassed);
-		
-		
-	}
-		    
-		    
-		
+    }
 
-}
-
+//    void setUpBoardToBringSoldeirBack() {
+//		String check = null;
+//
+//		
+//		
+//				
+//			
+//    	for (Entry<String , String> entry : tilesBoardMap.entrySet()) {
+//			check = entry.getValue() ; 
+//			if(check!=null) {
+//				String[] parts = check.split(",");
+//				String part1 = parts[0]; 
+//				String part2 = parts[1]; 
+//				//Tile converted to i,j format to be used with the board 2d arary.
+//				Integer ii = Integer.parseInt(part1);
+//				Integer jj = Integer.parseInt(part2);
+//				
+//if (this.game.checkIfLegalPosition(2, new Tile(ii,jj)) ) {
+//	this.WelcomeSoldeirBack.add(entry.getKey()) ; 
+//	
+//	((Button) scene.lookup("#"+entry.getKey())).setStyle("-fx-background-color: #8fff8f ;");
+//}
+//
+//			
+//			}
+//		}
+//    	
+//		
+//    }
 	
-
 	
 	
 }

@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,7 +49,7 @@ public class mainMenuController extends Application implements Initializable{
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
@@ -74,7 +74,7 @@ public class mainMenuController extends Application implements Initializable{
     @FXML
     void optionBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.optionBtn.getScene().getWindow();
-		 FXMLLoader loader = new FXMLLoader(optionScreenController.class.getResource("/View/optionScreen.fxml"));
+		 FXMLLoader loader = new FXMLLoader(optionScreenController.class.getResource("optionScreen.fxml"));
 		Parent toLoad = loader.load();
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
@@ -90,7 +90,7 @@ public class mainMenuController extends Application implements Initializable{
     @FXML
     void tutorialsBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.tutorialBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/TutorialScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("TutorialScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
 
@@ -99,7 +99,7 @@ public class mainMenuController extends Application implements Initializable{
     @FXML
     void leaderboardBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.leaderboardBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/LeaderboardScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("LeaderboardScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
 
@@ -108,14 +108,14 @@ public class mainMenuController extends Application implements Initializable{
     @FXML
     void loadgameBtnClicked(ActionEvent event) throws IOException {
 		Stage st = (Stage)this.loadGameBtn.getScene().getWindow();
-		Parent toLoad = FXMLLoader.load(getClass().getResource("/View/LoadGameScreen.fxml"));
+		Parent toLoad = FXMLLoader.load(getClass().getResource("LoadGameScreen.fxml"));
 		Scene scene = new Scene(toLoad);
 		st.setScene(scene);
     }
     
     @FXML
     void startBtnClicked(ActionEvent event) throws IOException {
-		Controller.enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
+		View.enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
     }
     
     public void darkTheme(boolean isOn) {

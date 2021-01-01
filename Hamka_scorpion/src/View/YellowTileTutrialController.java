@@ -1,4 +1,6 @@
-package Controller;
+package View;
+
+
 
 import java.awt.event.ActionListener;
 import java.io.FileInputStream;
@@ -7,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -22,7 +25,9 @@ import Controller.SysData;
 import Model.Board;
 import Model.Color;
 import Model.Game;
+import Model.Level;
 import Model.Queen;
+import Model.Question;
 import Model.Soldier;
 import Model.StopWatch;
 import Model.Tile;
@@ -54,6 +59,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BlendMode;
@@ -72,8 +79,9 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class RedTileTutorialcontroller extends Application implements Initializable{
-	
+
+public class YellowTileTutrialController  extends Application implements Initializable{
+
 	@FXML
 	private Pane paneBoard;
 
@@ -177,12 +185,10 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 	@FXML
 	private Button tile28;
 
-	  
     @FXML
     private Button ExitBtn;
-
-   //-------------------Colored Tiles 
     
+   
 
     @FXML
     private Button YellowTileBtn;
@@ -196,19 +202,19 @@ public class RedTileTutorialcontroller extends Application implements Initializa
     @FXML
     private Button BlueTileBtn;
     
+    
+ 
     @FXML
-    private Button FirstNote;
+    private Button firstNote;
 
     @FXML
-    private Button thirdNote;
+    private Button instructions;
 
-    @FXML
-    private Button secondNote;
-
-
+   
     
     
-    //------------------
+
+    
     
 	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
@@ -219,7 +225,10 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 	Button tr = new Button();
 	Button bl = new Button();
 	
+	popupQuestion quesPop = new popupQuestion();
 
+ 
+    //-----------------------------------
 	public static HashMap<String, String> tilesBoardMap;
 	public static String clickedSoldier = null;
 	public static ArrayList<Tile> possible = null;
@@ -227,13 +236,13 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 
 	private int[][] startBoard = {
-			{-1,2,-1,2,-1,2,-1,0},
-			{0,-1,0,-1,2,-1,0,-1},
-			{-1,2,-1,0,-1,2,-1,0},
+			{-1,0,-1,2,-1,0,-1,0},
+			{0,-1,0,-1,2,-1,2,-1},
+			{-1,2,-1,0,-1,0,-1,0},
 			{0,-1,0,-1,0,-1,0,-1},
 			{-1,0,-1,0,-1,0,-1,0},
-			{0,-1,0,-1,1,-1,0,-1},
-			{-1,0,-1,1,-1,0,-1,0},
+			{0,-1,1,-1,1,-1,0,-1},
+			{-1,1,-1,0,-1,1,-1,1},
 			{0,-1,0,-1,0,-1,0,-1}
 	};
 	
@@ -252,6 +261,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 	public static Parent  root;
 	public static Scene scene;
 	GridPane queenArrows = new GridPane();
+	GridPane instruction = new GridPane();
 
 	String direction = null;
 	
@@ -260,7 +270,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 	
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		root = FXMLLoader.load(getClass().getResource("/View/RedTileTutrial.fxml"));
+		root = FXMLLoader.load(getClass().getResource("YellowTileTutrial.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
@@ -270,16 +280,11 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		//java.io.FileInputStream fis = new FileInputStream("/System/Library/CoreServices/loginwindow.app/Contents/Resources/LogOut.png");
 		buildTilesBoardMap();
 		refreshBoard(game, scene, root);
-
-
-		//	((Button)root.getChildrenUnmodifiable().get(root.getChildrenUnmodifiable().indexOf( (Button) scene.lookup("#tile3")))).setGraphic(img); 
-		stage.show();
+        stage.show();
 		stage.setTitle("Hamka - Match");
          
 
-		//System.out.println("START   " + tile1)
-
-
+		
 
 
 	}
@@ -297,27 +302,57 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		    
 	      //------------------------------
 		buildTilesBoardMap();
-	
+	  
+		this.instructions.setVisible(true);
+		this.firstNote.setVisible(true);
 		
-		
-	
-		
-		
-//----------Timer related
+		settings.exitBtn.setOnAction(e -> {
+			
+			((Stage)settings.exitBtn.getScene().getWindow()).close();
 
-        
-	   
-            
-        
-	  //  OverAllTimer();
+			Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
+			Parent toLoad;
+			try {
+				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+				Scene scene = new Scene(toLoad);
+				stage.setScene(scene);
+				stage.centerOnScreen();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+		});
+		
+		this.tile11.setStyle("-fx-background-Color :#fff23d ");
+		this.tile13.setStyle("-fx-background-Color :#fff23d ");
+		this.tile14.setStyle("-fx-background-Color :#fff23d ");
+
+		
+		this.tile12.setOnMouseClicked(null);
+		this.tile15.setOnMouseClicked(null);
+		this.tile16.setOnMouseClicked(null);
+		this.tile17.setOnMouseClicked(null);
+		this.tile18.setOnMouseClicked(null);
+		//((Button)scene.lookup("#tile11")).setStyle("-fx-background-Color :#fff23d ");
+		
+		
+		
+		
 	    //------------------------------
-
+		instruction.setVisible(false);
+		instruction.setVgap(2);
+		instruction.setHgap(2);
+		instruction.setMinHeight(20);
+		instruction.setMinWidth(20);
+		
 		queenArrows.setVisible(false);
 		queenArrows.setVgap(2);
 		queenArrows.setHgap(2);
 		queenArrows.setPadding(new Insets(0, 10, 0, 10));
 		queenArrows.setMinHeight(20);
 		queenArrows.setMinWidth(20);
+		
 		queenArrows.add(tl,5,5);
 		queenArrows.add(br, 6, 6);
 		queenArrows.add(tr, 6, 5);
@@ -326,11 +361,18 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 		paneBoard.setOnMouseClicked(e -> {
 			queenArrows.setVisible(false);
+			instruction.setVisible(true);
 		});
 		paneBoard.getChildren().add(queenArrows);
+		paneBoard.getChildren().add(instruction);
+
 		//pane.setVisible(true);
 		queenArrows.setTranslateX(10);
 		queenArrows.setTranslateY(10);
+		
+		instruction.setTranslateX(10);
+		instruction.setTranslateY(10);
+		
 		//        orig.getChildren().add(b5);
 		//        ss.getChildren().addAll(orig,pane);
 		ImageView b1Image = new ImageView(
@@ -351,13 +393,81 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		tr.setStyle("-fx-background-color: transparent;");
 		bl.setStyle("-fx-background-color: transparent;");
 		
+		
+
 		OrangeGreenTileBtn.setStyle(" -fx-background-radius : 5em ; -fx-background-color: linear-gradient(from 0px 0px to 210px 0px, green 0%, green 36.84%, orange 36.84%, orange 100%);");
 
-//------------ Notes :
-		this.FirstNote.setVisible(true);
-		this.secondNote.setVisible(false);
-     	this.thirdNote.setVisible(false);
+//------------------------------------------------
+		
+		quesPop.nextBtn.setOnAction(e -> {
+			quesPop.points.setText("");
+			if(quesPop.nextBtn.getText().equals("Next")) {
+				RadioButton rb = (RadioButton) quesPop.group.getSelectedToggle();
 
+				if(SysData.getInstance().isQuestionAnsweredCorrectly(quesPop.question, rb.getText())) {
+					rb.setStyle("-fx-background-color : #32CD32");
+					quesPop.points.setTextFill(javafx.scene.paint.Color.FORESTGREEN);
+					if(quesPop.question.getLevel().equals(Level.easy)) {
+						quesPop.points.setText("You have earned 100 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 100);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 100);
+					}else if(quesPop.question.getLevel().equals(Level.medium)) {
+						quesPop.points.setText("You have earned 200 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 200);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 200);
+					}else {
+						quesPop.points.setText("You have earned 500 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() + 500);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() + 500);
+					}
+
+				}
+				else {
+					rb.setStyle("-fx-background-color : #EB1717");
+					quesPop.points.setTextFill(javafx.scene.paint.Color.RED);
+					quesPop.group.getToggles().forEach(toggle -> {
+						RadioButton rad =(RadioButton) toggle;
+						if(rad.getText().equals(quesPop.question.getRightAnswer())) {
+							rad.setStyle("-fx-background-color : #32CD32");
+						}
+					});
+
+					if(quesPop.question.getLevel().equals(Level.easy)) {
+						quesPop.points.setText("You have lost 250 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 250);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 250);
+					}else if(quesPop.question.getLevel().equals(Level.medium)) {
+						quesPop.points.setText("You have lost 100 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 100);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 100);
+					}else {
+						quesPop.points.setText("You have lost 50 points");
+						if(game.getTurn().equals(Color.Black))
+							game.setblackPlayerPoints(game.getblackPlayerPoints() - 50);
+						else
+							game.setWhitePlayerPoints(game.getwhitePlayerPoints() - 50);
+					}
+
+				}
+				quesPop.nextBtn.setText("Close");
+			}else {
+				quesPop.window.close();
+				
+			}
+		});
+		
+		
+		
 	}
 
 	//	@FXML
@@ -433,143 +543,115 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 
 //------------------------Timer Related  
+	  @FXML
+	    void BlueTileBtnClicked(ActionEvent event) {
 
-	@FXML
-    void ExitBtnClicked(ActionEvent event) {
-    	
-		((Stage)this.ExitBtn.getScene().getWindow()).close();
+			 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+				
+			 FXMLLoader loader = new FXMLLoader(BlueTileTutController .class.getResource("BlueTileTutorial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+	        Parent root;
+	      try {
+	          root = loader.load();
+	        Scene scene = new Scene(root);
+	        window.setTitle("Hamka");
+	        window.setScene(scene);
+	        BlueTileTutController con = loader.getController();
+	 
+	        con.start(window);
+	        window.show();
+	        window.centerOnScreen();
+	    	//((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+	    	} catch ( Exception e1) {
+	          // TODO Auto-generated catch block
+	          e1.printStackTrace();
+	      }
+        
+	    }
 
-		Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
-		Parent toLoad;
-		try {
-			toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
-			Scene scene = new Scene(toLoad);
-			stage.setScene(scene);
-			stage.centerOnScreen();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-		  stage.show();
-			stage.setTitle("Hamka - Match");
-	         
-    }
-	
+	    @FXML
+	    void OrangeTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("GreenOrangeTileTutorial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+         Parent root;
+       try {
+           root = loader.load();
+         Scene scene = new Scene(root);
+         window.setTitle("Hamka");
+         window.setScene(scene);
+         GrnOrangetutrialController con = loader.getController();
+  
+         con.start(window);
+         window.show();
+         window.centerOnScreen();
+    // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+     	} catch ( Exception e1) {
+           // TODO Auto-generated catch block
+           e1.printStackTrace();
+       }
+	    	
+	    }
 
-//-------------------------------------
-	@FXML
-    void BlueTileBtnClicked(ActionEvent event) {
-
-	 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-		
-	 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/BlueTileTutorial.fxml"));
-	// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-    Parent root;
-  try {
-      root = loader.load();
-    Scene scene = new Scene(root);
-    window.setTitle("Hamka");
-    window.setScene(scene);
-    BlueTileTutController con = loader.getController();
-
-    con.start(window);
-    window.show();
-    window.centerOnScreen();
-//	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-	} catch ( Exception e1) {
-      // TODO Auto-generated catch block
-      e1.printStackTrace();
-  }
-
-       	   
-    }
-
-
-    @FXML
-    void OrangeTileBtnClicked(ActionEvent event) {
-    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-		
-		 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("/View/GreenOrangeTileTutorial.fxml"));
-		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+	    @FXML
+	    void RedTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("RedTileTutrial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
         Parent root;
       try {
           root = loader.load();
         Scene scene = new Scene(root);
         window.setTitle("Hamka");
         window.setScene(scene);
-        GrnOrangetutrialController con = loader.getController();
+        RedTileTutorialcontroller con = loader.getController();
  
         con.start(window);
         window.show();
         window.centerOnScreen();
-    //	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+ //   	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
     	} catch ( Exception e1) {
           // TODO Auto-generated catch block
           e1.printStackTrace();
       }
-    }
+	    }
 
-    @FXML
-    void RedTileBtnClicked(ActionEvent event) {
-    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-		
-		 FXMLLoader loader = new FXMLLoader(RedTileTutorialcontroller.class.getResource("/View/RedTileTutrial.fxml"));
-		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+	    @FXML
+	    void YellowTileBtnClicked(ActionEvent event) {
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+			
+			 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("YellowTileTutrial.fxml"));
+			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
        Parent root;
      try {
          root = loader.load();
        Scene scene = new Scene(root);
        window.setTitle("Hamka");
        window.setScene(scene);
-       RedTileTutorialcontroller con = loader.getController();
+       YellowTileTutrialController con = loader.getController();
 
        con.start(window);
        window.show();
        window.centerOnScreen();
- //  	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
+  // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
    	} catch ( Exception e1) {
          // TODO Auto-generated catch block
          e1.printStackTrace();
      }
-    }
-
-    @FXML
-    void YellowTileBtnClicked(ActionEvent event) {
-
-    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
-		
-		 FXMLLoader loader = new FXMLLoader(YellowTileTutrialController.class.getResource("/View/YellowTileTutrial.fxml"));
-		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
-      Parent root;
-    try {
-        root = loader.load();
-      Scene scene = new Scene(root);
-      window.setTitle("Hamka");
-      window.setScene(scene);
-      YellowTileTutrialController con = loader.getController();
-
-      con.start(window);
-      window.show();
-      window.centerOnScreen();
- // 	((Stage)this.BlueTileBtn.getScene().getWindow()).close();
-  	} catch ( Exception e1) {
-        // TODO Auto-generated catch block
-        e1.printStackTrace();
-    }
-    
-    }
-
-    
+	    }
+	    
+	    
 	
-	///--------------------------
+//-------------------------------------
+	
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
 
-
-	
-		
-		
+        if(((Button)event.getSource()).getId().equals("tile32") ) System.out.println("tile32");
+        
+        
 		queenArrows.setVisible(false);
 		//Clicked Button (black tile)
 		//System.out.println(tilesBoardMap);
@@ -606,30 +688,23 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
 		chosenBlackSoldier.setFitHeight(45);
 		chosenBlackSoldier.setFitWidth(45);
-		ImageView chosenWhiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteSoldier.png")));
-		chosenWhiteSoldier.setFitHeight(45);
-		chosenWhiteSoldier.setFitWidth(45);
+		
 		ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 		blackSoldier.setFitHeight(45);
 		blackSoldier.setFitWidth(45);
-		ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
-		whiteSoldier.setFitHeight(45);
-		whiteSoldier.setFitWidth(45);
+	
 		ImageView possibleMove = new ImageView(new Image(getClass().getResourceAsStream("/Resources/possibleMove.png")));
 		possibleMove.setFitHeight(45);
 		possibleMove.setFitWidth(45);
+		
 		ImageView chosenBlackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackQueen.png")));
 		chosenBlackQueen.setFitHeight(45);
 		chosenBlackQueen.setFitWidth(45);
-		ImageView chosenWhiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenWhiteQueen.png")));
-		chosenWhiteQueen.setFitHeight(45);
-		chosenWhiteQueen.setFitWidth(45);
+		
 		ImageView blackQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackQueen.png")));
 		blackQueen.setFitHeight(45);
 		blackQueen.setFitWidth(45);
-		ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
-		whiteQueen.setFitHeight(45);
-		whiteQueen.setFitWidth(45);
+		
 
 
 		//	System.out.println();
@@ -648,14 +723,15 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		Tile current = new Tile(i, j);
 		Soldier s = game.getTileContent(current);
 		Color color = game.getTurn();
+		
+		
+	
 
 		//		p1Points.setText(String.valueOf(this.game.getblackPlayerPoints()) ); 
 		//		p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
 
 		if(color==Color.Black) { //Black's turn
-			StopWatch turnTimer = new StopWatch();
-			turnTimer.start();
-			System.out.println();
+		
 
 			System.out.println("switching to Black  !!");
 			SwitchTurntoBlack(i , j , s , currentTile , blackSoldier, chosenBlackSoldier, blackQueen,  chosenBlackQueen) ; 
@@ -663,7 +739,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		}
 		else if(color==Color.White) { //turn.color = Color.White
 			System.out.println("switching to White !!");
-			SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
+			//SwitchTurntoWhite(s, i, j, currentTile, whiteSoldier, chosenWhiteSoldier, whiteQueen, chosenWhiteQueen);
 
 
 
@@ -681,24 +757,28 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		tr.setOnAction(e -> {
 			direction = "TR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		bl.setOnAction(e -> {
 			direction = "BL";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 		br.setOnAction(e -> {
 			direction = "BR";
 			queenArrows.setVisible(false);
 			possibleQueen = game.getQueenBiasMoves((Queen)s, direction);
 			System.out.println("POSSIBLE FOR QUEEN: " +possibleQueen );
+
 		} );
 
 
@@ -725,7 +805,6 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 				Soldier prevS = game.getTileContent(prevT);
 
 				if(prevS.getSoldierNumber()==2) {
-					System.out.println("99999999999999999999999999");
 					for (Tile t : possible) {  //a tile was selected before, and current tile is used to make the move.
 						int coordinateI = t.getX();
 						int coordinateJ = t.getY();
@@ -737,16 +816,30 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 							//to.setGraphic(blackSoldier);
 							//Button from = getButtonById(clickedSoldier);
 							//	from.setGraphic(null);
-							//System.out.println(prevS);
+							//System.out.println(prevS);s
 							game.moveBlackSoldier(prevS, t, possible);
-							//game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
-							//Timer Related - 
+							if((t.getX()== 2 && t.getY()==5) || (t.getX()== 3 && t.getY()==0) || (t.getX()== 3 && t.getY()==2) )  {
+								ArrayList<String> Alist = new ArrayList<>()  ;
+								Alist.add("Yes ,Sure !") ; 
+								Alist.add("Nope " ) ; 
+								Alist.add( "too Fun !"  ) ; 
+								Alist.add( "i don't Know !" ) ; 
+								Question q = new Question(" SoftWare Engineering is A Very Fun Course  ! ", "1" , Alist ,"Yes ,Sure !" ) ;
+								quesPop.question = q ;
+								quesPop.display();
+								boardOFF() ; 
+							}
 							occupiedTilesOriginalColor(scene) ; 
-							ClearColoredTiles(scene);
-					        // GenerateRedTiles(scene, Color.Black);
+							//ClearColoredTiles(scene);
+							//GenerateYellowTiles(scene);
+						//	GenerateRedTiles(scene, Color.White);
 							//GenerateGreenTiles(scene, Color.White);
 							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-						
+//							if(game.isGameOver()) {
+//								winnerLabel.setText(game.winner() + " Wins!");
+//								winnerLabel.setVisible(true);
+//								boardOFF();
+//							}
 
 							System.out.println("Now It's White's turn");
 							clickedSoldier=null;
@@ -762,8 +855,9 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 				}
 
 				else if(prevS.getSoldierNumber()==22) {
-					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas" + possibleQueen);
+					System.out.println("sdsdsdsddsdsdsdsdadwasdasdwqasdas  : " + possibleQueen);
 					if(possibleQueen!=null) {
+						
 						for (Tile t2 : possibleQueen.keySet()) {  //a tile was selected before, and current tile is used to make the move.
 							int coordinateI2 = t2.getX();
 							int coordinateJ2 = t2.getY();
@@ -775,17 +869,22 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 								//Button from = getButtonById(clickedSoldier);
 								//	from.setGraphic(null);
 								//System.out.println("Prev Tile: " + prevT);
+							//	System.out.println("moves: "+t2.getX()+ " "+t2.getY());
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
-							
+								
 								occupiedTilesOriginalColor(scene) ; 
-								ClearColoredTiles(scene);
-						      //   GenerateRedTiles(scene, Color.Black);
-
-								//GenerateGreenTiles(scene, Color.White);
+							//	ClearColoredTiles(scene);
+							//	GenerateYellowTiles(scene);
+							//	GenerateRedTiles(scene, Color.White);
+							 	//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-							
+//								if(game.isGameOver()) {
+//									winnerLabel.setText(game.winner() + " Wins!");
+//									winnerLabel.setVisible(true);
+//									boardOFF();
+//									}
 								System.out.println("Now It's White's turn");
 								clickedSoldier=null;
 								break;
@@ -807,54 +906,6 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 
 
-
-			/*       
-		}else if(s.getColor().equals(Color.White)) {
-				System.out.println("White Soldier clicked!");
-
-
-		         }else if(color==Color.White) { //turn.color = Color.White
-			if(s==null) {
-				if(possible==null)
-					System.out.println("Please click a white  Soldier!");
-				else if(clickedSoldier!=null){
-					for (Tile t : possible) {
-						int coordinateI = t.getX();
-						int coordinateJ = t.getY();
-						if(i==coordinateI && j == coordinateJ){
-
-							String prev = tilesBoardMap.get(clickedSoldier);
-
-							String[] parts2= prev.split(",");
-							String part21 = parts2[0]; 
-							String part22 = parts2[1]; 
-							//Tile converted to i,j format to be used with the board 2d arary.
-							Integer desti = Integer.parseInt(part21);
-							Integer destj = Integer.parseInt(part22);
-							Tile prevT = new Tile(desti, destj);
-
-							//System.out.println("Prev Tile: " + prevT);
-							Soldier prevS = game.getTileContent(prevT);
-							//System.out.println(prevS);
-							game.moveWhiteSoldier(prevS, t, possible);
-							p2Points.setText(String.valueOf(this.game.getwhitePlayerPoints()) ); 
-							game.handTurn(); //Switch  turn to black.
-							System.out.println("Now It's Black's  turn");
-							clickedSoldier=null;
-							break;
-
-
-						}
-//>>>>>>> master
-
-					}
-					//Else don't do anything.
-					//						else {
-					//							System.out.println("Nope");
-					//						}
-
-				}
-			 */
 			try {
 				refreshBoard(game,scene, root);
 
@@ -927,6 +978,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 			}
 			////*get Soldier's possible moves
 			possible = game.getPossibleMovesForBlackSoldier(s);
+			 
 			System.out.println("????????????????????");
 			if(possible!=null) {
 				for (Tile tile : possible) {
@@ -1015,13 +1067,16 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 							//System.out.println(prevS);
 							game.moveWhiteSoldier(prevS, t, possible);
-							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
-							occupiedTilesOriginalColor(scene) ; 
-							ClearColoredTiles(scene);
-						
-							//GenerateGreenTiles(scene, Color.White);
-							System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
 							
+							game.handTurn(); //Switch  turn to black. ////////////////// Colored Tiles here
+						
+							//Timer Related - 
+							occupiedTilesOriginalColor(scene) ; 
+						//	ClearColoredTiles(scene);
+						//	GenerateYellowTiles(scene);
+						//	GenerateRedTiles(scene, Color.White);
+							//GenerateGreenTiles(scene, Color.White);
+						
 							System.out.println("Now It's Black's  turn");
 							clickedSoldier=null;
 							break;
@@ -1045,13 +1100,21 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 								Queen prevSs =(Queen) prevS;
 								//System.out.println(prevS);
 								game.queenMove(prevSs, t2, possibleQueen);
+								
 								game.handTurn(); //Switch  turn to white. ///////////////Generating Colored Tiles Here
+							
 								//Timer Related - 
 								occupiedTilesOriginalColor(scene) ; 
-								ClearColoredTiles(scene);
+							//	ClearColoredTiles(scene);
+							//	GenerateYellowTiles(scene);
+							//	GenerateRedTiles(scene, Color.White);
 								//GenerateGreenTiles(scene, Color.White);
 								System.out.println(game.isGameOver() + " IS GAME OVER ??" + game.getwhitePlayerSoldiers() + " , queens = " + game.getwhitePlayerQueens());
-								
+//								if(game.isGameOver()) {
+//									winnerLabel.setText(game.winner() + " Wins!");
+//									winnerLabel.setVisible(true);	
+//									boardOFF();
+//								}
 								System.out.println("Now It's Black's  turn");
 								clickedSoldier=null;
 								break;
@@ -1212,7 +1275,6 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 			for(int j = 0; j<=7; j++) {
 
 				//for(int j = 2; j<8; j+=2) {
-
 				
 				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
 				blackSoldier.setFitHeight(45);
@@ -1233,7 +1295,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 				//					((Button) scene.lookup("#"+ks)).setGraphic(null);
 				//				}
 				buildTilesBoardMap();
-
+                
 				String dest = i+","+j;
 				String check = null;
 				String key = null;
@@ -1253,38 +1315,21 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 				//	System.out.println("Over herererere");
 				//System.out.println(key);
 
-
 				if(board[i][j]==1) {
 					((Button) scene.lookup("#"+key)).setGraphic(whiteSoldier);
 					whiteAliveCout++ ; 
 				}else if(board[i][j]==2) { 
-		
-					if(i == 1 && j ==4 ) {
-						
-						//((Button) scene.lookup("#"+key)).setGraphic(null);
-						ImageView chosenBlackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/chosenBlackSoldier.png")));
-						chosenBlackSoldier.setFitHeight(45);
-						chosenBlackSoldier.setFitWidth(45);			
-						 ((Button) scene.lookup("#"+key)).setGraphic(chosenBlackSoldier);
-					 ((Button) scene.lookup("#tile10")).setStyle("-fx-background-color: #f2140c;");
-						 
-					}else {
-						 ((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-
-					}
-					if(i == 2 && j ==3 ) {
-						 ((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-                          this.thirdNote.setVisible(true);
-						 ((Button) scene.lookup("#tile15")).setStyle("-fx-background-color: #f2140c;");
-					}
-					if(i == 4 && j ==3 ) {
-						 ((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
-						 this.FirstNote.setVisible(false);
-                         this.thirdNote.setVisible(false);
-                         this.secondNote.setVisible(true);
-                         ((Button) scene.lookup("#tile18")).setOnMouseClicked(null);
-					}
-					
+					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
+//					if((i == 2 && j==5) || (i == 3 && j==0) ||(i == 3 && j==2) ) {
+//						 System.out.println( "i is : "+i + " and  j  :"+j);
+//
+//						quesPop.question = SysData.getInstance().randomQuestion();
+//						quesPop.display();
+//						SysData.getInstance().questionIsShown(quesPop.question);
+//						
+//						}
+					// 3,2 
+					// 3,0 
 					//blackAliveCount++; 
 				}else if(board[i][j]==0 && key!=null ) {
 					((Button) scene.lookup("#"+key)).setGraphic(null);
@@ -1300,40 +1345,74 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 				
 
 
+				//					String value ; 
+				//
+				//					//value = i*4 + j ; 
+				//					value=String.valueOf((i*4+j)) ; 
+
+				//	String key = tilesBoardMap.get(value);
+				//	    		System.out.println(value+"//");
+				//	    		if(board[i][j]== 1) {
+				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img2);
+				//
+				//	    		}
+				//	    		
+				//	    		if(board[i][j]== 2) {
+				//	    	    	((Button) scene.lookup("#tile"+value)).setGraphic(img);
+				//
+				//	    		}
+
+				//					if(Integer.parseInt(value) <13) {
+				//						System.out.println("#tile"+value);
+				//						((Button) scene.lookup("#tile"+value)).setGraphic(blackSoldier);
+				//					}
+				//					if(Integer.parseInt(value) >20) {
+				//						((Button) scene.lookup("#tile"+value)).setGraphic(whiteSoldier);
+				//					}
+
+
+
+				// Button btn = (Button) scene.lookup("#"+key);
+				//System.out.println(tile1);
+				// btn.setGraphic(img);
 			
-				
 			}
 			
 
 
 		}
-		((Button) scene.lookup("#tile22")).setStyle("-fx-background-color: #888f9e;");
-		((Button) scene.lookup("#tile18")).setStyle("-fx-background-color: #888f9e;");
-
 		
-		((Button) scene.lookup("#tile1")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile2")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile3")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile9")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile11")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile14")).setOnMouseClicked(null);
-
-		((Button) scene.lookup("#tile23")).setOnMouseClicked(null);
-		((Button) scene.lookup("#tile26")).setOnMouseClicked(null);
-
+		
 		//Generate Blue Tile - Maybe ! 
 		
+		//-----------------------Count Your Loses ! 
+//		if(this.deadBlackv !=null && this.deadwhitev !=null) {
+//			this.deadwhitev.getChildren().clear();
+//			this.deadBlackv.getChildren().clear();
+//
+//
+//			for(int i=0 ; i< 12 -whiteAliveCout ; i++) {
+//
+//				ImageView whiteSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteSoldier.png")));
+//				whiteSoldier.setFitHeight(45);
+//				whiteSoldier.setFitWidth(45);
+//				this.deadwhitev.getChildren().add(whiteSoldier);
+//			}
+//
+//			for(int i=0 ; i< 12 -blackAliveCount ; i++) {
+//				ImageView blackSoldier = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blackSoldier.png")));
+//				blackSoldier.setFitHeight(45);
+//				blackSoldier.setFitWidth(45);
+//				this.deadBlackv.getChildren().add(blackSoldier);
+//			}
+//		}
 
 	}
 
-	public int getWinnerPoints() {
-		if(game.winner().equals(game.getblackPlayer()))
-			return game.getblackPlayerPoints();
-		else
-			return game.getwhitePlayerPoints();
-	}
+	
 	public void boardOFF() {
-			tile1.setOnMouseClicked(null);
+	
+		tile1.setOnMouseClicked(null);
 		tile2.setOnMouseClicked(null);
 		tile3.setOnMouseClicked(null);
 		tile4.setOnMouseClicked(null);
@@ -1403,17 +1482,85 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 	}
 	//------------------------------colored tiles  ;
+	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
+
+		// color 3 random Empty tiles
+		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
+		if(redTile != null ) { 
+			String possibleTile = redTile.getX()+","+redTile.getY();
+			String check = null;
+			String key = null;
+			for (String ks : tilesBoardMap.keySet()) {
+				check = tilesBoardMap.get(ks);
+				if(check!=null) {
+					if(check.equals(possibleTile)) {
+						key = ks;
+						//						System.out.println("should be red  :: "+key);
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+						break;
+					}
+				}
+			}
+		}
+
+	}
 
 
+	//-----------------------green Tile
 
-	
-
-
+//
+//	public void GenerateGreenTiles( Scene s, Model.Color Nowplaying )  {
+//
+//		// color 1 random Empty tile
+//		Tile greenTile = this.game.generateGreenTile(Nowplaying) ; 
+//		if(greenTile != null ) { 
+//			String possibleTile = greenTile.getX()+","+greenTile.getY();
+//			String check = null;
+//			String key = null;
+//			for (String ks : tilesBoardMap.keySet()) {
+//				check = tilesBoardMap.get(ks);
+//				if(check!=null) {
+//					if(check.equals(possibleTile)) {
+//						key = ks;
+//						//						System.out.println("should be red  :: "+key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+//						break;
+//					}
+//				}
+//			}
+//		}
+//
+//	}
 
 
 
 	//-------------------------
 
+//	public void GenerateOrangeTiles( Scene s, Model.Color Nowplaying )  {
+//
+//		// color 3 random Empty tiles
+//		for (Tile tile : this.game.generateOrangeTiles(Nowplaying) ) {
+//			String possibleTile = tile.getX()+","+tile.getY();
+//			String check = null;
+//			String key = null;
+//			for (String ks : tilesBoardMap.keySet()) {
+//				check = tilesBoardMap.get(ks);
+//				if(check!=null) {
+//					if(check.equals(possibleTile)) {
+//						key = ks;
+//						//						System.out.println("should be orange  :: "+key);
+//						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
+//						break;
+//					}
+//				}
+//			}
+//		}
+//
+//	}
+
+
+
+	
 
 
 	public Button getButtonById(String id) {
@@ -1485,72 +1632,34 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 		return false ; 
 	}
 
+
 	
 
   
-    
-	
-	void OverAllTimer() {
-		
-		 boolean x=true;
-		    long displayMinutes=0;
-		    //long secondspassed=0 ; 
-		    long starttime=System.currentTimeMillis();
-		    System.out.println("Timer:");
-		    while(x)
-		    {
-		    	
-		        try {
-					TimeUnit.SECONDS.sleep(1);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-		        long timepassed=System.currentTimeMillis()-starttime;
-		      long  secondspassed=timepassed/1000;
-		        if(secondspassed==60)
-		        {
-		            secondspassed=0;
-		            starttime=System.currentTimeMillis();
-		        }
-		        if((secondspassed%60)==0)
-		        displayMinutes++;
-
-		System.out.println( displayMinutes+" : "+secondspassed);
-		
-		
-	}
-		    
-		    
-		
-
-}
 
 	
-	public void GenerateRedTiles( Scene s, Model.Color Nowplaying )  {
 
-		// color 3 random Empty tiles
-		Tile redTile = this.game.generateRedTile(Nowplaying)  ; 
-		if(redTile != null ) { 
-			String possibleTile = redTile.getX()+","+redTile.getY();
-			String check = null;
-			String key = null;
-			for (String ks : tilesBoardMap.keySet()) {
-				check = tilesBoardMap.get(ks);
-				if(check!=null) {
-					if(check.equals(possibleTile)) {
-						key = ks;
-						//						System.out.println("should be red  :: "+key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
-						break;
-					}
-				}
-			}
+    @FXML
+    void ExitBtnClicked(ActionEvent event) {
+    	
+		((Stage)this.ExitBtn.getScene().getWindow()).close();
+
+		Stage stage = (Stage)this.ExitBtn.getScene().getWindow();
+		Parent toLoad;
+		try {
+			toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
+			Scene scene = new Scene(toLoad);
+			stage.setScene(scene);
+			stage.centerOnScreen();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
-
-	}
+		
+		  stage.show();
+			stage.setTitle("Hamka - Match");
+	         
+    }
 	
 	
-	
-
 }

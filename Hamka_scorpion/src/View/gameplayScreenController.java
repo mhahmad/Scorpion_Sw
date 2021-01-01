@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 
 import java.awt.event.ActionListener;
@@ -309,7 +309,7 @@ public class gameplayScreenController extends Application implements Initializab
 		if(game == null)
 			game = new Game(p1Name, p2Name, startBoard); //Singletone changes to be in every method.
 		timeSeconds = new SimpleIntegerProperty(STARTTIME);
-		root = FXMLLoader.load(getClass().getResource("/View/gameplayScreen.fxml"));
+		root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
 		scene = new Scene(root);
 		//FillBoard() ;
 		//game.handTurn();
@@ -431,7 +431,7 @@ public class gameplayScreenController extends Application implements Initializab
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
-				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 				Scene scene = new Scene(toLoad);
 				stage.setScene(scene);
 				stage.centerOnScreen();
@@ -515,7 +515,7 @@ public class gameplayScreenController extends Application implements Initializab
 			Stage stage = (Stage)this.settingsButton.getScene().getWindow();
 			Parent toLoad;
 			try {
-				toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+				toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 				Scene scene = new Scene(toLoad);
 				stage.setScene(scene);
 				stage.centerOnScreen();

@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -52,7 +52,7 @@ public class optionScreenController extends Application  implements Initializabl
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource("/View/optionScreen.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("optionScreen.fxml"));
 		Scene scene = new Scene(root,1200,960);
 		stage.setScene(scene);
 		stage.show();
@@ -67,7 +67,7 @@ public class optionScreenController extends Application  implements Initializabl
 	   @FXML
 	   public void backBtnClicked(ActionEvent event) throws IOException {
 		   Stage stage = (Stage)this.backBtn.getScene().getWindow();
-		   Parent toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+		   Parent toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 		   Scene scene = new Scene(toLoad);
 		   stage.setScene(scene);
 	    }
@@ -105,7 +105,7 @@ public class optionScreenController extends Application  implements Initializabl
 	    @FXML
 		   public void manageQuestionClicked(ActionEvent event) throws IOException {
 			   Stage stage = (Stage)this.mngQuesBtn.getScene().getWindow();
-			   Parent toLoad = FXMLLoader.load(getClass().getResource("/View/ManageQuestionScreen.fxml"));
+			   Parent toLoad = FXMLLoader.load(getClass().getResource("ManageQuestionScreen.fxml"));
 			   Scene scene = new Scene(toLoad);
 			   stage.setScene(scene);
 		    }

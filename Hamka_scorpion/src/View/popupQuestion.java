@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import Model.Question;
 import javafx.application.Application;

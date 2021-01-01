@@ -1,6 +1,6 @@
-package Controller;
+package View;
 
-import Controller.gameplayScreenController;
+import View.gameplayScreenController;
 import Model.Board;
 import Model.Game;
 import javafx.event.EventHandler;
@@ -85,7 +85,7 @@ public class enterNameController{
 				 }
 			 }else {
 				 // GO TO BOARD SCREEN
-				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("gameplayScreen.fxml"));
                  Parent root;
                try {
                    root = loader.load();
@@ -145,7 +145,7 @@ public class enterNameController{
 		    				 }
 		    			 }else {
 		    				 // GO TO BOARD SCREEN
-		    				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
+		    				 FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("gameplayScreen.fxml"));
 		                     Parent root;
 		                   try {
 		                       root = loader.load();
@@ -192,7 +192,7 @@ public class enterNameController{
 		 VBox layout = new VBox(10);
 		 layout.setAlignment(Pos.CENTER);
 		 layout.getChildren().addAll(label1,player1,label2,player2,errorLabel,pane);
-		 if(SysData.darkTheme)
+		 if(Controller.SysData.darkTheme)
 			 layout.setStyle("-fx-background-color: #3E3E3E	");
 		 else
 			 layout.setStyle("-fx-background-color: #8B0000	");

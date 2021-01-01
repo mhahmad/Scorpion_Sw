@@ -1,4 +1,4 @@
-package Controller;
+package View;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,7 +50,7 @@ public class leaderboardScreen extends Application implements Initializable {
 	@Override
 	public void start(Stage stage) throws Exception {
 		// TODO Auto-generated method stub
-		Parent root = FXMLLoader.load(getClass().getResource("/View/LeaderboardScreen.fxml"));
+		Parent root = FXMLLoader.load(getClass().getResource("LeaderboardScreen.fxml"));
 		Scene scene = new Scene(root);
 		stage.setScene(scene);
 		stage.show();
@@ -68,7 +68,7 @@ public class leaderboardScreen extends Application implements Initializable {
 	@FXML
 	   public void backBtnClicked(ActionEvent event) throws IOException {
 		   Stage stage = (Stage)this.backBtn.getScene().getWindow();
-		   Parent toLoad = FXMLLoader.load(getClass().getResource("/View/mainMenu.fxml"));
+		   Parent toLoad = FXMLLoader.load(getClass().getResource("mainMenu.fxml"));
 		   Scene scene = new Scene(toLoad);
 		   stage.setScene(scene);
 	    }

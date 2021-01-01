@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 import Controller.SysData;
-import Controller.popupQuestion;
-import Controller.winnerWindow;
+import View.popupQuestion;
+import View.winnerWindow;
 import Model.Game;
 import Model.Queen;
 import Model.Soldier;
