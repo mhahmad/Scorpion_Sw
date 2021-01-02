@@ -165,7 +165,6 @@ public class loadGameScreen extends Application implements Initializable {
 	public ObservableList<String> getSavedFiles(){
 		ObservableList<String> savedFiles = FXCollections.observableArrayList();
 
-		//		File folder = new File(System.getProperty("user.dir") + "/savedGames");
 		System.out.println(System.getProperty("user.dir"));
 		File folder = new File(System.getProperty("user.dir"));
 		folder = folder.getParentFile();

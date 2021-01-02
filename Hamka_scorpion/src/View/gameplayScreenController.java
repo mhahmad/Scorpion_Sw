@@ -555,11 +555,6 @@ public class gameplayScreenController extends Application implements Initializab
 		timeSeconds.addListener((observable, oldTimeValue, newTimeValue) -> {
 			// code to execute here...
 			// e.g.
-			//System.out.println("Time left: "+newTimeValue);
-
-			//   System.out.println("Time left: "+timeSeconds.toString());
-
-			//		    System.out.println("time left : "+newTimeValue);
 			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, gameController.getTurn());
 			if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, gameController.getTurn());
 			if(newTimeValue.intValue() == 1) {SwapTurn();  try {
@@ -741,13 +736,11 @@ public class gameplayScreenController extends Application implements Initializab
 		Button currentTile;
 		Board gBoard = gameController.getBoardObj();
 		int[][] board = gBoard.getBoard();
-		//System.out.println(board);
 
 
 
 		String dest = tilesBoardMap.get((String)((Control)event.getSource()).getId());
-		//		 root = FXMLLoader.load(getClass().getResource("gameplayScreen.fxml"));
-		//		 scene = new Scene(root);
+
 		currentTile = (Button) scene.lookup("#"+(String)((Control)event.getSource()).getId());
 
 		//Convert tile to i,j
@@ -787,6 +780,10 @@ public class gameplayScreenController extends Application implements Initializab
 		ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
 		whiteQueen.setFitHeight(45);
 		whiteQueen.setFitWidth(45);
+
+		ImageView yellow = new ImageView(new Image(getClass().getResourceAsStream("/Resources/yellowTile.png")));
+		yellow.setFitHeight(45);
+		yellow.setFitWidth(45);
 
 
 
@@ -865,7 +862,6 @@ public class gameplayScreenController extends Application implements Initializab
 		int blackSoldiers = gameController.getSoldiers();
 		int blackQueens = gameController.getQueens();
 
-		System.out.println(blackSoldiers + " now queens: "+ blackQueens + "   RIGHT???????");
 
 
 		InvalidMove = true;
@@ -1027,7 +1023,8 @@ public class gameplayScreenController extends Application implements Initializab
 		//-------------------- This is a revive click (Blue tile revive).
 		if(lockedForBlue && s==null) {
 			if(gameController.ressurectSoldier(1, current)) {
-				System.out.println("Revived");
+				occupiedTilesOriginalColor(scene);
+				ClearColoredTiles(scene);
 				SwapTurn();
 				flag=0;
 				blueTile = null;
@@ -1173,7 +1170,6 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//	System.out.println(key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
 						((Button) s.lookup("#"+key)).setGraphic(null);
 						//break;
@@ -1224,6 +1220,21 @@ public class gameplayScreenController extends Application implements Initializab
 				ImageView whiteQueen = new ImageView(new Image(getClass().getResourceAsStream("/Resources/whiteQueen.png")));
 				whiteQueen.setFitHeight(45);
 				whiteQueen.setFitWidth(45);
+				ImageView yellow = new ImageView(new Image(getClass().getResourceAsStream("/Resources/yellowTile.png")));
+				yellow.setFitHeight(45);
+				yellow.setFitWidth(45);
+				ImageView green = new ImageView(new Image(getClass().getResourceAsStream("/Resources/greenTile.png")));
+				green.setFitHeight(45);
+				green.setFitWidth(45);
+				ImageView red = new ImageView(new Image(getClass().getResourceAsStream("/Resources/redTile.png")));
+				red.setFitHeight(45);
+				red.setFitWidth(45);
+				ImageView blue = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blueTile.png")));
+				blue.setFitHeight(45);
+				blue.setFitWidth(45);
+//				ImageView orange = new ImageView(new Image(getClass().getResourceAsStream("/Resources/orangeTile.png")));
+//				orange.setFitHeight(45);
+//				orange.setFitWidth(45);
 
 				buildTilesBoardMap();
 
@@ -1249,9 +1260,6 @@ public class gameplayScreenController extends Application implements Initializab
 				}else if(board[i][j]==2) { 
 					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
 					blackAliveCount++; 
-				}else if(board[i][j]==0 && key!=null ) {
-					((Button) scene.lookup("#"+key)).setGraphic(null);
-
 				}else if (board[i][j]==11) { 
 					((Button) scene.lookup("#"+key)).setGraphic(whiteQueen);
 					whiteAliveCout++ ; 
@@ -1259,6 +1267,26 @@ public class gameplayScreenController extends Application implements Initializab
 				}else if (board[i][j]==22) {
 					((Button) scene.lookup("#"+key)).setGraphic(blackQueen);
 					blackAliveCount++; 
+				//If tile is marked is yellow, set YellowTile icon
+				}else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #FFFF00;")) {
+					((Button) scene.lookup("#"+key)).setGraphic(yellow);
+				//if tile is marked as green, set GreenTile icon.
+				}else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #7EB77C;")) {
+					((Button) scene.lookup("#"+key)).setGraphic(green);
+					//if tile is marked as red, set redTile icon.
+				}else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #ed492f;")) {
+					((Button) scene.lookup("#"+key)).setGraphic(red);
+					//if tile is marked as blue, set blueTile  icon.
+				}else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #2EB9FF;")) {
+					((Button) scene.lookup("#"+key)).setGraphic(blue);
+				}
+//				else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #e38d0b;")) {
+//					((Button) scene.lookup("#"+key)).setGraphic(orange);
+//				}
+				//If tile is empty, Graphic should be null.
+				else if(board[i][j]==0 && key!=null ) {
+					((Button) scene.lookup("#"+key)).setGraphic(null);
+
 				}
 
 
@@ -1364,7 +1392,6 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println(key);
 						if(((Button) s.lookup("#"+key)).getStyle().equals(("-fx-background-color: #000000;"))){
 							// the Tile is empty and Black
 							toReturn.add(tile) ;
@@ -1374,7 +1401,7 @@ public class gameplayScreenController extends Application implements Initializab
 				}
 			}
 		}
-		//System.out.println("method empty not colored , returning Empty Array ! ");
+
 		return toReturn  ; 
 
 	}
@@ -1395,7 +1422,6 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println(key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #000000;");;
 						((Button) s.lookup("#"+key)).setGraphic(null);
 						//break;
@@ -1418,9 +1444,12 @@ public class gameplayScreenController extends Application implements Initializab
 				check = tilesBoardMap.get(ks);
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
+						ImageView red = new ImageView(new Image(getClass().getResourceAsStream("/Resources/redTile.png")));
+						red.setFitHeight(45);
+						red.setFitWidth(45);
 						key = ks;
-						//						System.out.println("should be red  :: "+key);
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");;
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #ed492f;");
+						((Button) s.lookup("#"+key)).setGraphic(red);;
 						return redTile;
 
 					}
@@ -1448,8 +1477,12 @@ public class gameplayScreenController extends Application implements Initializab
 				check = tilesBoardMap.get(ks);
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
+						ImageView green = new ImageView(new Image(getClass().getResourceAsStream("/Resources/greenTile.png")));
+						green.setFitHeight(45);
+						green.setFitWidth(45);
 						key = ks;
-						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");;
+						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #7EB77C;");
+						((Button) s.lookup("#"+key)).setGraphic(green);
 						return greenTile;
 					}
 				}
@@ -1473,9 +1506,12 @@ public class gameplayScreenController extends Application implements Initializab
 				check = tilesBoardMap.get(ks);
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
+//						ImageView orange = new ImageView(new Image(getClass().getResourceAsStream("/Resources/orangeTile.png")));
+//						orange.setFitHeight(45);
+//						orange.setFitWidth(45);
 						key = ks;
-						//						System.out.println("should be orange  :: "+key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
+						//((Button) s.lookup("#"+key)).setGraphic(orange);
 						break;
 					}
 				}
@@ -1507,12 +1543,11 @@ public class gameplayScreenController extends Application implements Initializab
 						yellow.setFitHeight(45);
 						yellow.setFitWidth(45);
 						key = ks;
-						//	System.out.println(key);
 						if(((Button) s.lookup("#"+key)).getStyle().equals("-fx-background-color: #000000;")) {
 							System.out.println("the "+key+" is Black ! ");
 
-							((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");
 							((Button) s.lookup("#"+key)).setGraphic(yellow);
+							((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #FFFF00;");
 							tilesToReturn.add(tile);
 							break;
 						}
@@ -1539,10 +1574,12 @@ public class gameplayScreenController extends Application implements Initializab
 				check = tilesBoardMap.get(ks);
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
+						ImageView blue = new ImageView(new Image(getClass().getResourceAsStream("/Resources/blueTile.png")));
+						blue.setFitHeight(45);
+						blue.setFitWidth(45);
 						key = ks;
-						//                        System.out.println("should be red  :: "+key);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #2EB9FF;");;
-						System.out.println("HERE IS THE BLUE TILE OK????: " + BlueTile);
+						((Button) s.lookup("#"+key)).setGraphic(blue);
 						blueTile = BlueTile;
 						return BlueTile;
 					}
@@ -1633,7 +1670,7 @@ public class gameplayScreenController extends Application implements Initializab
 				if(check!=null) {
 					if(check.equals(possibleTile)) {
 						key = ks;
-						//						System.out.println(key);
+
 						toCheck.add(((Button) s.lookup("#"+key)));
 						//break;
 					}
@@ -1642,7 +1679,6 @@ public class gameplayScreenController extends Application implements Initializab
 		}
 
 		if(toCheck.contains(btn)) {
-			//			System.out.println("the tile/Button  is Empty :  ");
 			return true ; // is Empty 
 		}
 
@@ -1846,7 +1882,6 @@ public class gameplayScreenController extends Application implements Initializab
 					InvalidMove = false;
 
 					Queen prevQ =(Queen) prevS;
-					//System.out.println(prevS);
 
 					Soldier k = possibleQueen.get(t2);
 					boolean killed = false;

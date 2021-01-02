@@ -185,13 +185,24 @@ public class SysData {
 	 * this method accepts a boolean , if it's true music will play , if false music will stop.
 	 * @param status
 	 */
-
+	Media media;
+	MediaPlayer mp;
+	
 	public void soundtrackOn(boolean status) {
 		
-		String fileName = new File("Hamka_scorpion/Music/soundtrack.mp3").toURI().toString();
+		System.out.println(System.getProperty("user.dir"));
+		File folder = new File(System.getProperty("user.dir"));
+		folder = folder.getParentFile();
+		String toF = folder.toString();
+//		folder = new File(toF + "/savedGames");
+		
+		File folder2 = new File(System.getProperty("user.dir") + "/Music/soundtrack.mp3");
+		
+		String fileName = folder2.toURI().toString();
 		JFXPanel j = new JFXPanel();
-		Media media = new Media(fileName);
-		MediaPlayer mp = new MediaPlayer(media);
+		System.out.println(fileName);
+		media = new Media(fileName);
+		mp = new MediaPlayer(media);
 		
 		try {
 			if(status) {
