@@ -1,6 +1,7 @@
 package View;
 
 import View.gameplayScreenController;
+import Controller.gameController;
 import Model.Board;
 import Model.Game;
 import javafx.event.EventHandler;
@@ -105,8 +106,8 @@ public class enterNameController{
             			{-1,1,-1,1,-1,1,-1,1},
             			{1,-1,1,-1,1,-1,1,-1}
             	};
-             	gameplayScreenController.startBoard = startBoard;
-             	gameplayScreenController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
+             	gameController.startBoard = startBoard;
+             	gameController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
              	//gameplayScreenController.game.setBoard(new Board(startBoard));
                  con.start(window);
                  window.show();
@@ -165,8 +166,8 @@ public class enterNameController{
 		                			{-1,1,-1,1,-1,1,-1,1},
 		                			{1,-1,1,-1,1,-1,1,-1}
 		                	};
-		                 	gameplayScreenController.startBoard = startBoard;
-		                 	gameplayScreenController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
+		                 	gameController.startBoard = startBoard;
+		                 	gameController.game = new Game(player1.getText(), player2.getText() , startBoard); //Singletone changes to be in every method.
 		                 	//gameplayScreenController.game.setBoard(new Board(startBoard));
 		                     con.start(window);
 		                     window.show();
