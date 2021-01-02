@@ -42,8 +42,6 @@ public class leaderboardScreen extends Application implements Initializable {
     @FXML
     private TableColumn<Winner, String> playerColumn;
 
-    @FXML
-    private TableColumn<Winner, String> dateColumn;
 
     @FXML
     private TableColumn<Winner, Integer> resultColumn;
@@ -79,7 +77,6 @@ public class leaderboardScreen extends Application implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		 this.playerColumn.setCellValueFactory(new PropertyValueFactory<>("winnerName"));
-		 this.dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 		 this.resultColumn.setCellValueFactory(new PropertyValueFactory<>("winnerPoints"));
 
 	        this.leaderboardTable.setItems(getWinners());

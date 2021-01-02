@@ -368,7 +368,7 @@
                   <Font name="Roboto" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="GameTime" layoutX="561.0" layoutY="61.0" prefHeight="27.0" prefWidth="47.0" text="0:0" textFill="#ebe3e3">
+            <Label fx:id="GameTime" layoutX="561.0" layoutY="61.0" prefHeight="27.0" prefWidth="56.0" text="0:0" textFill="#ebe3e3">
                <font>
                   <Font size="18.0" />
                </font></Label>

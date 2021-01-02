@@ -167,12 +167,12 @@ public class loadGameScreen extends Application implements Initializable {
 
 		System.out.println(System.getProperty("user.dir"));
 		File folder = new File(System.getProperty("user.dir"));
-		folder = folder.getParentFile();
+//		folder = folder.getParentFile();
 		String toF = folder.toString();
 		folder = new File(toF + "/savedGames");
 		System.out.println(folder.getAbsolutePath());
 		File[] listOfFiles = folder.listFiles();
-
+		System.out.println(listOfFiles);
 		for (int i = 0; i < listOfFiles.length; i++) {
 			File file = listOfFiles[i];
 			if (file.isFile() && file.getName().endsWith(".txt")) {
@@ -189,10 +189,11 @@ public class loadGameScreen extends Application implements Initializable {
 		Stage window = new Stage();
 
 		File folder = new File(System.getProperty("user.dir"));
-		folder = folder.getParentFile();
+//		folder = folder.getParentFile();
 		String toF = folder.toString();
 
 		String chosenFilePath = toF+ "/savedGames/" + this.loadgameTable.getSelectionModel().getSelectedItem();
+		System.out.println(chosenFilePath);
 		Board board = new Board(SysData.getInstance().getBoard(chosenFilePath));
 		Color turn = SysData.getInstance().getTurn(chosenFilePath);
 		ArrayList<String> namesAndPoints = null;

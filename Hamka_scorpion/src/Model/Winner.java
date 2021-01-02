@@ -28,7 +28,7 @@ public class Winner implements Comparable<Winner> {
 	@Override
 	public int compareTo(Winner arg0) {
 		// TODO Auto-generated method stub
-		return (this.getWinnerPoints() - arg0.getWinnerPoints());
+		return (arg0.getWinnerPoints() - this.getWinnerPoints() );
 		
 	}
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.leaderboardScreen">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="960.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.leaderboardScreen">
    <children>
       <ImageView fx:id="background" fitHeight="960.0" fitWidth="1200.0">
          <image>
@@ -44,9 +44,8 @@
             </Label>
             <TableView fx:id="leaderboardTable" layoutX="70.0" layoutY="106.0" prefHeight="530.0" prefWidth="745.0" style="-fx-background-color: #404040;" styleClass="-column-header-background { -fx-background-color:  #404040}">
               <columns>
-                <TableColumn fx:id="playerColumn" prefWidth="250.0" text="Player" />
-                <TableColumn fx:id="dateColumn" minWidth="0.0" prefWidth="250.0" text="Date" />
-                  <TableColumn fx:id="resultColumn" prefWidth="250.0" text="Result" />
+                <TableColumn fx:id="playerColumn" prefWidth="375.0" text="Player" />
+                  <TableColumn fx:id="resultColumn" prefWidth="369.0" text="Result" />
               </columns>
             </TableView>
          </children>
