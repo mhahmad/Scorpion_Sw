@@ -200,7 +200,14 @@ public class manageQuestionScreen extends Application implements Initializable {
 				alert.setHeaderText("Question does already exist !");
 				alert.setContentText("Question does already exist !");
 				alert.showAndWait();
-			} else if (SysData.getInstance().addQuestion(ques)) {
+			}else if(answers.get(0).equals(answers.get(1)) || answers.get(0).equals(answers.get(2)) || answers.get(0).equals(answers.get(3)) || 
+					answers.get(1).equals(answers.get(2)) || answers.get(1).equals(answers.get(3)) || answers.get(2).equals(answers.get(3))){ 
+				Alert alert = new Alert(AlertType.WARNING);
+				alert.setTitle("Duplicate Answer");
+				alert.setHeaderText("There is a duplicate answer");
+				alert.setContentText("Answers should be different from one another.");
+				alert.showAndWait();
+			}else if (SysData.getInstance().addQuestion(ques)) {
 				SysData.getInstance().writeQuestionsToJson();
 				quesTable.getItems().add(ques);
 			}
