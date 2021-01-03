@@ -546,7 +546,7 @@ public class gameplayScreenController extends Application implements Initializab
 			// code to execute here...
 			// e.g.
 			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, gameController.getTurn());
-			if(newTimeValue.intValue() == 115)     GenerateOrangeTiles(scene, gameController.getTurn());
+			if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, gameController.getTurn());
 			if(newTimeValue.intValue() == 1) {SwapTurn();  try {
 				flag=0;
 				clearBoard(gameController.game, scene, root);
