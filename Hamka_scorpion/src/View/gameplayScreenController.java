@@ -546,7 +546,7 @@ public class gameplayScreenController extends Application implements Initializab
 			// code to execute here...
 			// e.g.
 			if(newTimeValue.intValue() == 90)     greenTile = GenerateGreenTiles(scene, gameController.getTurn());
-			if(newTimeValue.intValue() == 30)     GenerateOrangeTiles(scene, gameController.getTurn());
+			if(newTimeValue.intValue() == 115)     GenerateOrangeTiles(scene, gameController.getTurn());
 			if(newTimeValue.intValue() == 1) {SwapTurn();  try {
 				flag=0;
 				clearBoard(gameController.game, scene, root);
@@ -1271,9 +1271,9 @@ public class gameplayScreenController extends Application implements Initializab
 				}else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #2EB9FF;")) {
 					((Button) scene.lookup("#"+key)).setGraphic(blue);
 				}
-//				else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #e38d0b;")) {
+				else if(key!=null && ((Button) scene.lookup("#"+key)).getStyle().equals("-fx-background-color: #e38d0b;")) {
 //					((Button) scene.lookup("#"+key)).setGraphic(null);
-//				}
+				}
 				//If tile is empty, Graphic should be null.
 				else if(board[i][j]==0 && key!=null ) {
 					((Button) scene.lookup("#"+key)).setGraphic(null);
@@ -1501,7 +1501,7 @@ public class gameplayScreenController extends Application implements Initializab
 						orange.setFitHeight(45);
 						orange.setFitWidth(45);
 						key = ks;
-						((Button) s.lookup("#"+key)).setGraphic(null);
+//						((Button) s.lookup("#"+key)).setGraphic(null);
 						((Button) s.lookup("#"+key)).setStyle("-fx-background-color: #e38d0b;");;
 						//((Button) s.lookup("#"+key)).setGraphic(orange);
 						//((Button) s.lookup("#"+key)).setCursor(arg0);
