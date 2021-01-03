@@ -1,10 +1,8 @@
-*:Not all methods in .Model are implemented in GUI (Such as Killstreak and colored tiles functionality),
-  Other than that, Almost everything in the game screen (gameboardScreen) works, like queen movements and such.
-*: Question Managament screen works as intended (Read and write to Json files), as well as leaderBoard screen (
-   After a game finishes, it gets added to the leaderboard screen.).
+In this repository all assignment 5 requirements are included, such as design patterns, scrum, HamkaJar.jar, and the project itself.
 
-Note: Hamka.Jar is included, as well as the scrum_Backlog, and the class diagram was update from itration 1.
+*In the moodle: We submitted a seperate file with only the jar, scrum and design patterns. And an additional google drive link to download all of them with the project itself (Final iteration 3, i.e. last push on the 3rd of january 2021).
 
+Google drive link for Iteration 3: https://drive.google.com/file/d/1lAkr4uaO7OsE3gOP-8L0umAK40lMvFgn/view?usp=sharing
 
 gitHub URI if needed: https://github.com/mhahmad/Scorpion_Sw.git
 
