@@ -26,6 +26,7 @@ import Model.Winner;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class SysData {
 
@@ -193,6 +194,15 @@ public class SysData {
 
 	public void soundtrackOn(boolean status) {
 		
+		//Play on loop
+		mp.setOnEndOfMedia(new Runnable() {
+	        @Override
+	        public void run() {
+	        	mp.seek(Duration.ZERO);
+	        	mp.play();
+	        }
+	    }); 
+		///
 		
 		try {
 			if(status) {

@@ -1232,6 +1232,7 @@ public class KillSTutrialController  extends Application implements Initializabl
 		((Button) scene.lookup("#tile2")).setOnMouseClicked(null);
 		((Button) scene.lookup("#tile3")).setOnMouseClicked(null);
 		((Button) scene.lookup("#tile9")).setOnMouseClicked(null);
+		((Button) scene.lookup("#tile7")).setOnMouseClicked(null);
 		//((Button) scene.lookup("#tile11")).setOnMouseClicked(null);
 		//((Button) scene.lookup("#tile14")).setOnMouseClicked(null);
 
@@ -1284,6 +1285,7 @@ public class KillSTutrialController  extends Application implements Initializabl
 			((Button) scene.lookup("#tile28")).setOnMouseClicked(null);
 			((Button) scene.lookup("#tile29")).setOnMouseClicked(null);
 			((Button) scene.lookup("#tile30")).setOnMouseClicked(null);
+			//((Button) scene.lookup("#tile7")).setOnMouseClicked(null);
 			
 
 
