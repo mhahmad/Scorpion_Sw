@@ -323,8 +323,8 @@ public class BlueTileTutController extends Application implements Initializable 
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		
-		 
 		darkTheme(SysData.darkTheme);
+		    BoardLocked=false ; 
 	      //------------------------------
 		buildTilesBoardMap();
 	 this.BlueTile = tile15 ;
@@ -443,7 +443,7 @@ public class BlueTileTutController extends Application implements Initializable 
 	    void BlueTileBtnClicked(ActionEvent event) {
 		 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 			
-		 FXMLLoader loader = new FXMLLoader(BlueTileTutController.class.getResource("BlueTileTutorial.fxml"));
+		 FXMLLoader loader = new FXMLLoader( BlueTileTutController.class.getResource("BlueTileTutorial.fxml"));
 		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
         Parent root;
       try {
@@ -493,7 +493,7 @@ public class BlueTileTutController extends Application implements Initializable 
 
 	    @FXML
 	    void OrangeTileBtnClicked(ActionEvent event) {
-	    	Stage window = (Stage)this.OrangeGreenTileBtn.getScene().getWindow();
+	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 			
 			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("GreenOrangeTileTutorial.fxml"));
 			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
@@ -570,9 +570,7 @@ public class BlueTileTutController extends Application implements Initializable 
 	@FXML
 	void tileClicked(MouseEvent event) throws IOException {
        
-        if(((Button)event.getSource()).getId().equals("tile32") ) {
-        	
-        }
+      
       
      
 		queenArrows.setVisible(false);
@@ -648,6 +646,7 @@ public class BlueTileTutController extends Application implements Initializable 
 				Soldier prevS = new Soldier(2) ;
 
 	        	System.out.println("welcome Tile List : "+WelcomeSoldeirBack);
+	        	if(WelcomeSoldeirBack != null) {
 	        	for (Tile t : WelcomeSoldeirBack) {  //a tile was selected before, and current tile is used to make the move.
 					int coordinateI = t.getX();
 					int coordinateJ = t.getY();
@@ -669,6 +668,7 @@ public class BlueTileTutController extends Application implements Initializable 
 
 					}
 				}
+	        	}
 	        }
 
 	
@@ -1341,9 +1341,17 @@ public class BlueTileTutController extends Application implements Initializable 
 				Integer destj = Integer.parseInt(part22);
 				if(i== desti && j == destj) {
 					((Button) scene.lookup("#"+key)).setGraphic(blackSoldier);
+					
 				boardOFF();
 				this.BlueTileBtn.setOnAction(null);
 				this.SoldeirReturns= "10,10" ; 
+				PaintBlackBoard(game, scene, root);
+				this.thirdNote.setText(" Well Done Mate ! ");
+				this.thirdNote.setStyle("-fx-background-color : #efffc4; -fx-background-radious : em5 ; ");
+				this.firstNote.setVisible(false);
+				this.secondNote.setVisible(false); 
+				this.FourthNote.setVisible(false);
+				
 				}
 			  
 
@@ -1385,15 +1393,7 @@ public class BlueTileTutController extends Application implements Initializable 
 
 		}
 		
-//		if(blackAliveCount == 1 ) {
-//			//this.secondNote.setText("hello there , \n we wish a merry Christmas \n mother fucker") ;
-//           this.secondNote.setVisible(true);
-//			
-//			this.thirdNote.setVisible(true);
-//			//System.out.println(this.thirdNote.getText());
-//		}
-		//Generate Blue Tile - Maybe ! 
-	//	GenerateBlueTile(scene) ; 
+           // if the solfeir is ressurected - > turn the borad back to Black ! , and display M
 		
 //-----------------------------------------------
 
@@ -1562,7 +1562,17 @@ public class BlueTileTutController extends Application implements Initializable 
 
 	}
 
+	public void PaintBlackBoard(Game game, Scene scene, Parent root) throws IOException {
 
+		for(int i = 0; i<=7; i++) {
+			for(int j = 0; j<=7; j++) {
+				for (String ks : tilesBoardMap.keySet()) {
+					((Button) scene.lookup("#"+ks)).setStyle("-fx-background-color: #000000;");
+				}
+			}
+		}
+
+	}
 	
 
 	public void ClearColoredTiles(Scene s) {
@@ -1787,18 +1797,6 @@ public class BlueTileTutController extends Application implements Initializable 
 		}
 
     }
-    
-	public void darkTheme(boolean isOn) {
-		if(isOn) {
-			headerPane.setStyle("-fx-background-color : #201C1C");
-			paneBoard.setStyle("-fx-background-color :  #3E3E3E ;");
-
-		}else {
-			headerPane.setStyle("-fx-background-color :  #630000;");
-			paneBoard.setStyle("-fx-background-color :   #6C3131 ;");
-
-		}
-	}
 
 //    void setUpBoardToBringSoldeirBack() {
 //		String check = null;
@@ -1830,5 +1828,16 @@ public class BlueTileTutController extends Application implements Initializable 
 //		
 //    }
 	
+    public void darkTheme(boolean isOn) {
+        if(isOn) {
+            headerPane.setStyle("-fx-background-color : #201C1C");
+            paneBoard.setStyle("-fx-background-color :  #3E3E3E ;");
+
+        }else {
+            headerPane.setStyle("-fx-background-color :  #630000;");
+            paneBoard.setStyle("-fx-background-color :   #6C3131 ;");
+
+        }
+    }
 	
 }
