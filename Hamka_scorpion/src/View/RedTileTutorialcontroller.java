@@ -463,7 +463,7 @@ public class RedTileTutorialcontroller extends Application implements Initializa
 
 	 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 		
-	 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("BlueTileTutorial.fxml"));
+	 FXMLLoader loader = new FXMLLoader(BlueTileTutController.class.getResource("BlueTileTutorial.fxml"));
 	// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
     Parent root;
   try {

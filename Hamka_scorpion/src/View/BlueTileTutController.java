@@ -441,7 +441,7 @@ public class BlueTileTutController extends Application implements Initializable 
 	    void BlueTileBtnClicked(ActionEvent event) {
 		 Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
 			
-		 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("BlueTileTutorial.fxml"));
+		 FXMLLoader loader = new FXMLLoader(BlueTileTutController.class.getResource("BlueTileTutorial.fxml"));
 		// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
         Parent root;
       try {
@@ -491,7 +491,7 @@ public class BlueTileTutController extends Application implements Initializable 
 
 	    @FXML
 	    void OrangeTileBtnClicked(ActionEvent event) {
-	    	Stage window = (Stage)this.BlueTileBtn.getScene().getWindow();
+	    	Stage window = (Stage)this.OrangeGreenTileBtn.getScene().getWindow();
 			
 			 FXMLLoader loader = new FXMLLoader(GrnOrangetutrialController.class.getResource("GreenOrangeTileTutorial.fxml"));
 			// FXMLLoader loader = new FXMLLoader(gameplayScreenController.class.getResource("/View/gameplayScreen.fxml"));
