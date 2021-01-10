@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -130,6 +131,26 @@ public class optionScreenController extends Application  implements Initializabl
 	    	}
 	    }
 
+	    @FXML
+	    void BtnEntered(MouseEvent event) throws IOException {
+	    	Button but = (Button)event.getSource();
+	    	if(!Controller.SysData.darkTheme) 
+	    		but.setStyle("-fx-background-color : #FDB360 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+	    	else
+	    		but.setStyle("-fx-background-color : #1FD862 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+
+	    }
+	    
+	    @FXML
+	    void BtnExited(MouseEvent event) throws IOException {
+	    	Button but = (Button)event.getSource();
+	    	if(!Controller.SysData.darkTheme) 
+	    		but.setStyle("-fx-background-color :  #F1B237 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+	    	else
+	    		but.setStyle("-fx-background-color : #6AF99E ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+
+
+	    }
 		@Override
 		public void initialize(URL location, ResourceBundle resources) {
 			// TODO Auto-generated method stub

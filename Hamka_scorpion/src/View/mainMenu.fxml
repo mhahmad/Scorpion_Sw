@@ -31,7 +31,7 @@
          <children>
             <VBox layoutX="101.0" layoutY="42.0" prefHeight="597.0" prefWidth="365.0" spacing="20.0">
                <children>
-                  <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Start Game">
+                  <Button fx:id="startBtn" mnemonicParsing="false" onAction="#startBtnClicked" onMouseEntered="#BtnEntered" onMouseExited="#BtnExited" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Start Game">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>
@@ -39,7 +39,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="loadGameBtn" mnemonicParsing="false" onAction="#loadgameBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Load Game">
+                  <Button fx:id="loadGameBtn" mnemonicParsing="false" onAction="#loadgameBtnClicked" onMouseEntered="#BtnEntered" onMouseExited="#BtnExited" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Load Game">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>
@@ -47,7 +47,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="leaderboardBtn" mnemonicParsing="false" onAction="#leaderboardBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Leaderboard">
+                  <Button fx:id="leaderboardBtn" mnemonicParsing="false" onAction="#leaderboardBtnClicked" onMouseEntered="#BtnEntered" onMouseExited="#BtnExited" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Leaderboard">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>
@@ -55,7 +55,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="tutorialBtn" mnemonicParsing="false" onAction="#tutorialsBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Tutorials">
+                  <Button fx:id="tutorialBtn" mnemonicParsing="false" onAction="#tutorialsBtnClicked" onMouseEntered="#BtnEntered" onMouseExited="#BtnExited" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Tutorials">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>
@@ -63,7 +63,7 @@
                         <InnerShadow choke="0.2" height="31.39" radius="14.08" width="26.93" />
                      </effect>
                   </Button>
-                  <Button fx:id="optionBtn" mnemonicParsing="false" onAction="#optionBtnClicked" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Options">
+                  <Button fx:id="optionBtn" mnemonicParsing="false" onAction="#optionBtnClicked" onMouseEntered="#BtnEntered" onMouseExited="#BtnExited" prefHeight="64.0" prefWidth="295.0" style="-fx-border-radius: 15; -fx-background-color: #F1B237; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width: 3; -fx-background-insets: 0;" text="Options">
                      <font>
                         <Font name="Roboto" size="30.0" />
                      </font>

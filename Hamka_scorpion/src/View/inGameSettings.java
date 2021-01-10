@@ -55,7 +55,10 @@ public  class inGameSettings {
 		 layout.getChildren().addAll(label,continueBtn,saveBtn,exitBtn);
 		 layout.setAlignment(Pos.TOP_CENTER);
 		 layout.setPadding(new Insets(20,20,20,20));
-		 layout.setStyle("-fx-background-color: #8B0000	");
+		 if(Controller.SysData.darkTheme)
+			 layout.setStyle("-fx-background-color: #3E3E3E	");
+		 else
+			 layout.setStyle("-fx-background-color: #8B0000	");
 		 Scene scene = new Scene(layout);
 		 window.setScene(scene);
 		

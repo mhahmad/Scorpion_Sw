@@ -15,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -118,6 +119,26 @@ public class mainMenuController extends Application implements Initializable{
 		View.enterNameController.display((Stage)this.optionBtn.getScene().getWindow());
     }
     
+    @FXML
+    void BtnEntered(MouseEvent event) throws IOException {
+    	Button but = (Button)event.getSource();
+    	if(!Controller.SysData.darkTheme) 
+    		but.setStyle("-fx-background-color : #FDB360 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+    	else
+    		but.setStyle("-fx-background-color : #1FD862 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+
+    }
+    
+    @FXML
+    void BtnExited(MouseEvent event) throws IOException {
+    	Button but = (Button)event.getSource();
+    	if(!Controller.SysData.darkTheme) 
+    		but.setStyle("-fx-background-color : #F1B237 ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+    	else
+    		but.setStyle("-fx-background-color : #6AF99E ; -fx-border-radius:15; -fx-border-color: #000000; -fx-background-radius: 18; -fx-border-width:3; -fx-background-insets:0;");
+
+
+    }
     public void darkTheme(boolean isOn) {
     	if(isOn) {
     		background.setImage(new Image("Resources/darkThemeBackground.png"));
