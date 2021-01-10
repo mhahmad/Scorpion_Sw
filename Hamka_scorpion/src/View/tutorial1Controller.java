@@ -197,7 +197,8 @@ public class tutorial1Controller  extends Application implements Initializable {
     
     @FXML
     private Button NextTut;
-
+    @FXML
+    private Pane headerPane;
     
 	inGameSettings settings = new inGameSettings();;
     public static String p1Name = "p1";
@@ -328,7 +329,7 @@ public class tutorial1Controller  extends Application implements Initializable {
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		
-		    
+		  darkTheme(SysData.darkTheme);
 	      //------------------------------
 		buildTilesBoardMap();
 	
@@ -1555,6 +1556,16 @@ public class tutorial1Controller  extends Application implements Initializable {
 
     }
 	
+    public void darkTheme(boolean isOn) {
+		if(isOn) {
+			headerPane.setStyle("-fx-background-color : #201C1C");
+			paneBoard.setStyle("-fx-background-color :  #3E3E3E ;");
 
+		}else {
+			headerPane.setStyle("-fx-background-color :  #630000;");
+			paneBoard.setStyle("-fx-background-color :   #6C3131 ;");
+
+		}
+	}
 
 }

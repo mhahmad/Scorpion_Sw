@@ -203,6 +203,8 @@ public class TiletutorialController   extends Application implements Initializab
 
     @FXML
     private Button BlueTileBtn;
+    @FXML
+    private Pane headerPane;
 
    
 	inGameSettings settings = new inGameSettings();;
@@ -307,7 +309,7 @@ public class TiletutorialController   extends Application implements Initializab
 	@Override
 	public void initialize (URL arg0, ResourceBundle arg1) {
 		
-		    
+		 darkTheme(SysData.darkTheme);
 	      //------------------------------
 		buildTilesBoardMap();
 	
@@ -1793,6 +1795,16 @@ public class TiletutorialController   extends Application implements Initializab
 //		
 //    }
 	
-	
+	public void darkTheme(boolean isOn) {
+		if(isOn) {
+			headerPane.setStyle("-fx-background-color : #201C1C");
+			paneBoard.setStyle("-fx-background-color :  #3E3E3E ;");
+
+		}else {
+			headerPane.setStyle("-fx-background-color :  #630000;");
+			paneBoard.setStyle("-fx-background-color :   #6C3131 ;");
+
+		}
+	}
 	
 }
